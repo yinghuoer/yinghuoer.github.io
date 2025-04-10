@@ -14,42 +14,42 @@
             gap: 2rem;
             margin-bottom: 3rem;
         }
-        
+
         .character-image {
             flex: 1;
             min-width: 300px;
         }
-        
+
         .character-image img {
             width: 100%;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
         }
-        
+
         .character-info {
             flex: 2;
             min-width: 300px;
         }
-        
+
         .character-name {
             color: var(--primary-color);
             margin-bottom: 1rem;
             font-size: 2.2rem;
         }
-        
+
         .character-title {
             color: var(--secondary-color);
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .character-stats {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1rem;
             margin: 1.5rem 0;
         }
-        
+
         .stat-item {
             background-color: var(--card-bg);
             padding: 1rem;
@@ -57,22 +57,22 @@
             text-align: center;
             box-shadow: var(--box-shadow);
         }
-        
+
         .stat-value {
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--primary-color);
         }
-        
+
         .stat-name {
             font-size: 0.9rem;
             color: #777;
         }
-        
+
         .character-description {
             line-height: 1.8;
         }
-        
+
         .character-quote {
             font-style: italic;
             padding: 1.5rem;
@@ -80,17 +80,17 @@
             border-left: 3px solid var(--primary-color);
             margin: 1.5rem 0;
         }
-        
+
         .gallery {
             margin-top: 3rem;
         }
-        
+
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 1.5rem;
         }
-        
+
         .gallery-item {
             position: relative;
             overflow: hidden;
@@ -100,23 +100,23 @@
             aspect-ratio: 1 / 1;
             background-color: #f0f0f0;
         }
-        
+
         .gallery-item:hover {
             transform: scale(1.03);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
-        
+
         .gallery-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: var(--transition);
         }
-        
+
         .gallery-item:hover img {
             transform: scale(1.1);
         }
-        
+
         .gallery-caption {
             position: absolute;
             bottom: 0;
@@ -128,18 +128,18 @@
             transform: translateY(100%);
             transition: var(--transition);
         }
-        
+
         .gallery-item:hover .gallery-caption {
             transform: translateY(0);
         }
-        
+
         .personality-traits {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
             margin: 1.5rem 0;
         }
-        
+
         .trait {
             background-color: var(--card-bg);
             padding: 0.5rem 1rem;
@@ -147,12 +147,12 @@
             font-size: 0.9rem;
             box-shadow: var(--box-shadow);
         }
-        
+
         .trait i {
             margin-right: 5px;
             color: var(--primary-color);
         }
-        
+
         .placeholder-character-image {
             width: 100%;
             aspect-ratio: 3/4;
@@ -170,7 +170,7 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="images/foxsan-logo.png" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
                 <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
             </div>
             <nav>
@@ -198,13 +198,13 @@
         <section class="character-profile">
             <div class="character-image">
                 <div class="placeholder-character-image">
-                    <i class="fas fa-fox"></i>
+                    <img src="image/fox立绘.jpg" alt="Fox Character" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
             <div class="character-info">
                 <h2 class="character-name">狐狸小姐 (Miss Foxsan)</h2>
                 <div class="character-title">TRPG骰点机器人 | 跑团助手 | 数字狐娘</div>
-                
+
                 <div class="personality-traits">
                     <div class="trait"><i class="fas fa-smile"></i> 活泼开朗</div>
                     <div class="trait"><i class="fas fa-brain"></i> 聪明机智</div>
@@ -212,7 +212,7 @@
                     <div class="trait"><i class="fas fa-magic"></i> 充满好奇</div>
                     <div class="trait"><i class="fas fa-star"></i> 略带神秘</div>
                 </div>
-                
+
                 <div class="character-stats">
                     <div class="stat-item">
                         <div class="stat-value">9+</div>
@@ -231,11 +231,11 @@
                         <div class="stat-name">耐心值</div>
                     </div>
                 </div>
-                
+
                 <div class="character-quote">
                     "需要掷骰子吗？让我来帮你！无论是探索神秘古堡还是与恶龙战斗，我都会陪伴在你身边~"
                 </div>
-                
+
                 <div class="character-description">
                     <p>Miss Foxsan是一位活泼可爱的数字狐娘，她的主要职责是为TRPG玩家提供骰点服务。她拥有丰富的规则知识，能够支持多种TRPG系统的骰点需求，包括COC、DND等主流规则。</p>
                     <p>除了骰点功能外，Miss Foxsan还具备AI对话能力，可以与玩家进行有趣的互动。她喜欢听取玩家的故事，也会分享自己的见解和想法。</p>

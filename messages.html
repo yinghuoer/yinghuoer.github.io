@@ -15,22 +15,22 @@
             box-shadow: var(--box-shadow);
             margin-bottom: 3rem;
         }
-        
+
         .message-form {
             margin-bottom: 2rem;
         }
-        
+
         .form-group {
             margin-bottom: 1.5rem;
         }
-        
+
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: var(--text-color);
         }
-        
+
         .form-control {
             width: 100%;
             padding: 0.8rem;
@@ -40,22 +40,22 @@
             font-size: 1rem;
             transition: var(--transition);
         }
-        
+
         .form-control:focus {
             border-color: var(--primary-color);
             outline: none;
             box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.2);
         }
-        
+
         textarea.form-control {
             min-height: 150px;
             resize: vertical;
         }
-        
+
         .message-list {
             margin-top: 3rem;
         }
-        
+
         .message-item {
             background-color: #f9f9f9;
             border-radius: var(--border-radius);
@@ -64,12 +64,12 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             transition: var(--transition);
         }
-        
+
         .message-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .message-header {
             display: flex;
             justify-content: space-between;
@@ -78,12 +78,12 @@
             padding-bottom: 0.5rem;
             border-bottom: 1px solid #eee;
         }
-        
+
         .message-author {
             display: flex;
             align-items: center;
         }
-        
+
         .author-avatar {
             width: 40px;
             height: 40px;
@@ -92,21 +92,21 @@
             margin-right: 1rem;
             overflow: hidden;
         }
-        
+
         .author-name {
             font-weight: 600;
             color: var(--primary-color);
         }
-        
+
         .message-date {
             color: #888;
             font-size: 0.9rem;
         }
-        
+
         .message-content {
             line-height: 1.6;
         }
-        
+
         .message-footer {
             display: flex;
             justify-content: space-between;
@@ -116,23 +116,23 @@
             color: #888;
             font-size: 0.9rem;
         }
-        
+
         .message-actions a {
             margin-left: 1rem;
             color: #888;
         }
-        
+
         .message-actions a:hover {
             color: var(--primary-color);
         }
-        
+
         .pagination {
             display: flex;
             justify-content: center;
             margin-top: 2rem;
             gap: 0.5rem;
         }
-        
+
         .page-btn {
             width: 40px;
             height: 40px;
@@ -144,19 +144,19 @@
             transition: var(--transition);
             cursor: pointer;
         }
-        
+
         .page-btn:hover, .page-btn.active {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
         .message-categories {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
             margin-bottom: 2rem;
         }
-        
+
         .category-btn {
             padding: 0.5rem 1rem;
             background-color: #f0f0f0;
@@ -164,16 +164,16 @@
             cursor: pointer;
             transition: var(--transition);
         }
-        
+
         .category-btn:hover, .category-btn.active {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
         .featured-messages {
             margin-bottom: 3rem;
         }
-        
+
         .featured-message {
             background: linear-gradient(135deg, #fff6f3, #fff);
             border-left: 4px solid var(--primary-color);
@@ -182,12 +182,12 @@
             margin-bottom: 1.5rem;
             box-shadow: var(--box-shadow);
         }
-        
+
         .featured-message .message-content {
             font-size: 1.1rem;
             font-style: italic;
         }
-        
+
         .featured-badge {
             background-color: var(--primary-color);
             color: white;
@@ -202,7 +202,7 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="images/foxsan-logo.png" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
                 <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
             </div>
             <nav>
@@ -229,7 +229,7 @@
     <main>
         <section class="featured-messages">
             <h2 class="section-title">精选留言</h2>
-            
+
             <div class="featured-message">
                 <div class="message-header">
                     <div class="message-author">
@@ -254,7 +254,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="featured-message">
                 <div class="message-header">
                     <div class="message-author">
@@ -283,7 +283,7 @@
 
         <section class="message-board">
             <h2 class="section-title">留下你的留言</h2>
-            
+
             <div class="message-form">
                 <form id="commentForm">
                     <div class="form-group">
@@ -311,10 +311,10 @@
                     <button type="submit" class="btn primary-btn">提交留言</button>
                 </form>
             </div>
-            
+
             <div class="message-list">
                 <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">所有留言</h3>
-                
+
                 <div class="message-categories">
                     <div class="category-btn active" data-category="all">全部</div>
                     <div class="category-btn" data-category="general">一般留言</div>
@@ -322,7 +322,7 @@
                     <div class="category-btn" data-category="bug">问题报告</div>
                     <div class="category-btn" data-category="suggestion">建议</div>
                 </div>
-                
+
                 <div class="message-item" data-category="general">
                     <div class="message-header">
                         <div class="message-author">
@@ -346,7 +346,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="message-item" data-category="feedback">
                     <div class="message-header">
                         <div class="message-author">
@@ -370,7 +370,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="message-item" data-category="bug">
                     <div class="message-header">
                         <div class="message-author">
@@ -394,7 +394,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="message-item" data-category="suggestion">
                     <div class="message-header">
                         <div class="message-author">
@@ -418,7 +418,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="message-item" data-category="general">
                     <div class="message-header">
                         <div class="message-author">
@@ -442,7 +442,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="pagination">
                     <div class="page-btn active">1</div>
                     <div class="page-btn">2</div>
@@ -490,18 +490,18 @@
             // 留言分类筛选
             const categoryButtons = document.querySelectorAll('.category-btn');
             const messageItems = document.querySelectorAll('.message-item');
-            
+
             categoryButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     // 移除所有按钮的active类
                     categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    
+
                     // 为当前点击的按钮添加active类
                     this.classList.add('active');
-                    
+
                     // 获取筛选类别
                     const category = this.getAttribute('data-category');
-                    
+
                     // 筛选留言
                     messageItems.forEach(item => {
                         if (category === 'all' || item.getAttribute('data-category') === category) {
@@ -512,43 +512,43 @@
                     });
                 });
             });
-            
+
             // 分页功能（示例）
             const pageButtons = document.querySelectorAll('.page-btn');
-            
+
             pageButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     // 移除所有按钮的active类
                     pageButtons.forEach(btn => btn.classList.remove('active'));
-                    
+
                     // 为当前点击的按钮添加active类
                     if (!this.querySelector('.fa-angle-right') && !this.querySelector('.fa-ellipsis-h')) {
                         this.classList.add('active');
                     }
-                    
+
                     // 这里可以添加实际的分页逻辑
                     console.log('切换到页面：', this.textContent);
                 });
             });
-            
+
             // 留言表单提交
             const commentForm = document.getElementById('commentForm');
-            
+
             commentForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
+
                 // 获取表单数据
                 const name = document.getElementById('name').value;
                 const email = document.getElementById('email').value;
                 const category = document.getElementById('category').value;
                 const message = document.getElementById('message').value;
-                
+
                 // 这里可以添加实际的表单提交逻辑
                 console.log('提交留言：', { name, email, category, message });
-                
+
                 // 显示提交成功消息
                 alert('留言提交成功！感谢您的反馈。');
-                
+
                 // 重置表单
                 commentForm.reset();
             });

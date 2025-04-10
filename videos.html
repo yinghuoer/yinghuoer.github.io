@@ -15,7 +15,7 @@
             margin-bottom: 2rem;
             justify-content: center;
         }
-        
+
         .filter-btn {
             padding: 0.5rem 1.2rem;
             background-color: #f0f0f0;
@@ -25,18 +25,18 @@
             transition: var(--transition);
             font-weight: 500;
         }
-        
+
         .filter-btn:hover, .filter-btn.active {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
         .video-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
         }
-        
+
         .video-item {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
@@ -44,30 +44,30 @@
             box-shadow: var(--box-shadow);
             transition: var(--transition);
         }
-        
+
         .video-item:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
-        
+
         .video-thumbnail {
             position: relative;
             aspect-ratio: 16 / 9;
             background-color: #f0f0f0;
             overflow: hidden;
         }
-        
+
         .video-thumbnail img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: var(--transition);
         }
-        
+
         .video-item:hover .video-thumbnail img {
             transform: scale(1.05);
         }
-        
+
         .video-duration {
             position: absolute;
             bottom: 10px;
@@ -78,7 +78,7 @@
             border-radius: 4px;
             font-size: 0.8rem;
         }
-        
+
         .video-play {
             position: absolute;
             top: 50%;
@@ -96,21 +96,21 @@
             opacity: 0;
             transition: var(--transition);
         }
-        
+
         .video-item:hover .video-play {
             opacity: 1;
         }
-        
+
         .video-info {
             padding: 1.5rem;
         }
-        
+
         .video-title {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
             color: var(--text-color);
         }
-        
+
         .video-meta {
             display: flex;
             justify-content: space-between;
@@ -118,19 +118,19 @@
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
-        
+
         .video-description {
             color: #555;
             margin-bottom: 1rem;
             line-height: 1.6;
         }
-        
+
         .video-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        
+
         .video-tag {
             background-color: #f0f0f0;
             padding: 3px 10px;
@@ -138,18 +138,18 @@
             font-size: 0.8rem;
             color: #555;
         }
-        
+
         .featured-video {
             margin-bottom: 3rem;
         }
-        
+
         .featured-video-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
             align-items: center;
         }
-        
+
         .featured-video-player {
             aspect-ratio: 16 / 9;
             background-color: #f0f0f0;
@@ -157,25 +157,25 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         .featured-video-info h3 {
             color: var(--primary-color);
             margin-bottom: 1rem;
             font-size: 1.8rem;
         }
-        
+
         .featured-video-description {
             margin-bottom: 1.5rem;
             line-height: 1.8;
         }
-        
+
         .pagination {
             display: flex;
             justify-content: center;
             margin-top: 3rem;
             gap: 0.5rem;
         }
-        
+
         .page-btn {
             width: 40px;
             height: 40px;
@@ -187,12 +187,12 @@
             transition: var(--transition);
             cursor: pointer;
         }
-        
+
         .page-btn:hover, .page-btn.active {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
         @media (max-width: 768px) {
             .featured-video-container {
                 grid-template-columns: 1fr;
@@ -204,7 +204,7 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="images/foxsan-logo.png" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
                 <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
             </div>
             <nav>
@@ -262,7 +262,7 @@
 
         <section class="video-collection">
             <h2 class="section-title">所有视频</h2>
-            
+
             <div class="video-filters">
                 <button class="filter-btn active" data-filter="all">全部</button>
                 <button class="filter-btn" data-filter="coc">COC</button>
@@ -270,7 +270,7 @@
                 <button class="filter-btn" data-filter="other">其他系统</button>
                 <button class="filter-btn" data-filter="tutorial">教程</button>
             </div>
-            
+
             <div class="video-grid">
                 <div class="video-item" data-category="coc">
                     <div class="video-thumbnail">
@@ -292,7 +292,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="video-item" data-category="coc">
                     <div class="video-thumbnail">
                         <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
@@ -313,7 +313,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="video-item" data-category="coc">
                     <div class="video-thumbnail">
                         <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
@@ -334,7 +334,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="video-item" data-category="dnd">
                     <div class="video-thumbnail">
                         <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
@@ -355,7 +355,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="video-item" data-category="dnd">
                     <div class="video-thumbnail">
                         <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
@@ -376,7 +376,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="video-item" data-category="other">
                     <div class="video-thumbnail">
                         <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
@@ -397,7 +397,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="video-item" data-category="tutorial">
                     <div class="video-thumbnail">
                         <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
@@ -418,7 +418,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="video-item" data-category="tutorial">
                     <div class="video-thumbnail">
                         <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
@@ -440,7 +440,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="pagination">
                 <div class="page-btn active">1</div>
                 <div class="page-btn">2</div>
@@ -487,18 +487,18 @@
             // 视频筛选功能
             const filterButtons = document.querySelectorAll('.filter-btn');
             const videoItems = document.querySelectorAll('.video-item');
-            
+
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     // 移除所有按钮的active类
                     filterButtons.forEach(btn => btn.classList.remove('active'));
-                    
+
                     // 为当前点击的按钮添加active类
                     this.classList.add('active');
-                    
+
                     // 获取筛选类别
                     const filter = this.getAttribute('data-filter');
-                    
+
                     // 筛选视频
                     videoItems.forEach(item => {
                         if (filter === 'all' || item.getAttribute('data-category') === filter) {
@@ -509,28 +509,28 @@
                     });
                 });
             });
-            
+
             // 分页功能（示例）
             const pageButtons = document.querySelectorAll('.page-btn');
-            
+
             pageButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     // 移除所有按钮的active类
                     pageButtons.forEach(btn => btn.classList.remove('active'));
-                    
+
                     // 为当前点击的按钮添加active类
                     if (!this.querySelector('.fa-angle-right') && !this.querySelector('.fa-ellipsis-h')) {
                         this.classList.add('active');
                     }
-                    
+
                     // 这里可以添加实际的分页逻辑
                     console.log('切换到页面：', this.textContent);
                 });
             });
-            
+
             // 视频点击事件（示例）
             const videoItems = document.querySelectorAll('.video-item, .featured-video-player');
-            
+
             videoItems.forEach(item => {
                 item.addEventListener('click', function() {
                     // 这里可以添加视频播放逻辑，例如打开B站链接或显示视频弹窗
