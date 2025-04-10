@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 关于页面特定样式 */
+        .about-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 3rem;
+        }
+
+        .about-content {
+            line-height: 1.8;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image {
+            float: right;
+            margin: 0 0 1.5rem 1.5rem;
+            width: 300px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .creator-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .creator-image {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .creator-image img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .creator-info {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .creator-name {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .creator-title {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .creator-bio {
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .faq-section {
+            margin-top: 3rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question i {
+            transition: var(--transition);
+        }
+
+        .faq-answer {
+            display: none;
+            padding-top: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .support-section {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .support-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .support-option {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            width: 250px;
+            transition: var(--transition);
+        }
+
+        .support-option:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .support-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .support-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .support-description {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+
+        .contact-form {
+            margin-top: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .placeholder-creator-image {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #aaa;
+            font-size: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/foxsan-logo.png" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="character.html"><i class="fas fa-user"></i> 角色设定</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="history.html"><i class="fas fa-history"></i> 历史记录</a></li>
+                    <li><a href="about.html" class="active"><i class="fas fa-info-circle"></i> 关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>关于我们</h2>
+            <p>了解Miss Foxsan项目和创作者</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="about-section">
+            <h2 class="section-title">关于Miss Foxsan</h2>
+            <div class="about-content">
+                <div class="placeholder-thumbnail about-image"></div>
+                <p>Miss Foxsan是一个为TRPG（桌面角色扮演游戏）爱好者提供骰点服务的免费公益机器人。她的设计灵感来源于东方神话中的狐仙形象，聪明、机智且略带神秘。</p>
+                <p>这个项目始于2021年初，最初只是一个简单的骰点工具，用于满足创作者自己和朋友们的跑团需求。随着时间的推移，Miss Foxsan不断发展壮大，功能也越来越丰富。从最初的基本骰点，到现在支持多种TRPG系统，再到能够记录跑团历史、提供数据分析等高级功能。</p>
+                <p>Miss Foxsan的核心理念是"让跑团更简单，让故事更精彩"。我们希望通过提供便捷、友好的骰点服务，让玩家们能够专注于故事的创作和角色的扮演，而不是被繁琐的规则和计算所困扰。</p>
+                <p>作为一个公益项目，Miss Foxsan完全免费提供给所有TRPG爱好者使用。我们不断听取用户的反馈和建议，努力改进和完善各项功能，为TRPG社区贡献自己的一份力量。</p>
+                <p>感谢所有支持和使用Miss Foxsan的朋友们，是你们的鼓励和支持让这个项目能够不断成长和进步。我们将继续努力，为TRPG爱好者提供更好的服务。</p>
+            </div>
+        </section>
+
+        <section class="creator-section">
+            <h2 class="section-title">关于创作者</h2>
+            <div class="creator-profile">
+                <div class="creator-image">
+                    <div class="placeholder-creator-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="creator-info">
+                    <h3 class="creator-name">荒惑（骰主）</h3>
+                    <div class="creator-title">TRPG爱好者 | 内容创作者 | 羊马帮帮主</div>
+                    <div class="creator-bio">
+                        <p>我是一名热爱TRPG的个人内容创作者，运营着一个免费公益机器人——狐狸小姐（Miss Foxsan）。这个项目源于我对TRPG的热爱，希望能够为TRPG社区做出一些贡献。</p>
+                        <p>狐狸小姐是我的原创角色（Original Character），主要在Discord和QQ上为TRPG游戏提供骰点服务，并且内置了一些娱乐项目和AI对话功能。</p>
+                        <p>除了开发和维护Miss Foxsan，我还在B站上分享TRPG相关的视频内容，包括跑团实录、规则讲解和游戏体验等。希望通过这些内容，能够让更多人了解和喜欢上TRPG这种充满想象力和创造力的游戏形式。</p>
+                        <p>特别感谢炽热佬、014老师、白鱼佬、茶叶佬等骰主朋友们提供的协助，以及错误佬的技术协助。因为有大家的帮助，才有现在的狐狸小姐！</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://space.bilibili.com/" target="_blank" class="social-link">
+                            <i class="fab fa-bilibili"></i>
+                        </a>
+                        <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" target="_blank" class="social-link" title="QQ用户群：241639081">
+                            <i class="fab fa-qq"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2 class="section-title">常见问题</h2>
+            <div class="about-section">
+                <div class="faq-item active">
+                    <div class="faq-question">
+                        <span>如何将Miss Foxsan添加到我的Discord服务器？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>要将Miss Foxsan添加到您的Discord服务器，请点击网站上的"添加到服务器"按钮，或者访问我们的Discord官方服务器获取邀请链接。按照授权步骤操作，即可将Miss Foxsan添加到您的服务器中。添加后，您可以通过输入".help"命令查看所有可用的指令。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>如何将Miss Foxsan添加到QQ群？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>要将Miss Foxsan添加到您的QQ群，请点击网站上的"添加QQ机器人"按钮，或者直接添加Miss Foxsan的QQ号为好友，然后邀请她加入您的群聊。添加后，您可以通过输入".help"命令查看所有可用的指令。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Miss Foxsan支持哪些TRPG规则系统？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Miss Foxsan目前支持多种TRPG规则系统，包括但不限于：</p>
+                        <ul>
+                            <li>克苏鲁的呼唤 (COC) 6版在7版</li>
+                            <li>龙与地下城 (DND)</li>
+                            <li>无限恐怖（通用）</li>
+                            <li>赛博服克红 (Cyberpunk RED)</li>
+                            <li>FFG系战锤规则</li>
+                            <li>魔导书大战</li>
+                            <li>BRP</li>
+                            <li>LOM诡秘及诡秘琉璃版</li>
+                            <li>最终物语</li>
+                            <li>北欧奇谭</li>
+                            <li>喃苏鲁</li>
+                            <li>忍神</li>
+                            <li>永夜后日谈</li>
+                            <li>撞邪</li>
+                            <li>暗夜刀锋</li>
+                            <li>餐云卧石</li>
+                            <li>魔法猫猫救世界</li>
+                            <li>绿色三角洲</li>
+                            <li>黑暗世界</li>
+                            <li>双重十字</li>
+                            <li>共鸣性怪异</li>
+                            <li>暗影狂奏</li>
+                        </ul>
+                        <p>我们还在不断添加新的规则系统支持，如果您有特定需求，欢迎在留言板上提出建议。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Miss Foxsan是否收费？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Miss Foxsan是一个完全免费的公益项目，所有基本功能都可以免费使用。我们不会对核心骰点功能收费，也不会在使用过程中强制插入广告。</p>
+                        <p>如果您喜欢Miss Foxsan并希望支持这个项目的发展，可以考虑通过赞助的方式提供帮助，但这完全是自愿的。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>我可以自定义Miss Foxsan的回复内容吗？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>是的，Miss Foxsan提供了一定程度的自定义功能。您可以通过特定命令设置自定义的回复模板、骰点格式和称呼方式等。详细的自定义指令可以通过输入".help custom"查看。</p>
+                        <p>此外，我们还计划在未来版本中增加更多的自定义选项，让Miss Foxsan能够更好地适应不同团队的需求和风格。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Miss Foxsan的AI对话功能是如何工作的？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Miss Foxsan的AI对话功能基于自然语言处理技术，能够理解和回应玩家的自然语言输入。她被设计为具有狐狸小姐的人格特征，能够以友好、活泼的方式与玩家互动。</p>
+                        <p>AI对话功能主要用于增强跑团的趣味性和沉浸感，而不是取代人类KP的角色。您可以通过特定的命令或直接@Miss Foxsan来触发对话功能。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Miss Foxsan有哪些主要功能模块？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Miss Foxsan提供了丰富的功能模块，包括：</p>
+                        <ul>
+                            <li><strong>基础功能：</strong>日志时间和条数记录、长期骰点统计、team功能、logstat记录</li>
+                            <li><strong>娱乐功能：</strong>特色牌堆（疯狂星期四、COJ名场面、一日三餐、随机冒险等）、点歌功能、表情包制作</li>
+                            <li><strong>好感系统：</strong>与狐狸小姐建立好感度，解锁更多互动</li>
+                            <li><strong>单人跑团模组：</strong>提供单人跑团体验（需私聊）</li>
+                            <li><strong>跑团辅助功能：</strong>各种实用的跑团辅助工具</li>
+                        </ul>
+                        <p>您可以通过输入 <code>.help</code> 命令获取完整的功能列表和使用方法。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="support-section">
+            <h2 class="section-title">支持我们</h2>
+            <p>Miss Foxsan是一个免费的公益项目，如果您喜欢我们的工作，可以通过以下方式支持我们：</p>
+
+            <div class="support-options">
+                <div class="support-option">
+                    <div class="support-icon"><i class="fas fa-heart"></i></div>
+                    <h3 class="support-title">赞助支持</h3>
+                    <p class="support-description">通过赞助的方式支持Miss Foxsan的开发和维护。</p>
+                    <a href="#" class="btn small-btn">了解更多</a>
+                </div>
+                <div class="support-option">
+                    <div class="support-icon"><i class="fas fa-share-alt"></i></div>
+                    <h3 class="support-title">分享推广</h3>
+                    <p class="support-description">将Miss Foxsan分享给更多的TRPG爱好者。</p>
+                    <a href="#" class="btn small-btn">分享链接</a>
+                </div>
+                <div class="support-option">
+                    <div class="support-icon"><i class="fas fa-code"></i></div>
+                    <h3 class="support-title">参与开发</h3>
+                    <p class="support-description">如果您有技术能力，欢迎参与Miss Foxsan的开发。</p>
+                    <a href="#" class="btn small-btn">查看项目</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <h2 class="section-title">联系我们</h2>
+            <div class="about-section">
+                <p>如果您有任何问题、建议或合作意向，欢迎通过以下方式联系我们：</p>
+
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name" class="form-label">姓名</label>
+                            <input type="text" id="name" class="form-control" placeholder="请输入您的姓名" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">邮箱</label>
+                            <input type="email" id="email" class="form-control" placeholder="请输入您的邮箱" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="form-label">主题</label>
+                            <input type="text" id="subject" class="form-control" placeholder="请输入主题" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="form-label">内容</label>
+                            <textarea id="message" class="form-control" placeholder="请输入您的留言内容" required></textarea>
+                        </div>
+                        <button type="submit" class="btn primary-btn">发送消息</button>
+                    </form>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: center;">
+                    <p>您也可以通过以下方式关注我们：</p>
+                    <div class="social-links" style="justify-content: center; margin-top: 1rem;">
+                        <a href="https://space.bilibili.com/" target="_blank" class="social-link">
+                            <i class="fab fa-bilibili"></i>
+                        </a>
+                        <a href="#" target="_blank" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" target="_blank" class="social-link">
+                            <i class="fab fa-qq"></i>
+                        </a>
+                        <a href="#" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="#" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ群</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="videos.html">跑团视频</a></li>
+                    <li><a href="character.html">角色设定</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQ手风琴效果
+            const faqQuestions = document.querySelectorAll('.faq-question');
+
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const faqItem = this.parentElement;
+
+                    // 切换当前项的状态
+                    faqItem.classList.toggle('active');
+
+                    // 关闭其他项（可选，取消注释以启用）
+                    /*
+                    document.querySelectorAll('.faq-item').forEach(item => {
+                        if (item !== faqItem) {
+                            item.classList.remove('active');
+                        }
+                    });
+                    */
+                });
+            });
+
+            // 联系表单提交
+            const contactForm = document.getElementById('contactForm');
+
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // 获取表单数据
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+
+                // 这里可以添加实际的表单提交逻辑
+                console.log('提交联系表单：', { name, email, subject, message });
+
+                // 显示提交成功消息
+                alert('消息发送成功！我们会尽快回复您。');
+
+                // 重置表单
+                contactForm.reset();
+            });
+        });
+    </script>
+</body>
+</html>

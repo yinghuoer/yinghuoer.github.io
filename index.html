@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狐狸小姐 (Miss Foxsan) - 骰点机器人</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/foxsan-logo.png" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="character.html"><i class="fas fa-user"></i> 角色设定</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="history.html"><i class="fas fa-history"></i> 历史记录</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-flex">
+                <div class="hero-image-container">
+                    <img src="image/missfoxtrasp.png" alt="Miss Foxsan" class="hero-image">
+                </div>
+                <div class="hero-text">
+                    <h2>欢迎来到狐狸小姐的世界！</h2>
+                    <p>一个为TRPG爱好者提供骰点服务的免费公益机器人</p>
+                    <div class="hero-buttons">
+                        <a href="dicebot.html" class="btn primary-btn">了解骰点功能</a>
+                        <a href="https://space.bilibili.com/" target="_blank" class="btn secondary-btn">访问B站主页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="features">
+            <h2 class="section-title">主要功能</h2>
+            <div class="feature-cards">
+                <div class="feature-card" onclick="window.location.href='dicebot.html'" style="cursor: pointer;">
+                    <div class="feature-icon"><i class="fas fa-dice-d20"></i></div>
+                    <h3>骰点服务</h3>
+                    <p>支持多种TRPG规则系统的骰点，包括COC、DND等</p>
+                    <div class="feature-link" style="margin-top: 10px;">
+                        <a href="dicebot.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="window.location.href='character.html'" style="cursor: pointer;">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <h3>AI对话</h3>
+                    <p>与Miss Foxsan进行有趣的AI对话互动</p>
+                    <div class="feature-link" style="margin-top: 10px;">
+                        <a href="character.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="window.location.href='about.html'" style="cursor: pointer;">
+                    <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
+                    <h3>娱乐功能</h3>
+                    <p>内置多种娱乐小游戏和互动功能</p>
+                    <div class="feature-link" style="margin-top: 10px;">
+                        <a href="about.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="window.location.href='history.html'" style="cursor: pointer;">
+                    <div class="feature-icon"><i class="fas fa-history"></i></div>
+                    <h3>历史记录</h3>
+                    <p>详细的跑团历史记录和数据统计</p>
+                    <div class="feature-link" style="margin-top: 10px;">
+                        <a href="history.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="platforms">
+            <h2 class="section-title">支持平台</h2>
+            <div class="platform-container">
+                <div class="platform">
+                    <img src="image/dc01.jpg" alt="Discord" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>Discord</h3>
+                    <p>在Discord服务器上使用骰点功能</p>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank" class="btn small-btn">添加到服务器</a>
+                </div>
+                <div class="platform">
+                    <img src="image/qq01.JPEG" alt="QQ初号机" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>QQ初号机</h3>
+                    <p>西幻/现代风格的骰点机器人</p>
+                    <div style="text-align: center; margin: 1rem 0;">
+                        <p><strong>QQ号码：</strong> 3989736640</p>
+                    </div>
+                    <a href="#" class="btn small-btn">添加初号机</a>
+                </div>
+                <div class="platform">
+                    <img src="image/qq02.jpg" alt="QQ二号机" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>QQ二号机</h3>
+                    <p>古风/和风风格的骰点机器人</p>
+                    <div style="text-align: center; margin: 1rem 0;">
+                        <p><strong>QQ号码：</strong> 1783352478</p>
+                        <p><strong>用户群：</strong> 241639081</p>
+                    </div>
+                    <a href="#" class="btn small-btn">添加二号机</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="latest-videos">
+            <h2 class="section-title">最新跑团视频</h2>
+            <div class="video-container">
+                <div class="video-card">
+                    <div class="video-thumbnail placeholder-thumbnail">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    </div>
+                    <h3>跑团实录：神秘的古堡</h3>
+                    <p>发布于 2023-05-15</p>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail placeholder-thumbnail">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    </div>
+                    <h3>COC模组：午夜来客</h3>
+                    <p>发布于 2023-04-22</p>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail placeholder-thumbnail">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    </div>
+                    <h3>DND冒险：龙与地下城</h3>
+                    <p>发布于 2023-03-10</p>
+                </div>
+            </div>
+            <div class="more-link">
+                <a href="videos.html">查看更多视频 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank">Discord机器人</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ初号机：3989736640</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ二号机：1783352478</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ用户群：241639081</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="character.html">角色设定</a></li>
+                    <li><a href="messages.html">留言板</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

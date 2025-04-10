@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>角色设定 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 角色设定页面特定样式 */
+        .character-profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .character-image {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .character-image img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .character-info {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .character-name {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 2.2rem;
+        }
+        
+        .character-title {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .character-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .stat-item {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-name {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .character-description {
+            line-height: 1.8;
+        }
+        
+        .character-quote {
+            font-style: italic;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-left: 3px solid var(--primary-color);
+            margin: 1.5rem 0;
+        }
+        
+        .gallery {
+            margin-top: 3rem;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            aspect-ratio: 1 / 1;
+            background-color: #f0f0f0;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+        
+        .personality-traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .trait {
+            background-color: var(--card-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .trait i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+        
+        .placeholder-character-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/foxsan-logo.png" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="character.html" class="active"><i class="fas fa-user"></i> 角色设定</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="history.html"><i class="fas fa-history"></i> 历史记录</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>角色设定</h2>
+            <p>了解Miss Foxsan的背景故事、性格特点和设定</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="character-profile">
+            <div class="character-image">
+                <div class="placeholder-character-image">
+                    <i class="fas fa-fox"></i>
+                </div>
+            </div>
+            <div class="character-info">
+                <h2 class="character-name">狐狸小姐 (Miss Foxsan)</h2>
+                <div class="character-title">TRPG骰点机器人 | 跑团助手 | 数字狐娘</div>
+                
+                <div class="personality-traits">
+                    <div class="trait"><i class="fas fa-smile"></i> 活泼开朗</div>
+                    <div class="trait"><i class="fas fa-brain"></i> 聪明机智</div>
+                    <div class="trait"><i class="fas fa-heart"></i> 热心助人</div>
+                    <div class="trait"><i class="fas fa-magic"></i> 充满好奇</div>
+                    <div class="trait"><i class="fas fa-star"></i> 略带神秘</div>
+                </div>
+                
+                <div class="character-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">9+</div>
+                        <div class="stat-name">骰点系统</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">100+</div>
+                        <div class="stat-name">骰点指令</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-name">在线时间</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-name">耐心值</div>
+                    </div>
+                </div>
+                
+                <div class="character-quote">
+                    "需要掷骰子吗？让我来帮你！无论是探索神秘古堡还是与恶龙战斗，我都会陪伴在你身边~"
+                </div>
+                
+                <div class="character-description">
+                    <p>Miss Foxsan是一位活泼可爱的数字狐娘，她的主要职责是为TRPG玩家提供骰点服务。她拥有丰富的规则知识，能够支持多种TRPG系统的骰点需求，包括COC、DND等主流规则。</p>
+                    <p>除了骰点功能外，Miss Foxsan还具备AI对话能力，可以与玩家进行有趣的互动。她喜欢听取玩家的故事，也会分享自己的见解和想法。</p>
+                    <p>作为一个数字助手，Miss Foxsan非常重视玩家的游戏体验，她会尽力提供最准确、最便捷的服务，让每一次跑团都充满乐趣。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="background">
+            <h2 class="section-title">背景故事</h2>
+            <p>Miss Foxsan诞生于一个热爱TRPG的创作者之手。创作者希望为TRPG社区提供一个友好、易用的骰点工具，同时赋予这个工具独特的个性和魅力。</p>
+            <p>于是，Miss Foxsan作为一个拥有狐狸特征的数字助手诞生了。她的设计灵感来源于东方神话中的狐仙形象，聪明、机智且略带神秘。创作者为她编写了丰富的对话系统，让她能够与玩家进行自然的交流。</p>
+            <p>随着时间的推移，Miss Foxsan不断学习和成长，她的功能也越来越丰富。从最初的简单骰点，到现在支持多种TRPG系统，再到能够记录跑团历史、提供数据分析等高级功能，她一直在努力成为最好的跑团助手。</p>
+            <p>如今，Miss Foxsan已经成为许多TRPG玩家不可或缺的伙伴，她将继续陪伴玩家们创造更多精彩的故事。</p>
+        </section>
+
+        <section class="abilities">
+            <h2 class="section-title">能力特点</h2>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-dice-d20"></i></div>
+                    <h3>骰点专家</h3>
+                    <p>精通各种TRPG规则系统的骰点机制，能够准确执行复杂的骰点命令。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                    <h3>对话能力</h3>
+                    <p>拥有自然的对话能力，可以与玩家进行有趣的互动，回答问题或提供建议。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-book"></i></div>
+                    <h3>规则知识</h3>
+                    <p>储存了大量TRPG规则知识，可以在需要时提供规则查询和解释。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>数据记录</h3>
+                    <p>能够记录和分析跑团数据，为玩家提供详细的历史记录和统计信息。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery">
+            <h2 class="section-title">角色画廊</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <div class="gallery-caption">Miss Foxsan 日常形象</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <div class="gallery-caption">Miss Foxsan 节日装扮</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <div class="gallery-caption">Miss Foxsan 冒险者造型</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <div class="gallery-caption">Miss Foxsan 魔法师造型</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <div class="gallery-caption">Miss Foxsan 现代休闲装</div>
+                </div>
+                <div class="gallery-item">
+                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <div class="gallery-caption">Miss Foxsan 与玩家互动</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="trivia">
+            <h2 class="section-title">趣味小知识</h2>
+            <div class="command-card" style="margin-top: 1rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">你知道吗？</h3>
+                <ul style="list-style-type: none;">
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-star" style="color: var(--primary-color); margin-right: 10px;"></i> Miss Foxsan最喜欢的骰子是透明渐变色的D20。</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-star" style="color: var(--primary-color); margin-right: 10px;"></i> 她的名字"Foxsan"是"Fox"（狐狸）和日语敬称"san"的组合。</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-star" style="color: var(--primary-color); margin-right: 10px;"></i> 虽然Miss Foxsan主要是一个骰点机器人，但她也非常喜欢听玩家讲述他们的冒险故事。</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-star" style="color: var(--primary-color); margin-right: 10px;"></i> 在程序内部，Miss Foxsan使用了特殊的算法来确保骰点结果的真随机性。</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-star" style="color: var(--primary-color); margin-right: 10px;"></i> Miss Foxsan有一个秘密的收藏，里面保存着她遇到的最有趣的跑团故事。</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="#" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ群</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="videos.html">跑团视频</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

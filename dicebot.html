@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>骰点功能 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 骰点功能页面特定样式 */
+        .command-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .command-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .command-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .command-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .command-syntax {
+            background-color: #f5f5f5;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 1rem 0;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .command-example {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+
+        .command-example h4 {
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .system-logo {
+            width: 80px;
+            height: 80px;
+            background-color: #eee;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        .system-card {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .system-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .system-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/foxsan-logo.png" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="dicebot.html" class="active"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="character.html"><i class="fas fa-user"></i> 角色设定</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="history.html"><i class="fas fa-history"></i> 历史记录</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>骰点功能介绍</h2>
+            <p>Miss Foxsan提供丰富的骰点命令，支持多种TRPG规则系统</p>
+        </div>
+    </div>
+
+    <main style="max-width: 1300px; margin: 0 auto;">
+        <!-- 悬浮目录按钮 -->
+        <div class="toc-button" id="tocButton">
+            <i class="fas fa-list"></i>
+        </div>
+
+        <!-- 悬浮目录容器 -->
+        <div class="sidebar-toc" id="sidebarToc">
+            <h3>
+                <span id="tocTitle">目录</span>
+                <span class="close-toc" id="closeToc">&times;</span>
+            </h3>
+            <ul class="toc-list" id="tocList">
+                <!-- 目录将由JavaScript生成 -->
+            </ul>
+        </div>
+        <div class="tabs">
+            <div class="tab active" data-tab="general">通用命令</div>
+            <div class="tab" data-tab="coc">COC规则</div>
+            <div class="tab" data-tab="dnd">DND规则</div>
+            <div class="tab" data-tab="other">其他系统</div>
+            <div class="tab" data-tab="story">故事辅助</div>
+            <div class="tab" data-tab="log">日志管理</div>
+            <div class="tab" data-tab="tools">实用工具</div>
+        </div>
+
+        <div class="tab-content active" id="general">
+            <div class="tab-content-main">
+            <h2 class="section-title">通用骰点命令</h2>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-dice"></i>
+                    <h3>基础骰点</h3>
+                </div>
+                <p>最基本的骰点命令，用于投掷指定数量和面数的骰子。</p>
+                <div class="command-syntax">
+                    .r[骰子数]d[骰子面数]
+                </div>
+                <p>参数说明：</p>
+                <ul>
+                    <li><strong>骰子数</strong>：要投掷的骰子数量</li>
+                    <li><strong>骰子面数</strong>：骰子的面数</li>
+                </ul>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.r1d20</code> - 投掷1个20面骰</p>
+                    <p><code>.r3d6</code> - 投掷3个6面骰</p>
+                    <p>结果示例：<br>「Miss Foxsan」投掷 3D6：[3, 5, 2] = 10</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-plus-minus"></i>
+                    <h3>带修正值的骰点</h3>
+                </div>
+                <p>在基础骰点的基础上添加修正值。</p>
+                <div class="command-syntax">
+                    .r[骰子数]d[骰子面数]+[修正值]
+                </div>
+                <p>参数说明：</p>
+                <ul>
+                    <li><strong>修正值</strong>：可以是正数或负数</li>
+                </ul>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.r1d20+5</code> - 投掷1个20面骰并加5</p>
+                    <p><code>.r2d6-2</code> - 投掷2个6面骰并减2</p>
+                    <p>结果示例：<br>「Miss Foxsan」投掷 1D20+5：[15]+5 = 20</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-comment"></i>
+                    <h3>带描述的骰点</h3>
+                </div>
+                <p>在骰点命令后添加描述文本。</p>
+                <div class="command-syntax">
+                    .r[骰子数]d[骰子面数] [描述文本]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.r1d100 侦查检定</code></p>
+                    <p>结果示例：<br>「Miss Foxsan」进行侦查检定：D100 = 45</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-calculator"></i>
+                    <h3>复杂骰点表达式</h3>
+                </div>
+                <p>支持复杂的数学运算和特殊骰点表达式。</p>
+                <div class="command-syntax">
+                    .r &lt;表达式&gt; [&lt;原因&gt;]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.r 4d6k3</code> - 骰4个6面骰，取3个最大的</p>
+                    <p><code>.r 100 + 3 * 2</code> - 进行数学运算</p>
+                    <p><code>.r 2#d10</code> - 投掷2次d10</p>
+                    <p><code>.r 侦查+10</code> - 使用角色卡中的属性值</p>
+                    <p>结果示例：<br>「Miss Foxsan」掷出了 4d6k3=[{6 5 3 | 1 }]=14</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-dice-d20"></i>
+                    <h3>特殊骰点方式</h3>
+                </div>
+                <p>支持各种特殊的骰点方式，如奖惩骰、优势骰等。</p>
+                <div class="command-syntax">
+                    .r b[&lt;数量&gt;] - COC奖励骰<br>
+                    .r p[&lt;数量&gt;] - COC惩罚骰<br>
+                    .r d优势/劣势 - DND优势/劣势骰<br>
+                    .r f - 命运骰(Fate)<br>
+                    .r &lt;X&gt;a&lt;Y&gt;[m&lt;Z&gt;][k&lt;N&gt;] - WOD骰点<br>
+                    .r &lt;X&gt;c&lt;Y&gt;[m&lt;Z&gt;] - 双重十字骰点
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.r b2</code> - 使用2个奖励骰</p>
+                    <p><code>.r d优势</code> - 使用优势骰</p>
+                    <p><code>.r 5a6</code> - WOD骰点，5个骰子，加骰线6</p>
+                    <p>结果示例：<br>「Miss Foxsan」掷出了 b2=[D100=96, 奖励 4 6]=46</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-eye-slash"></i>
+                    <h3>暗骰</h3>
+                </div>
+                <p>进行暗骰，结果只有发起者可见。</p>
+                <div class="command-syntax">
+                    .rh &lt;表达式&gt; [&lt;原因&gt;]<br>
+                    .rxh &lt;表达式&gt; @其他人
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.rh d50</code> - 暗骰d50</p>
+                    <p><code>.rxh 侦查+1d20 @Szz</code> - 代替Szz进行暗骰</p>
+                    <p>结果示例：<br>命运正在低语！</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-user-edit"></i>
+                    <h3>角色名设定</h3>
+                </div>
+                <p>设置和管理角色名称。</p>
+                <div class="command-syntax">
+                    .nn<br>
+                    .nn &lt;角色名&gt;<br>
+                    .nn clr
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.nn</code> - 查看当前角色名</p>
+                    <p><code>.nn 简·拉基·茸德</code> - 修改角色名</p>
+                    <p><code>.nn clr</code> - 重置角色名</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-id-card-alt"></i>
+                    <h3>角色卡管理</h3>
+                </div>
+                <p>管理跨群聊角色卡。</p>
+                <div class="command-syntax">
+                    .pc new &lt;角色名&gt;<br>
+                    .pc save [&lt;角色名&gt;]<br>
+                    .pc list<br>
+                    .pc tag (&lt;角色名&gt;|&lt;角色序号&gt;)<br>
+                    .pc load (&lt;角色名&gt;|&lt;角色序号&gt;)<br>
+                    .pc del (&lt;角色名&gt;|&lt;角色序号&gt;)
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.pc new 阿尔卡特拉兹</code> - 新建角色卡</p>
+                    <p><code>.pc list</code> - 列出所有角色卡</p>
+                    <p><code>.pc tag 阿尔卡特拉兹</code> - 绑定角色卡到当前群聊</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-cog"></i>
+                    <h3>骰子面数管理</h3>
+                </div>
+                <p>设置和管理默认骰子面数。</p>
+                <div class="command-syntax">
+                    .set info<br>
+                    .set &lt;面数&gt;<br>
+                    .set dnd<br>
+                    .set coc<br>
+                    .set clr
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.set info</code> - 查看当前面数设置</p>
+                    <p><code>.set 20</code> - 设置默认面数为20</p>
+                    <p><code>.set dnd</code> - 切换到DND规则，面数为20</p>
+                    <p><code>.set coc</code> - 切换到COC规则，面数为100</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-search"></i>
+                    <h3>词条查询</h3>
+                </div>
+                <p>查询规则书和资料中的词条。</p>
+                <div class="command-syntax">
+                    .find [#&lt;分组名&gt;] &lt;关键字&gt;<br>
+                    .find &lt;数字ID&gt;<br>
+                    .find --rand
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.find 火球术</code> - 搜索火球术相关词条</p>
+                    <p><code>.find #COC 克苏鲁</code> - 在COC分组中搜索克苏鲁</p>
+                    <p><code>.find 2212</code> - 显示指定ID的词条</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>帮助指令</h3>
+                </div>
+                <p>获取指令的帮助信息。</p>
+                <div class="command-syntax">
+                    .help [&lt;词条名&gt;]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.help</code> - 获取总体帮助</p>
+                    <p><code>.help ra</code> - 获取ra指令的帮助</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-power-off"></i>
+                    <h3>骰子管理</h3>
+                </div>
+                <p>管理骰子的开关和移出。</p>
+                <div class="command-syntax">
+                    .bot on/off<br>
+                    .bot bye / .dismiss<br>
+                    .botlist add @A @B @C<br>
+                    .botlist del @A @B @C<br>
+                    .botlist list
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.bot off</code> - 关闭骰子</p>
+                    <p><code>.bot on</code> - 开启骰子</p>
+                    <p><code>.bot bye</code> - 移出骰子</p>
+                    <p><code>.botlist add @其他骰子</code> - 标记其他骰子</p>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="coc">
+            <div class="sidebar-toc">
+                <h3>COC规则</h3>
+                <ul class="toc-list" id="coc-toc">
+                    <!-- COC规则目录将由JavaScript生成 -->
+                </ul>
+            </div>
+            <div class="tab-content-main">
+            <h2 class="section-title">克苏鲁的呼唤 (COC) 规则</h2>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>克苏鲁的呼唤</h3>
+                    <p>「克苏鲁的呼唤」（Call of Cthulhu）是一个充满了秘密、神秘和恐怖的游戏。你将扮演一位坤定的侦探，奔波在奇怪而危险的场所之间，揭开邪恶的阴谋，对抗暗夜的恐怖。</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-user-plus"></i>
+                    <h3>角色生成</h3>
+                </div>
+                <p>生成COC角色的随机属性值。</p>
+                <div class="command-syntax">
+                    .coc [&lt;数量&gt;]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.coc 2</code> - 生成2组调查员属性</p>
+                    <p>结果示例：<br>「Miss Foxsan」的七版COC人物作成:<br>力量:65 敏捷:80 意志:55<br>体质:50 外貌:45 教育:90<br>体型:70 智力:75<br>HP:12 幸运:45 [530/575]</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-id-card"></i>
+                    <h3>角色卡操作</h3>
+                </div>
+                <p>管理COC角色卡的各种属性。</p>
+                <div class="command-syntax">
+                    .st show [&lt;属性&gt;]<br>
+                    .st clr<br>
+                    .st del &lt;属性&gt;...<br>
+                    .st &lt;属性&gt;&lt;表达式&gt;<br>
+                    .st &lt;属性&gt;±&lt;表达式&gt;<br>
+                    .st &&lt;属性&gt;=&lt;表达式&gt;<br>
+                    .st export
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.st show</code> - 显示所有属性</p>
+                    <p><code>.st 侦查80 力量50</code> - 设置属性值</p>
+                    <p><code>.st 敏捷+2 hp+1d3</code> - 增加属性值</p>
+                    <p><code>.st &手枪伤害=1d6+1</code> - 设置计算表达式</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-check"></i>
+                    <h3>技能检定</h3>
+                </div>
+                <p>进行COC的技能检定，自动判定成功等级。</p>
+                <div class="command-syntax">
+                    .ra &lt;属性表达式&gt;<br>
+                    .ra &lt;次数&gt;# &lt;属性表达式&gt;<br>
+                    .ra &lt;难度&gt;&lt;属性表达式&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ra 侦查</code> - 使用角色卡中的侦查值进行检定</p>
+                    <p><code>.ra 侦查+10</code> - 使用侦查值+10进行检定</p>
+                    <p><code>.ra 3# 侦查</code> - 进行3次侦查检定</p>
+                    <p><code>.ra 困难侦查+10</code> - 进行困难难度的侦查检定</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-award"></i>
+                    <h3>奖惩骰检定</h3>
+                </div>
+                <p>使用COC的奖惩骰机制进行检定。</p>
+                <div class="command-syntax">
+                    .ra (b|p)[&lt;个数&gt;] &lt;属性表达式&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ra b2 侦查</code> - 使用2个奖励骰进行侦查检定</p>
+                    <p><code>.ra p 侦查</code> - 使用1个惩罚骰进行侦查检定</p>
+                    <p>结果示例：<br>「Miss Foxsan」的“侦查”检定结果为: b2=1/40, ([D100=51, 奖励 0 2]) 大成功!</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-eye-slash"></i>
+                    <h3>暗中检定</h3>
+                </div>
+                <p>进行暗中检定，结果只有发起者可见。</p>
+                <div class="command-syntax">
+                    .rah &lt;属性表达式&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.rah 侦查</code> - 暗中进行侦查检定</p>
+                    <p><code>.rah 心理学 @PL</code> - KP代替PL进行暗中心理学检定</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>对抗检定</h3>
+                </div>
+                <p>进行两个角色之间的对抗检定。</p>
+                <div class="command-syntax">
+                    .rav &lt;属性表达式&gt; @对手<br>
+                    .rav &lt;自己的属性表达式&gt; &lt;对手的属性表达式&gt; @对手
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.rav 侦查+10 @Szz</code> - 与Szz进行侦查对抗</p>
+                    <p><code>.rav 潜行,b 侦查 @Szz</code> - 使用带奖励骰的潜行对抗Szz的侦查</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-brain"></i>
+                    <h3>理智检定</h3>
+                </div>
+                <p>进行COC的理智检定，计算理智值损失。</p>
+                <div class="command-syntax">
+                    .sc &lt;成功时理智损失&gt;/&lt;失败时理智损失&gt;<br>
+                    .sc &lt;失败时理智损失&gt;<br>
+                    .sc (b|p)[&lt;数量&gt;] &lt;成功时理智损失&gt;/&lt;失败时理智损失&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.sc 1/1D4+1</code> - 成功损失1点，失败损失1D4+1点</p>
+                    <p><code>.sc 0/1</code> - 成功不损失，失败损失1点</p>
+                    <p><code>.sc 1</code> - 简写形式，成功不损失，失败损失1点</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-dizzy"></i>
+                    <h3>疯狂发作症状</h3>
+                </div>
+                <p>抽取疯狂发作的症状。</p>
+                <div class="command-syntax">
+                    .ti<br>
+                    .li
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ti</code> - 抽取疯狂发作的即时症状</p>
+                    <p><code>.li</code> - 抽取疯狂发作的总结症状</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>技能成长</h3>
+                </div>
+                <p>进行技能成长检定。</p>
+                <div class="command-syntax">
+                    .en &lt;技能名称&gt; [&lt;更多技能名称&gt;...]<br>
+                    .en &lt;技能名称&gt;&lt;技能点数&gt;<br>
+                    .en &lt;技能名称&gt;[&lt;技能点数&gt;] +&lt;失败成长值&gt;/&lt;成功成长值&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.en 侦查 聊听 图书馆使用</code> - 对多个技能进行成长检定</p>
+                    <p><code>.en 侦查80</code> - 强制设置侦查值为80</p>
+                    <p><code>.en 侦查 +1d6/1d10</code> - 指定成长值</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-cog"></i>
+                    <h3>设置房规</h3>
+                </div>
+                <p>改变判定大成功与大失败的方式。</p>
+                <div class="command-syntax">
+                    .setcoc<br>
+                    .setcoc details<br>
+                    .setcoc &lt;房规序号&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.setcoc</code> - 显示当前房规</p>
+                    <p><code>.setcoc details</code> - 列出所有可用房规</p>
+                    <p><code>.setcoc 2</code> - 设置为常用房规（出 1-5 且判定成功为大成功，出 96-100 且判定失败为大失败）</p>
+                </div>
+            </div>
+        </div>
+
+            </div>
+        </div>
+
+        <div class="tab-content" id="dnd">
+            <div class="sidebar-toc">
+                <h3>DND规则</h3>
+                <ul class="toc-list" id="dnd-toc">
+                    <!-- DND规则目录屠6由JavaScript生成 -->
+                </ul>
+            </div>
+            <div class="tab-content-main">
+            <h2 class="section-title">龙与地下城 (DND) 规则</h2>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>龙与地下城</h3>
+                    <p>「龙与地下城」（Dungeons & Dragons, D&D, DnD）是一款剑与魔法奇幻背景的叙事性角色扮演游戏。支持DND 5版规则，包括优势/劣势检定、先攻检定等功能。</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-user-plus"></i>
+                    <h3>角色生成</h3>
+                </div>
+                <p>生成DND角色的随机属性值。</p>
+                <div class="command-syntax">
+                    .dnd [数量]<br>
+                    .dndx [数量]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.dnd 3</code> - 生成3组自由分配的属性值</p>
+                    <p><code>.dndx 2</code> - 生成2组带属性名的预设属性值</p>
+                    <p>结果示例：<br>「Miss Foxsan」的DnD5e人物作成(自由分配模式):<br>[16, 15, 14, 13, 12, 10] = 80</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-bolt"></i>
+                    <h3>先攻设置</h3>
+                </div>
+                <p>设置角色的先攻值，支持多种格式。</p>
+                <div class="command-syntax">
+                    .ri &lt;先攻值&gt; [角色名]<br>
+                    .ri &lt;单项&gt;, &lt;单项&gt;, ...
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ri 12</code> - 设置固定值12</p>
+                    <p><code>.ri +2</code> - 掷骰D20+2</p>
+                    <p><code>.ri =D20+3</code> - 掷骰D20+3</p>
+                    <p><code>.ri +1D8</code> - 掷骰D20+1D8</p>
+                    <p><code>.ri 优势+2 狗头人</code> - 使用优势骰设置狗头人的先攻</p>
+                    <p><code>.ri +2 狗头人1, 3 狗头人2</code> - 批量设置多个角色的先攻</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-list-ol"></i>
+                    <h3>先攻列表</h3>
+                </div>
+                <p>管理战斗中的先攻顺序。</p>
+                <div class="command-syntax">
+                    .init<br>
+                    .init del &lt;单位1&gt; &lt;单位2&gt; ...<br>
+                    .init set &lt;单位名称&gt; &lt;先攻表达式&gt;<br>
+                    .init clr<br>
+                    .init end
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.init</code> - 查看当前先攻列表</p>
+                    <p><code>.init del 狗头人2</code> - 从列表中删除指定单位</p>
+                    <p><code>.init set 狗头人3 16</code> - 设置指定单位的先攻值</p>
+                    <p><code>.init end</code> - 结束当前回合，进入下一回合</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-id-card"></i>
+                    <h3>角色卡操作</h3>
+                </div>
+                <p>管理DND角色卡的各种属性。</p>
+                <div class="command-syntax">
+                    .st show [属性1] [属性2] ...<br>
+                    .st (clr|clear)<br>
+                    .st del &lt;属性1&gt; &lt;属性2&gt; ...<br>
+                    .st &lt;属性&gt;:&lt;值&gt;<br>
+                    .st &lt;属性&gt;±&lt;表达式&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.st 模板</code> - 获取角色卡录入模板</p>
+                    <p><code>.st show</code> - 显示所有属性</p>
+                    <p><code>.st show 力量 敏捷</code> - 显示指定属性</p>
+                    <p><code>.st 力量:12 敏捷:14</code> - 设置属性值</p>
+                    <p><code>.st 力量+2</code> - 增加属性值</p>
+                    <p><code>.st hp-1d6</code> - 减少生命值</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-dice-d20"></i>
+                    <h3>技能检定</h3>
+                </div>
+                <p>进行DND的各种技能检定。</p>
+                <div class="command-syntax">
+                    .rc &lt;属性&gt;<br>
+                    .rc &lt;属性&gt;豁免<br>
+                    .rc &lt;表达式&gt;<br>
+                    .rc (优势|劣势) &lt;表达式&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.rc 运动</code> - 进行运动检定</p>
+                    <p><code>.rc 力量豁免</code> - 进行力量豁免检定</p>
+                    <p><code>.rc 力量+3</code> - 进行带调整值的检定</p>
+                    <p><code>.rc 优势 敏捷+2</code> - 进行优势检定</p>
+                    <p><code>.rc 劣势 隐匿</code> - 进行劣势检定</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-magic"></i>
+                    <h3>临时属性</h3>
+                </div>
+                <p>设置临时属性和效果（buff）。</p>
+                <div class="command-syntax">
+                    .buff<br>
+                    .buff clr<br>
+                    .buff del &lt;属性1&gt; &lt;属性2&gt; ...<br>
+                    .buff &lt;属性&gt;:&lt;值&gt;<br>
+                    .buff &lt;属性&gt;±&lt;表达式&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.buff</code> - 显示当前buff</p>
+                    <p><code>.buff hp:1d4+4</code> - 设置临时生命值</p>
+                    <p><code>.buff 力量:6</code> - 设置临时力量值</p>
+                    <p><code>.buff 运动*:0</code> - 设置临时技能熟练</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-book-open"></i>
+                    <h3>法术位管理</h3>
+                </div>
+                <p>管理角色的法术位。</p>
+                <div class="command-syntax">
+                    .ss<br>
+                    .ss init &lt;1环&gt; &lt;2环&gt; &lt;3环&gt; ...<br>
+                    .ss set &lt;环数&gt; &lt;数量&gt;<br>
+                    .ss &lt;环数&gt; ±&lt;数量&gt;<br>
+                    .ss rest
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ss</code> - 查看当前法术位</p>
+                    <p><code>.ss init 4 3 2</code> - 设置1、2、3环法术位</p>
+                    <p><code>.ss 3环 -1</code> - 消耗一个3环法术位</p>
+                    <p><code>.ss rest</code> - 恢复所有法术位</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-fire"></i>
+                    <h3>使用法术</h3>
+                </div>
+                <p>使用法术并消耗法术位。</p>
+                <div class="command-syntax">
+                    .cast &lt;环数&gt; [消耗数量]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.cast 2</code> - 消耗一个2环法术位</p>
+                    <p><code>.cast 3 2</code> - 消耗两个3环法术位</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-bed"></i>
+                    <h3>长休</h3>
+                </div>
+                <p>进行长休，恢复生命值和法术位。</p>
+                <div class="command-syntax">
+                    .longrest<br>
+                    .长休
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.longrest</code> - 进行长休</p>
+                    <p>结果示例：<br>「Miss Foxsan」的长休: hp得到了恢复，现为12 法术位得到了恢复</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>死亡豁免</h3>
+                </div>
+                <p>进行死亡豁免检定。</p>
+                <div class="command-syntax">
+                    .ds<br>
+                    .ds +&lt;加值&gt;<br>
+                    .ds (成功|失败)±&lt;变化值&gt;<br>
+                    .ds stat
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ds</code> - 进行死亡豁免检定</p>
+                    <p><code>.ds +1d4</code> - 带加值进行死亡豁免</p>
+                    <p><code>.ds 成功+1</code> - 增加一次成功</p>
+                    <p><code>.ds 失败-1</code> - 减少一次失败</p>
+                </div>
+            </div>
+        </div>
+
+            </div>
+        </div>
+
+        <div class="tab-content" id="other">
+            <div class="sidebar-toc">
+                <h3>其他规则</h3>
+                <ul class="toc-list" id="other-toc">
+                    <!-- 其他规则目录屠6由JavaScript生成 -->
+                </ul>
+            </div>
+            <div class="tab-content-main">
+            <h2 class="section-title">其他规则系统</h2>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-globe"></i>
+                    <h3>绿色三角洲 (Delta Green)</h3>
+                </div>
+                <p>「绿色三角洲」（Delta Green，简称 DG）是克苏鲁的呼唤（CoC）的拓展规则，同时也是作为游戏核心的秘密组织的名字。</p>
+                <div class="command-syntax">
+                    .setcoc dg
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.setcoc dg</code> - 切换到绿色三角洲规则</p>
+                    <p>结果示例：<br>切换到绿色三角洲规则，出 1 或检定成功基础上个位十位相同为大成功，出 100 或检定失败基础上个位十位相同为大失败</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-moon"></i>
+                    <h3>黑暗世界 (World of Darkness)</h3>
+                </div>
+                <p>「黑暗世界」（World of Darkness，简称 WOD）是一款超自然题材的 TRPG 游戏。在这个世界中，所有阴谋论都是真的，都市传说不再是什么可以轻松无视的「故事」。</p>
+                <div class="command-syntax">
+                    .ww &lt;表达式&gt;<br>
+                    .ww set &lt;默认值&gt;<br>
+                    .ww set clr
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ww 5</code> - 使用默认设置进行骰点</p>
+                    <p><code>.ww set a6m10k9</code> - 设置默认值（加骰线、6、面数10、成功线9）</p>
+                    <p>结果示例：<br>「Miss Foxsan」掷出了 5a6=[成功1/11 轮数:4 {<9*>,5,<6>,3,3},{<6>,<6>},{<6>,<7>},{5,4}]=1</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-dna"></i>
+                    <h3>双重十字 (Double Cross)</h3>
+                </div>
+                <p>「双重十字」（Double Cross，简称 DX）是一款日系超能力战斗 TRPG 游戏。在病毒感染了绝大多数人类使得他们进化为超能力者的时代，PL 在 GM 的指引下为了守护重要的人或者日常生活而战斗。</p>
+                <div class="command-syntax">
+                    .dx &lt;表达式&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.dx 4c3m7</code> - 进行双重十字骰点</p>
+                    <p>结果示例：<br>「Miss Foxsan」掷出了 4c3m7=[出目32/9 轮数:4 {<4>,2,<4>,<5>},{<7>,1,2},{<7>},{2}]=32</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-running"></i>
+                    <h3>暗影狂奏 (Shadowrun)</h3>
+                </div>
+                <p>「暗影狂奏」（Shadowrun，简称 SR）是一款科学奇幻 TRPG 游戏，背景设定在近未来的灵气复苏赛博服克虚构世界中。</p>
+                <div class="command-syntax">
+                    .rsr &lt;骰数&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.rsr 5</code> - 掷出5个D6</p>
+                    <p>结果示例：<br>「Miss Foxsan」的暗影狂奏检定结果为: 2成功度 [4,5,6,2,3]</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-ghost"></i>
+                    <h3>共鸣性怪异 (Emoklore)</h3>
+                </div>
+                <p>「共鸣性怪异」（Emoklore）是一款设定在与现实相似但存在超自然怪异的世界中的TRPG游戏。</p>
+                <div class="command-syntax">
+                    .ek &lt;技能名&gt;(+&lt;奖励骰&gt;) (&lt;判定线&gt;)<br>
+                    .ekgen [&lt;数量&gt;]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ek 调查+2 (8)</code> - 进行共鸣性怪异检定</p>
+                    <p><code>.ekgen 2</code> - 生成2组共鸣性怪异角色属性</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>无限恐怖 (通用)</h3>
+                    <p>支持无限恐怖通用规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>赛博朋克红 (Cyberpunk RED)</h3>
+                    <p>支持赛博朋克红规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>FFG系战锤规则</h3>
+                    <p>支持FFG系战锤规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>魔导书大战</h3>
+                    <p>支持魔导书大战规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>BRP</h3>
+                    <p>支持BRP规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>LOM诡秘&诡秘琉璃版</h3>
+                    <p>支持LOM诡秘及诡秘琉璃版规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>最终物语</h3>
+                    <p>支持最终物语规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>北欧奇谭</h3>
+                    <p>支持北欧奇谭规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>喵苏鲁</h3>
+                    <p>支持喵苏鲁规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>忍神</h3>
+                    <p>支持忍神规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>永夜后日谈</h3>
+                    <p>支持永夜后日谈规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>撞邪</h3>
+                    <p>支持撞邪规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>暗夜刀锋</h3>
+                    <p>支持暗夜刀锋规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>餐云卧石</h3>
+                    <p>支持餐云卧石规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+            <div class="system-card">
+                <div class="system-logo"></div>
+                <div class="system-info">
+                    <h3>魔法猫猫救世界</h3>
+                    <p>支持魔法猫猫救世界规则系统的骰点功能。</p>
+                </div>
+            </div>
+
+
+        </div>
+
+            </div>
+        </div>
+
+        <div class="tab-content" id="story">
+            <div class="sidebar-toc">
+                <h3>故事辅助</h3>
+                <ul class="toc-list" id="story-toc">
+                    <!-- 故事辅助目录屠6由JavaScript生成 -->
+                </ul>
+            </div>
+            <div class="tab-content-main">
+            <h2 class="section-title">故事辅助工具</h2>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-user"></i>
+                    <h3>随机名字生成</h3>
+                </div>
+                <p>生成随机名字，支持多种语言和类型。</p>
+                <div class="command-syntax">
+                    .name [cn|en|jp] [&lt;数量&gt;] [男|女]<br>
+                    .namednd &lt;种族&gt; [&lt;数量&gt;]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.name cn 3 男</code> - 生成3个中文男性名字</p>
+                    <p><code>.name en 2 女</code> - 生成2个英文女性名字</p>
+                    <p><code>.namednd 精灵 3</code> - 生成3个精灵种族的名字</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-random"></i>
+                    <h3>随机排序</h3>
+                </div>
+                <p>随机打乱元素的顺序。</p>
+                <div class="command-syntax">
+                    .who &lt;排列元素&gt;...
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.who 1 2 3 4 5</code> - 随机打乱数字顺序</p>
+                    <p><code>.who 张三 李四 王五</code> - 随机打乱名字顺序</p>
+                    <p>结果示例：<br>打乱顺序: 5, 2, 1, 4, 3</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-book"></i>
+                    <h3>魔都模组查询</h3>
+                </div>
+                <p>查询魔都网站的模组信息。</p>
+                <div class="command-syntax">
+                    .modu search &lt;关键字&gt; [&lt;页码&gt;]<br>
+                    .modu rec &lt;关键字&gt; [&lt;页码&gt;]<br>
+                    .modu author &lt;关键字&gt; [&lt;页码&gt;]<br>
+                    .modu luck [&lt;页码&gt;]<br>
+                    .modu get &lt;编号&gt;<br>
+                    .modu roll
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.modu search 克苏鲁</code> - 搜索克苏鲁相关模组</p>
+                    <p><code>.modu luck</code> - 查看编辑推荐模组</p>
+                    <p><code>.modu roll</code> - 随机抽取一个模组</p>
+                </div>
+            </div>
+        </div>
+
+            </div>
+        </div>
+
+        <div class="tab-content" id="log">
+            <div class="content-container">
+                <div class="sidebar-toc">
+                    <h3>日志管理</h3>
+                    <ul class="toc-list" id="log-toc">
+                        <!-- 日志管理目录将由JavaScript生成 -->
+                    </ul>
+                </div>
+                <div class="tab-content-main">
+            <h2 class="section-title">跑团日志管理</h2>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>日志记录</h3>
+                </div>
+                <p>管理跑团日志的创建、记录和结束。</p>
+                <div class="command-syntax">
+                    .log new &lt;日志名&gt;<br>
+                    .log on [&lt;日志名&gt;]<br>
+                    .log off<br>
+                    .log halt / .log end
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.log new 迷雾小镇</code> - 新建一份日志</p>
+                    <p><code>.log off</code> - 暂停记录当前日志</p>
+                    <p><code>.log end</code> - 结束当前日志并获取链接</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>数据统计</h3>
+                </div>
+                <p>统计日志中的检定成功失败数量和属性变化。</p>
+                <div class="command-syntax">
+                    .log stat [&lt;日志名&gt;]<br>
+                    .stat log [&lt;日志名&gt;]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.log stat</code> - 统计当前日志</p>
+                    <p><code>.log stat 迷雾小镇</code> - 统计指定日志</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-tasks"></i>
+                    <h3>日志管理</h3>
+                </div>
+                <p>管理日志的列表、获取和删除。</p>
+                <div class="command-syntax">
+                    .log list<br>
+                    .log get &lt;日志名&gt;<br>
+                    .log del &lt;日志名&gt;<br>
+                    .log export &lt;日志名&gt; [&lt;邮箱地址&gt;]
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.log list</code> - 列出所有日志</p>
+                    <p><code>.log get 迷雾小镇</code> - 获取指定日志的链接</p>
+                    <p><code>.log export 迷雾小镇</code> - 导出日志文件</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-eye"></i>
+                    <h3>日志旅观模式</h3>
+                </div>
+                <p>设置旅观者模式，方便日志管理。</p>
+                <div class="command-syntax">
+                    .ob<br>
+                    .ob exit
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.ob</code> - 设置为旅观者模式</p>
+                    <p><code>.ob exit</code> - 退出旅观者模式</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-id-badge"></i>
+                    <h3>自动群名片</h3>
+                </div>
+                <p>自动更新群名片以显示角色信息。</p>
+                <div class="command-syntax">
+                    .sn coc / .sn cocL<br>
+                    .sn dnd<br>
+                    .sn none<br>
+                    .sn expr &lt;模板&gt;<br>
+                    .sn off
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.sn coc</code> - 使用COC格式名片</p>
+                    <p><code>.sn dnd</code> - 使用DND格式名片</p>
+                    <p><code>.sn expr {$t玩家_RAW} SAN{san} HP{hp}/{hpmax}</code> - 自定义名片模板</p>
+                </div>
+            </div>
+        </div>
+
+            </div>
+        </div>
+
+        <div class="tab-content" id="tools">
+            <div class="content-container">
+                <div class="sidebar-toc">
+                    <h3>实用工具</h3>
+                    <ul class="toc-list" id="tools-toc">
+                        <!-- 实用工具目录将由JavaScript生成 -->
+                    </ul>
+                </div>
+                <div class="tab-content-main">
+            <h2 class="section-title">其他实用工具</h2>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-envelope"></i>
+                    <h3>向骰主发送消息</h3>
+                </div>
+                <p>向骰主发送消息或回复消息。</p>
+                <div class="command-syntax">
+                    .send &lt;消息内容&gt;<br>
+                    .send to &lt;对方ID&gt; &lt;消息内容&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.send 骰主你好！</code> - 向骰主发送消息</p>
+                    <p><code>.send to &lt;群号&gt; 我收到了！</code> - 骰主回复群聊</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-user-plus"></i>
+                    <h3>新人入群欢迎</h3>
+                </div>
+                <p>管理新人入群欢迎语。</p>
+                <div class="command-syntax">
+                    .welcome (on|off)<br>
+                    .welcome show<br>
+                    .welcome set &lt;欢迎语&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.welcome on</code> - 开启欢迎功能</p>
+                    <p><code>.welcome set 欢迎加入跑团！</code> - 设定欢迎语</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-cards"></i>
+                    <h3>牌堆管理</h3>
+                </div>
+                <p>抽牌和管理牌堆。</p>
+                <div class="command-syntax">
+                    .draw help<br>
+                    .draw list<br>
+                    .draw keys &lt;牌堆&gt;
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.draw list</code> - 列出当前装载的牌堆列表</p>
+                    <p><code>.draw keys 塔罗牌</code> - 查看塔罗牌的可抽取牌组</p>
+                </div>
+            </div>
+
+            <div class="command-card">
+                <div class="command-title">
+                    <i class="fas fa-comment-dots"></i>
+                    <h3>自定义回复</h3>
+                </div>
+                <p>管理自定义回复功能。</p>
+                <div class="command-syntax">
+                    .reply (on|off)
+                </div>
+                <div class="command-example">
+                    <h4>示例：</h4>
+                    <p><code>.reply on</code> - 开启自定义回复功能</p>
+                    <p><code>.reply off</code> - 关闭自定义回复功能</p>
+                </div>
+            </div>
+        </div>
+
+            </div>
+        </div>
+
+        <section class="platforms">
+            <h2 class="section-title">如何使用</h2>
+            <div class="platform-container">
+                <div class="platform">
+                    <img src="image/dc01.jpg" alt="Discord" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>Discord</h3>
+                    <p>在Discord服务器上使用骰点功能</p>
+                    <ol style="text-align: left; margin: 1rem 0;">
+                        <li>邀请Miss Foxsan加入您的服务器</li>
+                        <li>在任意文字频道中输入骰点命令</li>
+                        <li>享受便捷的骰点服务！</li>
+                    </ol>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank" class="btn small-btn">添加到服务器</a>
+                </div>
+                <div class="platform">
+                    <img src="image/qq01.jpg" alt="QQ初号机" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>QQ初号机</h3>
+                    <p>西幻/现代风格的骰点机器人</p>
+                    <ol style="text-align: left; margin: 1rem 0;">
+                        <li>添加初号机为好友并邀请到群中</li>
+                        <li>在群聊中输入骰点命令</li>
+                        <li>享受便捷的骰点服务！</li>
+                    </ol>
+                    <div style="text-align: center; margin: 1rem 0;">
+                        <p><strong>QQ号码：</strong> 3989736640</p>
+                    </div>
+                    <a href="#" class="btn small-btn">添加初号机</a>
+                </div>
+                <div class="platform">
+                    <img src="image/qq02.jpg" alt="QQ二号机" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>QQ二号机</h3>
+                    <p>古风/和风风格的骰点机器人</p>
+                    <ol style="text-align: left; margin: 1rem 0;">
+                        <li>添加二号机为好友并邀请到群中</li>
+                        <li>在群聊中输入骰点命令</li>
+                        <li>享受便捷的骰点服务！</li>
+                    </ol>
+                    <div style="text-align: center; margin: 1rem 0;">
+                        <p><strong>QQ号码：</strong> 1783352478</p>
+                        <p><strong>用户群：</strong> 241639081</p>
+                    </div>
+                    <a href="#" class="btn small-btn">添加二号机</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank">Discord机器人</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ初号机：3989736640</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ二号机：1783352478</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ用户群：241639081</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="videos.html">跑团视频</a></li>
+                    <li><a href="character.html">角色设定</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // 标签页切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有标签的active类
+                    tabs.forEach(t => t.classList.remove('active'));
+
+                    // 为当前点击的标签添加active类
+                    this.classList.add('active');
+
+                    // 获取对应的内容ID
+                    const tabId = this.getAttribute('data-tab');
+
+                    // 隐藏所有内容
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // 显示对应内容
+                    document.getElementById(tabId).classList.add('active');
+
+                    // 生成当前标签页的目录
+                    generateTOC(tabId);
+                });
+            });
+
+            // 悬浮目录按钮和容器
+            const tocButton = document.getElementById('tocButton');
+            const sidebarToc = document.getElementById('sidebarToc');
+            const closeToc = document.getElementById('closeToc');
+            const tocList = document.getElementById('tocList');
+            const tocTitle = document.getElementById('tocTitle');
+
+            // 点击按钮显示目录
+            tocButton.addEventListener('click', function() {
+                sidebarToc.classList.add('show');
+            });
+
+            // 点击关闭按钮隐藏目录
+            closeToc.addEventListener('click', function() {
+                sidebarToc.classList.remove('show');
+            });
+
+            // 点击目录外部区域隐藏目录
+            document.addEventListener('click', function(event) {
+                if (!sidebarToc.contains(event.target) && event.target !== tocButton && sidebarToc.classList.contains('show')) {
+                    sidebarToc.classList.remove('show');
+                }
+            });
+
+            // 实现拖动功能
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            // 开始拖动
+            sidebarToc.addEventListener('mousedown', function(e) {
+                // 如果点击的是目录项或关闭按钮，不进行拖动
+                if (e.target.classList.contains('toc-link') || e.target.classList.contains('close-toc') || e.target.closest('.toc-link')) {
+                    return;
+                }
+
+                isDragging = true;
+
+                // 计算鼠标与目录容器左上角的偏移量
+                const rect = sidebarToc.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+
+                // 添加活动状态样式
+                sidebarToc.style.transition = 'none';
+                sidebarToc.style.cursor = 'grabbing';
+
+                // 防止默认行为和文本选中
+                e.preventDefault();
+            });
+
+            // 拖动过程
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+
+                // 计算新位置
+                const newLeft = e.clientX - offsetX;
+                const newTop = e.clientY - offsetY;
+
+                // 限制范围，防止拖出可视区域
+                const maxX = window.innerWidth - sidebarToc.offsetWidth;
+                const maxY = window.innerHeight - sidebarToc.offsetHeight;
+
+                // 设置新位置
+                sidebarToc.style.left = Math.max(0, Math.min(newLeft, maxX)) + 'px';
+                sidebarToc.style.top = Math.max(0, Math.min(newTop, maxY)) + 'px';
+                sidebarToc.style.bottom = 'auto'; // 清除默认的bottom定位
+            });
+
+            // 结束拖动
+            document.addEventListener('mouseup', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    sidebarToc.style.cursor = 'move';
+                    sidebarToc.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                }
+            });
+
+            // 触摸设备支持
+            sidebarToc.addEventListener('touchstart', function(e) {
+                // 如果触摸的是目录项或关闭按钮，不进行拖动
+                if (e.target.classList.contains('toc-link') || e.target.classList.contains('close-toc') || e.target.closest('.toc-link')) {
+                    return;
+                }
+
+                isDragging = true;
+
+                const touch = e.touches[0];
+                const rect = sidebarToc.getBoundingClientRect();
+                offsetX = touch.clientX - rect.left;
+                offsetY = touch.clientY - rect.top;
+
+                sidebarToc.style.transition = 'none';
+
+                // 防止页面滚动
+                e.preventDefault();
+            }, { passive: false });
+
+            document.addEventListener('touchmove', function(e) {
+                if (!isDragging) return;
+
+                const touch = e.touches[0];
+
+                // 计算新位置
+                const newLeft = touch.clientX - offsetX;
+                const newTop = touch.clientY - offsetY;
+
+                // 限制范围
+                const maxX = window.innerWidth - sidebarToc.offsetWidth;
+                const maxY = window.innerHeight - sidebarToc.offsetHeight;
+
+                // 设置新位置
+                sidebarToc.style.left = Math.max(0, Math.min(newLeft, maxX)) + 'px';
+                sidebarToc.style.top = Math.max(0, Math.min(newTop, maxY)) + 'px';
+                sidebarToc.style.bottom = 'auto';
+
+                // 防止页面滚动
+                e.preventDefault();
+            }, { passive: false });
+
+            document.addEventListener('touchend', function() {
+                if (isDragging) {
+                    isDragging = false;
+                    sidebarToc.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                }
+            });
+
+            // 生成目录函数
+            function generateTOC(tabId) {
+                const tabContent = document.getElementById(tabId);
+                const mainContent = tabContent.querySelector('.tab-content-main');
+                if (!mainContent) return; // 防止错误
+                const commandCards = mainContent.querySelectorAll('.command-card');
+
+                // 更新目录标题
+                const activeTabName = document.querySelector(`.tab[data-tab="${tabId}"]`).textContent;
+                tocTitle.textContent = activeTabName + '目录';
+
+                // 清空当前目录
+                tocList.innerHTML = '';
+
+                // 遍历所有命令卡片，生成目录项
+                commandCards.forEach((card, index) => {
+                    const title = card.querySelector('.command-title h3').textContent;
+                    const id = 'cmd-' + tabId + '-' + index;
+
+                    // 给卡片添加ID，作为锚点
+                    card.id = id;
+
+                    // 创建目录项
+                    const listItem = document.createElement('li');
+                    listItem.className = 'toc-item';
+
+                    const link = document.createElement('a');
+                    link.className = 'toc-link';
+                    link.href = '#' + id;
+                    link.textContent = title;
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+
+                        // 移除所有活动状态
+                        const allLinks = document.querySelectorAll('.toc-link');
+                        allLinks.forEach(l => l.classList.remove('active'));
+
+                        // 添加当前项的活动状态
+                        this.classList.add('active');
+
+                        // 滚动到目标位置
+                        const target = document.getElementById(id);
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                        // 点击后关闭目录
+                        sidebarToc.classList.remove('show');
+                    });
+
+                    listItem.appendChild(link);
+                    tocList.appendChild(listItem);
+                });
+
+                // 添加滚动监听，更新活动目录项
+                const scrollHandler = function() {
+                    const scrollPosition = window.scrollY;
+
+                    // 找出当前可见的卡片
+                    let currentCard = null;
+                    commandCards.forEach(card => {
+                        const cardTop = card.getBoundingClientRect().top + window.scrollY;
+                        if (cardTop <= scrollPosition + 100) {
+                            currentCard = card;
+                        }
+                    });
+
+                    if (currentCard) {
+                        // 更新目录项的活动状态
+                        const allLinks = tocList.querySelectorAll('.toc-link');
+                        allLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === '#' + currentCard.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                };
+
+                // 添加滚动监听
+                window.addEventListener('scroll', scrollHandler);
+            }
+
+            // 初始化时生成活动标签页的目录
+            const activeTab = document.querySelector('.tab.active');
+            if (activeTab) {
+                const activeTabId = activeTab.getAttribute('data-tab');
+                generateTOC(activeTabId);
+            }
+
+            // 添加Font Awesome图标库
+            if (!document.getElementById('fontawesome-css')) {
+                const fontAwesome = document.createElement('link');
+                fontAwesome.id = 'fontawesome-css';
+                fontAwesome.rel = 'stylesheet';
+                fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+                document.head.appendChild(fontAwesome);
+            }
+        });
+    </script>
+</body>
+</html>

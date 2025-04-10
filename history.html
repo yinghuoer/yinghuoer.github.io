@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史记录 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 历史记录页面特定样式 */
+        .history-container {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 3rem;
+        }
+        
+        .history-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1.2rem;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .search-box {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .search-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .search-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .history-list {
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        .history-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .history-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .history-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .history-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .history-meta-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .history-meta-item i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+        
+        .history-content {
+            line-height: 1.6;
+        }
+        
+        .history-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        
+        .history-actions a {
+            margin-left: 1rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .history-actions a:hover {
+            color: var(--primary-color);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+        
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .page-btn:hover, .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #eee;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-color);
+            border: 4px solid white;
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+        
+        .timeline-left {
+            left: 0;
+        }
+        
+        .timeline-right {
+            left: 50%;
+        }
+        
+        .timeline-left::after {
+            right: -10px;
+        }
+        
+        .timeline-right::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .timeline-date {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-left::after, .timeline-right::after {
+                left: 21px;
+            }
+            
+            .timeline-right {
+                left: 0;
+            }
+        }
+        
+        .log-entry {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            color: #333;
+            border-left: 3px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/foxsan-logo.png" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="character.html"><i class="fas fa-user"></i> 角色设定</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="history.html" class="active"><i class="fas fa-history"></i> 历史记录</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>历史记录</h2>
+            <p>查看跑团历史记录和数据统计</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="stats-overview">
+            <h2 class="section-title">数据统计</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-dice-d20"></i></div>
+                    <div class="stat-value">1,234,567</div>
+                    <div class="stat-label">总骰点次数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-value">5,678</div>
+                    <div class="stat-label">服务用户数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="stat-value">789</div>
+                    <div class="stat-label">跑团场次</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-value">12,345</div>
+                    <div class="stat-label">总跑团时长（小时）</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="history-milestones">
+            <h2 class="section-title">发展历程</h2>
+            <div class="timeline">
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2021年1月</div>
+                        <h3>Miss Foxsan项目启动</h3>
+                        <p>Miss Foxsan项目正式启动，开始设计和开发基础骰点功能。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2021年3月</div>
+                        <h3>Discord版本发布</h3>
+                        <p>Miss Foxsan的Discord版本正式发布，支持基本的COC和DND骰点功能。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2021年6月</div>
+                        <h3>QQ版本发布</h3>
+                        <p>Miss Foxsan的QQ版本正式发布，让更多中国TRPG玩家能够使用。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2021年9月</div>
+                        <h3>角色卡功能上线</h3>
+                        <p>添加了角色卡管理功能，玩家可以在线创建和管理自己的角色。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2022年1月</div>
+                        <h3>AI对话功能上线</h3>
+                        <p>添加了AI对话功能，Miss Foxsan可以与玩家进行自然的对话互动。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2022年6月</div>
+                        <h3>历史记录系统上线</h3>
+                        <p>添加了历史记录系统，可以记录和查询跑团历史数据。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2022年12月</div>
+                        <h3>多系统支持</h3>
+                        <p>扩展支持更多TRPG规则系统，包括无限恐怖、守望者等。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023年现在</div>
+                        <h3>持续发展中</h3>
+                        <p>Miss Foxsan正在不断完善和发展，为TRPG玩家提供更好的服务。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="history-records">
+            <h2 class="section-title">跑团记录</h2>
+            <div class="history-container">
+                <div class="history-filters">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="coc">COC</button>
+                    <button class="filter-btn" data-filter="dnd">DND</button>
+                    <button class="filter-btn" data-filter="other">其他系统</button>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="搜索关键词...">
+                    <button class="search-btn"><i class="fas fa-search"></i> 搜索</button>
+                </div>
+                
+                <div class="history-list">
+                    <div class="history-item" data-category="coc">
+                        <div class="history-header">
+                            <div class="history-title">《迷雾小镇》COC跑团</div>
+                            <div class="history-date">2023-06-15</div>
+                        </div>
+                        <div class="history-meta">
+                            <div class="history-meta-item"><i class="fas fa-user"></i> KP: 星辰大海</div>
+                            <div class="history-meta-item"><i class="fas fa-users"></i> 玩家: 5人</div>
+                            <div class="history-meta-item"><i class="fas fa-clock"></i> 时长: 4小时30分钟</div>
+                            <div class="history-meta-item"><i class="fas fa-dice"></i> 骰点: 127次</div>
+                        </div>
+                        <div class="history-content">
+                            <p>一群调查员前往被迷雾笼罩的小镇，调查一系列神秘失踪事件。在这次冒险中，玩家们揭开了小镇的可怕秘密。</p>
+                            <div class="log-entry">
+[20:15] 「星辰大海」: 你们的车在浓雾中缓缓驶入小镇，四周一片寂静，只有车灯照亮前方的道路。
+[20:16] 「深海之眼」: 我环顾四周，有没有看到任何人或者建筑物？
+[20:17] 「星辰大海」: 请进行一个侦查检定。
+[20:17] 「深海之眼」: .rc60
+[20:17] 「Miss Foxsan」: 「深海之眼」进行侦查检定：D100 = 45，成功！（技能值60）
+[20:18] 「星辰大海」: 你透过浓雾，隐约看到路边有一些建筑物的轮廓，似乎是一些房屋。还能看到一个较大的建筑，可能是镇上的某个公共设施。
+...</div>
+                        </div>
+                        <div class="history-actions">
+                            <a href="#"><i class="fas fa-download"></i> 下载完整记录</a>
+                            <a href="#"><i class="fas fa-share-alt"></i> 分享</a>
+                        </div>
+                    </div>
+                    
+                    <div class="history-item" data-category="dnd">
+                        <div class="history-header">
+                            <div class="history-title">《龙与地下城》冒险</div>
+                            <div class="history-date">2023-05-22</div>
+                        </div>
+                        <div class="history-meta">
+                            <div class="history-meta-item"><i class="fas fa-user"></i> DM: 龙与地下城</div>
+                            <div class="history-meta-item"><i class="fas fa-users"></i> 玩家: 4人</div>
+                            <div class="history-meta-item"><i class="fas fa-clock"></i> 时长: 3小时15分钟</div>
+                            <div class="history-meta-item"><i class="fas fa-dice"></i> 骰点: 98次</div>
+                        </div>
+                        <div class="history-content">
+                            <p>一群冒险者探索一座古老的墓穴，面对各种陷阱和守卫，寻找传说中的宝藏。</p>
+                            <div class="log-entry">
+[19:30] 「龙与地下城」: 你们站在古墓的入口前，石门上刻着古老的符文，散发着神秘的气息。
+[19:31] 「剑舞者」: 我想检查一下石门上的符文，看看能不能理解它们的含义。
+[19:32] 「龙与地下城」: 请进行一个奥秘检定。
+[19:32] 「剑舞者」: .r1d20+5 奥秘检定
+[19:32] 「Miss Foxsan」: 「剑舞者」进行奥秘检定：1D20+5 = [17]+5 = 22
+[19:33] 「龙与地下城」: 你成功解读了符文，这些符文警告着不要打扰墓穴中沉睡的亡灵，否则将会遭受诅咒。
+...</div>
+                        </div>
+                        <div class="history-actions">
+                            <a href="#"><i class="fas fa-download"></i> 下载完整记录</a>
+                            <a href="#"><i class="fas fa-share-alt"></i> 分享</a>
+                        </div>
+                    </div>
+                    
+                    <div class="history-item" data-category="other">
+                        <div class="history-header">
+                            <div class="history-title">《无限恐怖》异世界冒险</div>
+                            <div class="history-date">2023-04-10</div>
+                        </div>
+                        <div class="history-meta">
+                            <div class="history-meta-item"><i class="fas fa-user"></i> 主持: 幻想编织者</div>
+                            <div class="history-meta-item"><i class="fas fa-users"></i> 玩家: 6人</div>
+                            <div class="history-meta-item"><i class="fas fa-clock"></i> 时长: 5小时45分钟</div>
+                            <div class="history-meta-item"><i class="fas fa-dice"></i> 骰点: 156次</div>
+                        </div>
+                        <div class="history-content">
+                            <p>一群普通人被卷入轮回世界，必须在充满危险的异世界中生存下来，完成任务才能返回现实世界。</p>
+                            <div class="log-entry">
+[18:00] 「幻想编织者」: 你们在一阵刺眼的白光后，发现自己身处一个陌生的城市。四周的建筑风格古老而奇特，天空呈现出诡异的红色。
+[18:01] 「生存者」: 我环顾四周，看看附近有没有其他人或者可以利用的资源。
+[18:02] 「幻想编织者」: 请进行一个感知检定。
+[18:02] 「生存者」: .r3d6 感知检定
+[18:02] 「Miss Foxsan」: 「生存者」进行感知检定：3D6 = [2, 5, 3] = 10
+[18:03] 「幻想编织者」: 你注意到不远处有一个小型超市，可能有一些生存物资。街道上空无一人，但你感觉到有什么东西在暗处观察着你们。
+...</div>
+                        </div>
+                        <div class="history-actions">
+                            <a href="#"><i class="fas fa-download"></i> 下载完整记录</a>
+                            <a href="#"><i class="fas fa-share-alt"></i> 分享</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <div class="page-btn active">1</div>
+                    <div class="page-btn">2</div>
+                    <div class="page-btn">3</div>
+                    <div class="page-btn"><i class="fas fa-ellipsis-h"></i></div>
+                    <div class="page-btn">15</div>
+                    <div class="page-btn"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="#" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ群</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="videos.html">跑团视频</a></li>
+                    <li><a href="about.html">关于</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 历史记录筛选功能
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const historyItems = document.querySelectorAll('.history-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 为当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 获取筛选类别
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // 筛选历史记录
+                    historyItems.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // 搜索功能
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            searchBtn.addEventListener('click', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                historyItems.forEach(item => {
+                    const content = item.textContent.toLowerCase();
+                    
+                    if (content.includes(searchTerm)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+            
+            // 回车键搜索
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+            
+            // 分页功能（示例）
+            const pageButtons = document.querySelectorAll('.page-btn');
+            
+            pageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    pageButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 为当前点击的按钮添加active类
+                    if (!this.querySelector('.fa-angle-right') && !this.querySelector('.fa-ellipsis-h')) {
+                        this.classList.add('active');
+                    }
+                    
+                    // 这里可以添加实际的分页逻辑
+                    console.log('切换到页面：', this.textContent);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
