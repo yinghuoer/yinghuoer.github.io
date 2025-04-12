@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你也想复活彼得三吗？- 后日谈（兽人龟星夜车） - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 禁用文字选择 */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 文档页面特定样式 */
+        .document-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .document-header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+        }
+
+        .document-title {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .document-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .document-meta span {
+            display: flex;
+            align-items: center;
+        }
+
+        .document-meta i {
+            margin-right: 0.3rem;
+        }
+
+        .document-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .document-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(231, 198, 255, 0.2); /* 浅紫色半透明 - 新色板 */
+            color: #b28dff; /* 深一点的紫色 */
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .document-tag:hover {
+            background-color: #E7C6FF; /* 浅紫色 - 新色板 */
+            color: white;
+        }
+
+        .document-content {
+            line-height: 1.8;
+        }
+
+        .document-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .document-content h2 {
+            color: var(--primary-color);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .document-content h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .document-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .document-actions a {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .document-actions a i {
+            margin-right: 0.5rem;
+        }
+
+        .document-actions .prev-link {
+            color: #FFAFCC; /* 深粉 - 新色板 */
+            border: 1px solid #FFAFCC;
+        }
+
+        .document-actions .next-link {
+            color: #ADE8F4; /* 深蓝 - 新色板 */
+            border: 1px solid #ADE8F4;
+        }
+
+        .document-actions a:hover {
+            background-color: rgba(255, 214, 255, 0.1); /* 浅粉半透明 - 新色板 */
+        }
+
+        .document-actions .prev-link:hover {
+            background-color: rgba(255, 175, 204, 0.1); /* 深粉半透明 - 新色板 */
+        }
+
+        .document-actions .next-link:hover {
+            background-color: rgba(173, 232, 244, 0.1); /* 深蓝半透明 - 新色板 */
+        }
+
+        .character-section {
+            background-color: rgba(255, 214, 255, 0.2); /* 浅粉半透明 - 新色板 */
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 3px solid #FFAFCC; /* 深粉 - 新色板 */
+        }
+
+        .character-section h3 {
+            color: #FFAFCC; /* 深粉 - 新色板 */
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 175, 204, 0.3); /* 深粉半透明 - 新色板 */
+            padding-bottom: 0.5rem;
+        }
+
+        .story-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .story-section:last-child {
+            border-bottom: none;
+        }
+
+        .scene-description {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid #E7C6FF; /* 浅紫色 - 新色板 */
+            background-color: rgba(231, 198, 255, 0.05); /* 浅紫色半透明 - 新色板 */
+            padding: 1rem;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .dialogue {
+            margin-bottom: 1.5rem;
+        }
+
+        .dialogue-name {
+            font-weight: bold;
+            color: #FFAFCC; /* 深粉 - 新色板 */
+        }
+
+        .narrator {
+            font-style: italic;
+            color: #b28dff; /* 深一点的紫色 - 新色板 */
+        }
+
+        @media (max-width: 768px) {
+            .document-container {
+                padding: 1.5rem;
+            }
+
+            .document-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="../image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="../blog.html"><i class="fas fa-blog"></i> 博客文章</a></li>
+                    <li><a href="../documents.html" class="active"><i class="fas fa-file-alt"></i> 跑团文档</a></li>
+                    <li><a href="../dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="../videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="../messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="../about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero" style="background-image: url('../image/hero-bg.jpg'); position: relative;">
+        <div class="hero-content" style="background: linear-gradient(135deg, rgba(255, 175, 204, 0.85), rgba(255, 214, 255, 0.75), rgba(231, 198, 255, 0.65)); padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(255, 175, 204, 0.4);">
+            <h2 style="color: #fff; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);">你也想复活彼得三吗？- 后日谈</h2>
+            <p style="color: #fff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">活人园乐队的故事</p>
+        </div>
+    </div>
+
+    <main style="padding: 2rem 1rem;">
+        <div class="document-container">
+            <div class="document-header">
+                <h1 class="document-title">你也想复活彼得三吗？- 后日谈（兽人龟星夜车）</h1>
+                <div class="document-meta">
+                    <span><i class="far fa-user"></i> KP：荧惑（狐狸小姐）</span>
+                    <span><i class="far fa-calendar"></i> 2023-06-15</span>
+                    <span><i class="far fa-folder"></i> 后日谈存档</span>
+                    <span><i class="far fa-eye"></i> 782 阅读</span>
+                </div>
+                <div class="document-tags">
+                    <a href="#" class="document-tag">COC</a>
+                    <a href="#" class="document-tag">后日谈</a>
+                    <a href="#" class="document-tag">活人园</a>
+                    <a href="#" class="document-tag">彼得三</a>
+                </div>
+            </div>
+
+            <div class="character-section">
+                <h3>角色列表</h3>
+                <p>pl列表：霍比（兽人），慕娜（星夜），伊莱恩（龟）</p>
+            </div>
+
+            <div class="document-content">
+                <div class="scene-description">
+                    <p>后台休息室中。</p>
+                    <p>一名年轻貌美的女性正端坐在镜子前，柔顺的金色长发乖巧的盘在她的脑后。她的手指在桌上琳琅满目的化妆品中留恋了一阵，最后还是随意的选中了桌上的一个金边镶嵌着彩色水晶的口红。艳丽夺目的大红色衬得她的气质越发孤傲淡漠。</p>
+                    <p>慕娜·卡德莉雅，这位后起之秀对着镜子里的自己微微一笑，勾起的红唇为她稍稍的冲散了一点这不好相处的气场。</p>
+                </div>
+
+                <div class="dialogue">
+                    <p><span class="narrator">"叩叩——"，后台准备室的门被轻轻叩响。</span></p>
+                    <p><span class="dialogue-name">慕娜：</span>"请进"，慕娜用和平时一样礼貌疏离的语气应付着来客，"是哪位呢？"</p>
+                </div>
+
+                <p>一个气质稍显青涩的高挑女性推开了门，从门缝里面怯怯地望向慕娜，"慕娜……我有打扰你吗？"她侧身进来，站在慕娜面前，似乎有些手足无措的样子。"就是之前商量好的乐队专访，不知道你现在有时间吗……我是觉得彩排或许是一个不错的时机，而且后台休息室作为背景也正正好。"她似乎是怕被慕娜误解，留下不好的印象，自发的补充说明了在这个时候叨扰的理由。</p>
+
+                <div class="dialogue">
+                    <p><span class="dialogue-name">慕娜：</span>"噢，当然不会了，毕竟我们早就商量好的不是吗？"慕娜微微一笑，"我们活人园乐队可还是要靠你这个大记者来宣传宣传呢。"</p>
+                </div>
+
+                <p>很显然这只是客套话，爱丽丝当然不会自傲到觉得这炙手可热的明日之星乐队需要她一个小小的前报社文员，现在也只是一个小记者，来帮他们宣传。不如说，反倒是她受到了不少帮助，让她从只能不停写小报的报社文员，升级到独立记者。当她向慕娜询问是否可以获得关于她们的第一场正式演唱会的抢先采访权，进行第一手报道时，她当然也是非常忐忑的——如此好的为乐队曝光的机会当然要留给更大更好的媒体，占据头条！这可是每个想走到更广阔天地，更大的舞台的乐队的共识！</p>
+
+                <p>然而，出乎爱丽丝意料的是，慕娜听完后认真的找所有乐队成员，特别是经纪人进行了讨论——顺带一提，那个经纪人就是当时穿着神秘酷炫蜘蛛侠cos服，带着金属朋克项链大摇大摆走在报社大楼里的那名男子。爱丽丝后来才知道他的名字叫霍比，霍比·布朗，是一名正儿八经的经纪人。听闻这个令人大跌眼镜的消息后，爱丽丝不自觉地十分愕然。然后感叹道，真是人不可貌相。总之，那名经纪人穿着他心爱的皮夹克带着他心爱的朋克项链面带微笑的同意了爱丽丝的请求，甚至贴心的帮她安排了现在的这个会面时间，可以采访活人园乐队。</p>
+
+                <p>至于爱丽丝在她们第一场演唱会完美谢幕后，忍不住自己的困惑还是问了霍比，
+                对方回答，"哦？宣传？不不，我们不需要那种东西~！我对伊莱恩的曲子非常有自信！他总是能完美的融合朋克和古典元素！而慕娜的发挥也堪称完美！我确信我们不需要这种小伎俩也能抓住所有观众的心~这种小手段也太不朋克了！我坚信我的经纪人技巧可以带他们走到最高峰！我们可是要名扬世界的乐队！"</p>
+
+                <p>此为后话。</p>
+
+                <p>慕娜端坐在扶手椅上，面带微笑的看着爱丽丝，和刚刚的公式化微笑不同，这次的笑意似乎带了几分真心，自然地从她看爱丽丝的眼神里流露了出来。</p>
+
+                <p>从业多年的爱丽丝当然也敏锐的发现了这一点——天，她只是缺少一些机会，还有一些契机，但这可不代表她缺乏一个专业媒体人敏锐的洞察力！她脸颊有些羞红地颔着脑袋，双手紧紧捏着她准备用来记录的笔记本，思绪不禁飘回了几个月前的那一个下午，慕娜一路跑来她的办公室，那段宁静祥和的时光……天，不能再想了！她实在是不知道该如何面对这样一位冉冉升起的新星歌者如此明显的示好。</p>
+
+                <p><span class="narrator">（kp注：如果一切顺利的话，美国会在2015年通过同性婚姻受宪法保护，全看慕娜·卡德莉娜和爱丽丝·詹姆斯的个人意愿。模组发生时为2000年，慕娜20岁。）</span></p>
+
+                <div class="dialogue">
+                    <p><span class="narrator">"咚咚咚——"激烈的敲门声拯救了陷在羞涩情绪中，一时不知该如何行动的爱丽丝。</span></p>
+                </div>
+
+                <p>还未等屋内的两人反应过来，一名有着健康小麦色皮肤的拉丁裔男子就揽着一个面色冷淡的金发蓝瞳的男性的脖子，一脚踹开虚掩着的门走了进来，正是乔·贝利和伊莱恩·纳坎二人——二人本就是学生时代的挚友，一起经历了一番奇妙事件后二人的友情反而更加浓厚。</p>
+
+                <p>即使是在伊莱恩决定成为活人园乐队的正式编曲之后，二人的交情也没有变淡。慕娜那边，她的本职本来也是艺人，对她来说演出不过是多一些在学习之余锻炼自己学到的技巧的机会罢了。而伊莱恩这边就没有那么好运了，他因为要一边兼顾密大的神秘学学业，一边产出更多更好的曲子，而常常忙得忘记吃饭和出门锻炼。而乔就充当了一个这样的督导员的身份，在伊莱恩埋头写曲子之余，经常拉着伊莱恩进行外出运动或社交，声称这样可以更好的帮助其寻找灵感；"健康的身体才能支持长久的创作生命"；"All work and no play makes Jack a dull boy"云云……风风火火的性格和行动力都让人叹为观止。至于表面上稍显冷淡内向的伊莱恩是否觉得自己有被帮助到呢？这就只能问他本人了。不过想来乔对伊莱恩这个朋友总体来说还是起到正面作用更多，毕竟他可是有着一天内就能学会某法术的聪明才智呢！热情到稍显强迫的态度想必也是出于珍稀朋友的目的吧？</p>
+
+                <div class="dialogue">
+                    <p><span class="dialogue-name">乔：</span>"哟！大家好啊！人还挺全的嘛！"乔挂着他惯有的爽朗笑容，用他明亮的洁白牙齿和在座的人打了招呼，"伊莱恩这小子把你们即将要演出的曲子的编曲改了一下切入时间，说是可能会更完美，但他自己不好意思过来让你们听，我就把他和霍比一起拽过来了，剩下的让他和你们说吧！"</p>
+                </div>
+
+                <div class="dialogue">
+                    <p><span class="narrator">"登登登——哟——"伴随着一声吉他的和弦，熟悉的招呼声响起。一个披着带刺皮夹克穿着酷炫蜘蛛侠cos服的熟悉人影靠在了门口，摆了一个帅气的pose，不由得让室内的众人侧目。</span></p>
+                </div>
+
+                <p>伊莱恩不着痕迹地默默躲远了乔和霍比一点，整理自己被乔抓皱的白衬衫。</p>
+
+                <div class="dialogue">
+                    <p><span class="dialogue-name">霍比：</span>"我觉得小伊莱恩的新编曲非常不错！大家都可以听听！爱丽丝小姐的采访先稍微等我们两分钟可以吗？您也可以留下一起听，我们最新的melody！登登登——"句子结尾，霍比又扫了一下自己的吉他，起到一个装逼上的作用。</p>
+                </div>
+
+                <p>慕娜因为自己的甜蜜二人独处时光被打断了，微微有些不悦，默默的剜了一眼非常没有眼力见儿的霍比——很难不说这么多人闯进来，但是只瞪他一个人是不是出于什么积年已久的私人恩怨。</p>
+
+                <div class="dialogue">
+                    <p><span class="dialogue-name">爱丽丝：</span>"当……当然没问题，请求这个采访机会本来就是我麻烦您。倒是您们，把要保密的曲子让我一个外人听没问题吗？"</p>
+                    <p><span class="dialogue-name">霍比：</span>"哦！当然没问题了！这点小事，不要放在心上！"</p>
+                </div>
+
+                <p>伊莱恩也高冷的点点头，示意同意经纪人的说法。</p>
+
+                <p>五人在沙发上各自挑选了一个舒服的位置，围坐在茶几边上。</p>
+
+                <p>伊莱恩缓缓地从自己随身携带的手提箱里拿出了一叠乐谱，摊放在桌上。乐谱上面密密麻麻的写满了各种颜色图改的笔记，证明了其主人做出了多少次改动，又有多么的用心。</p>
+
+                <p>此时，距活人园乐队第一次独立演出，即演唱会，还有9个小时的时间。而距离这些怀着满腔热血和雄心壮志的年轻人们名扬天下的时间，又有多久呢？在面对用普通手段无法解决的困难时，他们最终又会不会选择打开那扇已经暂时被他们遗忘的禁忌的门扉呢？Please stay tuned~！</p>
+            </div>
+
+            <div class="document-actions">
+                <a href="peter3-afterstory1.html" class="prev-link"><i class="fas fa-arrow-left"></i> 上一篇后日谈</a>
+                <a href="../documents.html" class="next-link">返回文档列表 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="../index.html">首页</a></li>
+                    <li><a href="../blog.html">博客文章</a></li>
+                    <li><a href="../documents.html">跑团文档</a></li>
+                    <li><a href="../dicebot.html">骰点功能</a></li>
+                    <li><a href="../about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        // 禁用右键菜单
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 禁用快捷键
+        document.addEventListener('keydown', function(e) {
+            // 禁用Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+A, Ctrl+S, Ctrl+P, F12
+            if (
+                (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 88 || e.keyCode === 65 || e.keyCode === 83 || e.keyCode === 80)) ||
+                e.keyCode === 123
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

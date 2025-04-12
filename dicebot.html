@@ -27,11 +27,13 @@
             align-items: center;
             margin-bottom: 1rem;
             color: var(--primary-color);
+            text-shadow: 1px 1px 2px rgba(255, 175, 204, 0.3);
         }
 
         .command-title i {
             margin-right: 10px;
             font-size: 1.5rem;
+            color: var(--primary-color);
         }
 
         .command-syntax {
@@ -41,24 +43,46 @@
             font-family: monospace;
             margin: 1rem 0;
             border-left: 3px solid var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .command-example {
-            background-color: #f9f9f9;
+            background-color: rgba(231, 198, 255, 0.1); /* 浅紫色背景 */
             padding: 1rem;
             border-radius: 5px;
             margin-top: 1rem;
+            border-left: 3px solid var(--accent-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .command-example h4 {
             margin-bottom: 0.5rem;
             color: var(--accent-color);
+            text-shadow: 1px 1px 2px rgba(231, 198, 255, 0.3);
+        }
+
+        .tabs-container {
+            position: relative;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 175, 204, 0.2); /* 深粉半透明 */
+        }
+
+        .tabs-scroll-container {
+            position: relative;
+            overflow: hidden;
         }
 
         .tabs {
             display: flex;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #eee;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+            scroll-behavior: smooth;
+            padding: 0 10px;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
 
         .tab {
@@ -66,10 +90,18 @@
             cursor: pointer;
             font-weight: 600;
             position: relative;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .tab:hover {
+            color: var(--primary-color);
         }
 
         .tab.active {
             color: var(--primary-color);
+            text-shadow: 0 0 1px rgba(255, 175, 204, 0.5);
         }
 
         .tab.active::after {
@@ -79,7 +111,36 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background-color: var(--primary-color);
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+
+        .tabs-scroll-indicator {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%);
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .tabs-scroll-indicator.active {
+            opacity: 1;
+        }
+
+        .tabs-scroll-left {
+            left: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
+        }
+
+        .tabs-scroll-right {
+            right: 0;
+            background: linear-gradient(270deg, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
         }
 
         .tab-content {
@@ -118,6 +179,29 @@
             color: var(--primary-color);
             margin-bottom: 0.5rem;
         }
+
+        /* 小狐狸贴纸目录按钮样式 */
+        .fox-sticker {
+            background-color: transparent;
+            box-shadow: none;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .fox-sticker:hover {
+            background-color: transparent;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .fox-sticker-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
@@ -130,12 +214,12 @@
             <nav>
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
                     <li><a href="dicebot.html" class="active"><i class="fas fa-dice"></i> 骰点功能</a></li>
                     <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
-                    <li><a href="character.html"><i class="fas fa-user"></i> 角色设定</a></li>
                     <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
-                    <li><a href="history.html"><i class="fas fa-history"></i> 历史记录</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
                 </ul>
             </nav>
         </div>
@@ -150,8 +234,8 @@
 
     <main style="max-width: 1300px; margin: 0 auto;">
         <!-- 悬浮目录按钮 -->
-        <div class="toc-button" id="tocButton">
-            <i class="fas fa-list"></i>
+        <div class="toc-button fox-sticker" id="tocButton">
+            <img src="image/sticker1.png" alt="Fox Sticker" class="fox-sticker-img" id="tocButtonImg">
         </div>
 
         <!-- 悬浮目录容器 -->
@@ -164,14 +248,20 @@
                 <!-- 目录将由JavaScript生成 -->
             </ul>
         </div>
-        <div class="tabs">
-            <div class="tab active" data-tab="general">通用命令</div>
-            <div class="tab" data-tab="coc">COC规则</div>
-            <div class="tab" data-tab="dnd">DND规则</div>
-            <div class="tab" data-tab="other">其他系统</div>
-            <div class="tab" data-tab="story">故事辅助</div>
-            <div class="tab" data-tab="log">日志管理</div>
-            <div class="tab" data-tab="tools">实用工具</div>
+        <div class="tabs-container">
+            <div class="tabs-scroll-container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="general">通用命令</div>
+                    <div class="tab" data-tab="coc">COC规则</div>
+                    <div class="tab" data-tab="dnd">DND规则</div>
+                    <div class="tab" data-tab="other">其他系统</div>
+                    <div class="tab" data-tab="story">故事辅助</div>
+                    <div class="tab" data-tab="log">日志管理</div>
+                    <div class="tab" data-tab="tools">实用工具</div>
+                </div>
+                <div class="tabs-scroll-indicator tabs-scroll-left"><i class="fas fa-chevron-left"></i></div>
+                <div class="tabs-scroll-indicator tabs-scroll-right"><i class="fas fa-chevron-right"></i></div>
+            </div>
         </div>
 
         <div class="tab-content active" id="general">
@@ -1393,20 +1483,20 @@
             <div class="footer-section">
                 <h3>联系方式</h3>
                 <ul class="contact-list">
-                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/" target="_blank">B站主页</a></li>
-                    <li><i class="fab fa-discord"></i> <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank">Discord机器人</a></li>
-                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ初号机：3989736640</a></li>
-                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ二号机：1783352478</a></li>
-                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ用户群：241639081</a></li>
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>快速链接</h3>
                 <ul class="quick-links">
                     <li><a href="index.html">首页</a></li>
-                    <li><a href="videos.html">跑团视频</a></li>
-                    <li><a href="character.html">角色设定</a></li>
-                    <li><a href="about.html">关于</a></li>
+                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
                 </ul>
             </div>
         </div>
@@ -1421,7 +1511,65 @@
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('.tab');
             const tabContents = document.querySelectorAll('.tab-content');
+            const tabsContainer = document.querySelector('.tabs');
+            const leftIndicator = document.querySelector('.tabs-scroll-left');
+            const rightIndicator = document.querySelector('.tabs-scroll-right');
 
+            // 检查是否需要显示滚动指示器
+            function checkScrollIndicators() {
+                const isScrollable = tabsContainer.scrollWidth > tabsContainer.clientWidth;
+                const isScrolledToStart = tabsContainer.scrollLeft <= 10;
+                const isScrolledToEnd = tabsContainer.scrollLeft + tabsContainer.clientWidth >= tabsContainer.scrollWidth - 10;
+
+                if (isScrollable) {
+                    leftIndicator.classList.toggle('active', !isScrolledToStart);
+                    rightIndicator.classList.toggle('active', !isScrolledToEnd);
+                } else {
+                    leftIndicator.classList.remove('active');
+                    rightIndicator.classList.remove('active');
+                }
+            }
+
+            // 滚动到活动标签
+            function scrollToActiveTab() {
+                const activeTab = document.querySelector('.tab.active');
+                if (activeTab) {
+                    const tabsRect = tabsContainer.getBoundingClientRect();
+                    const activeTabRect = activeTab.getBoundingClientRect();
+
+                    // 检查活动标签是否在可视区域内
+                    if (activeTabRect.left < tabsRect.left || activeTabRect.right > tabsRect.right) {
+                        // 计算滚动位置，使活动标签居中
+                        const scrollLeft = activeTab.offsetLeft - (tabsContainer.clientWidth / 2) + (activeTab.offsetWidth / 2);
+                        tabsContainer.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                    }
+                }
+
+                // 更新指示器状态
+                checkScrollIndicators();
+            }
+
+            // 初始化滚动指示器
+            checkScrollIndicators();
+            window.addEventListener('resize', function() {
+                checkScrollIndicators();
+                scrollToActiveTab();
+            });
+            tabsContainer.addEventListener('scroll', checkScrollIndicators);
+
+            // 页面加载后滚动到活动标签
+            setTimeout(scrollToActiveTab, 100);
+
+            // 点击左右指示器滚动
+            leftIndicator.addEventListener('click', function() {
+                tabsContainer.scrollBy({ left: -100, behavior: 'smooth' });
+            });
+
+            rightIndicator.addEventListener('click', function() {
+                tabsContainer.scrollBy({ left: 100, behavior: 'smooth' });
+            });
+
+            // 标签点击事件
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     // 移除所有标签的active类
@@ -1443,6 +1591,9 @@
 
                     // 生成当前标签页的目录
                     generateTOC(tabId);
+
+                    // 确保活动标签在视图中可见
+                    scrollToActiveTab();
                 });
             });
 
@@ -1454,7 +1605,14 @@
             const tocTitle = document.getElementById('tocTitle');
 
             // 点击按钮显示目录
-            tocButton.addEventListener('click', function() {
+            tocButton.addEventListener('click', function(e) {
+                e.stopPropagation(); // 阻止事件冒泡，防止触发爪印特效
+                sidebarToc.classList.add('show');
+            });
+
+            // 确保点击图片也能显示目录
+            document.getElementById('tocButtonImg').addEventListener('click', function(e) {
+                e.stopPropagation(); // 阻止事件冒泡，防止触发爪印特效
                 sidebarToc.classList.add('show');
             });
 
@@ -1658,6 +1816,9 @@
             if (activeTab) {
                 const activeTabId = activeTab.getAttribute('data-tab');
                 generateTOC(activeTabId);
+
+                // 页面加载后滚动到活动标签
+                setTimeout(scrollToActiveTab, 100); // 稍微延迟以确保元素已完全加载
             }
 
             // 添加Font Awesome图标库
@@ -1670,5 +1831,6 @@
             }
         });
     </script>
+    <script src="paw-effect.js"></script>
 </body>
 </html>

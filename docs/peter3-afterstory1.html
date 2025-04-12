@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你也想复活彼得三吗？- 后日谈（樂鸽子君迁子车） - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 禁用文字选择 */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 文档页面特定样式 */
+        .document-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .document-header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+        }
+
+        .document-title {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .document-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .document-meta span {
+            display: flex;
+            align-items: center;
+        }
+
+        .document-meta i {
+            margin-right: 0.3rem;
+        }
+
+        .document-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .document-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(231, 198, 255, 0.2); /* 浅紫色半透明 - 新色板 */
+            color: #b28dff; /* 深一点的紫色 */
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .document-tag:hover {
+            background-color: #E7C6FF; /* 浅紫色 - 新色板 */
+            color: white;
+        }
+
+        .document-content {
+            line-height: 1.8;
+        }
+
+        .document-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .document-content h2 {
+            color: var(--primary-color);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .document-content h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .document-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .document-actions a {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .document-actions a i {
+            margin-right: 0.5rem;
+        }
+
+        .document-actions .prev-link {
+            color: #ADE8F4; /* 深蓝 - 新色板 */
+            border: 1px solid #ADE8F4;
+        }
+
+        .document-actions .next-link {
+            color: #FFAFCC; /* 深粉 - 新色板 */
+            border: 1px solid #FFAFCC;
+        }
+
+        .document-actions a:hover {
+            background-color: rgba(255, 214, 255, 0.1); /* 浅粉半透明 - 新色板 */
+        }
+
+        .document-actions .prev-link:hover {
+            background-color: rgba(173, 232, 244, 0.1); /* 深蓝半透明 - 新色板 */
+        }
+
+        .document-actions .next-link:hover {
+            background-color: rgba(255, 175, 204, 0.1); /* 深粉半透明 - 新色板 */
+        }
+
+        .character-section {
+            background-color: rgba(255, 214, 255, 0.2); /* 浅粉半透明 - 新色板 */
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 3px solid #FFAFCC; /* 深粉 - 新色板 */
+        }
+
+        .character-section h3 {
+            color: #FFAFCC; /* 深粉 - 新色板 */
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 175, 204, 0.3); /* 深粉半透明 - 新色板 */
+            padding-bottom: 0.5rem;
+        }
+
+        .story-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px dashed rgba(255, 214, 255, 0.5); /* 浅粉半透明 - 新色板 */
+        }
+
+        .story-section:last-child {
+            border-bottom: none;
+        }
+
+        .story-section h2 {
+            color: #FFAFCC; /* 深粉 - 新色板 */
+            border-bottom: 1px solid rgba(255, 175, 204, 0.2); /* 深粉半透明 - 新色板 */
+            padding-bottom: 0.5rem;
+        }
+
+        .story-divider {
+            text-align: center;
+            margin: 2rem 0;
+            color: #E7C6FF; /* 浅紫色 - 新色板 */
+            font-style: italic;
+        }
+
+        .story-divider::before,
+        .story-divider::after {
+            content: "—";
+            margin: 0 1rem;
+            color: #E7C6FF; /* 浅紫色 - 新色板 */
+        }
+
+        @media (max-width: 768px) {
+            .document-container {
+                padding: 1.5rem;
+            }
+
+            .document-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="../image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="../blog.html"><i class="fas fa-blog"></i> 博客文章</a></li>
+                    <li><a href="../documents.html" class="active"><i class="fas fa-file-alt"></i> 跑团文档</a></li>
+                    <li><a href="../dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="../videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="../messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="../about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero" style="background-image: url('../image/hero-bg.jpg'); position: relative;">
+        <div class="hero-content" style="background: linear-gradient(135deg, rgba(255, 175, 204, 0.85), rgba(255, 214, 255, 0.75)); padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(255, 175, 204, 0.4);">
+            <h2 style="color: #fff; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);">你也想复活彼得三吗？- 后日谈</h2>
+            <p style="color: #fff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">卡维、瑟琳、米娅的故事</p>
+        </div>
+    </div>
+
+    <main style="padding: 2rem 1rem;">
+        <div class="document-container">
+            <div class="document-header">
+                <h1 class="document-title">你也想复活彼得三吗？- 后日谈（樂鸽子君迁子车）</h1>
+                <div class="document-meta">
+                    <span><i class="far fa-user"></i> KP：荧惑（狐狸小姐）</span>
+                    <span><i class="far fa-calendar"></i> 2023-06-15</span>
+                    <span><i class="far fa-folder"></i> 后日谈存档</span>
+                    <span><i class="far fa-eye"></i> 856 阅读</span>
+                </div>
+                <div class="document-tags">
+                    <a href="#" class="document-tag">COC</a>
+                    <a href="#" class="document-tag">后日谈</a>
+                    <a href="#" class="document-tag">密大</a>
+                    <a href="#" class="document-tag">彼得三</a>
+                </div>
+            </div>
+
+            <div class="character-section">
+                <h3>角色列表</h3>
+                <p>pl列表：卡维（樂），瑟琳（鸽子），米娅（君迁子）</p>
+            </div>
+
+            <div class="document-content">
+                <p>在命运的齿轮无情转动之下，卡维、米娅、乔和瑟琳四人因费萨南教授那近乎偏执的坚持，意外避开了那场席卷一切的爆炸。尽管他们未能成功研发出真正的复活术，但劫后余生的庆幸感却如潮水般淹没了他们的心头——至少，他们还活着。</p>
+
+                <div class="story-section">
+                    <h2>米娅的故事</h2>
+                    <p>米娅虽然遗憾错过了心爱的"死人园"乐队的演唱会，不过她也算是"亲眼见到"了死人园的主唱彼得三。在离开之前，她没有忘记把自己得到的死人园乐队主唱，三彼得的惊悚死亡现场照片以邮寄的形式交给爱丽丝——毕竟，社畜之间的默契总是无需多言的，不是吗？</p>
+
+                    <p>至于这些照片的来源和可能引发的麻烦？哈，记者总该有些"内部情报"的，不是吗？密大和警署的想法？那与她何干？米娅早早地搭乘了星期天的最后一班航班，逃离了密大的势力范围，回到了波士顿，继续她那平淡无奇的社畜生活。毕竟，周一的工作可不会等她。</p>
+
+                    <p>爱丽丝收到照片时，既惊喜又意外。她从未想过，一次冒险的情报分享竟能让一个初次见面的人如此认真地履行她们之间的口头约定。更让她没想到的是，米娅竟愿意将如此珍贵的一手资料免费赠予她。</p>
+
+                    <p>日复一日的排版和校对工作让爱丽丝头昏脑涨，油墨和纸屑的气味早已渗入她的皮肤，甚至连洗澡都无法洗去。新人总得从这种苦差事干起，但这样的生活何时才是尽头？何时才能成为新闻主笔呢？想到这里，爱丽丝决定铤而走险。她以内部人爆料的口吻，用笔名发表了关于彼得三的劲爆案情，并附上了米娅提供的照片以增添其真实性——至于她描述的案情是真是假，谁在乎呢？只要是有讨论度的、能抓人眼球的，就是优秀的新闻报社内容，这个世界向来如此。</p>
+
+                    <p>果不其然，爱丽丝的笔名借由这篇报道一炮而红，然而伴随着铺天盖地的赞许和吹嘘而来的，是密河报社给她施加的压力——在神秘领域只手遮天的密大可不是他们一个小小的报社可以得罪的。爱丽丝无力抵抗，在权衡之下，爱丽丝决定离开密河报社，剑走偏锋，建立起了一个小小的灵异杂志社，妄图借着神秘学的土壤，为自己谋一条生路。</p>
+
+                    <p>与此同时，一个念头在爱丽丝的脑海中盘旋，如同一只悄然振翅的蝴蝶，搅动着她的思绪："优秀的职业素养，强大的抗压能力——或许，邀请米娅入伙是个不错的选择……"这个想法一旦生根，便迅速蔓延开来，仿佛某种不可抗拒的命运正在悄然编织它的网。</p>
+
+                    <p>远在波士顿的米娅突然打了个喷嚏，"阿嚏——难道我摸鱼被老板发现了？不可能吧……"她一边自我安慰，一边端着刚冲好的咖啡，急匆匆地从茶水间溜回了工位。</p>
+
+                    <p>如果米娅接受爱丽丝的邀请，回到阿卡姆，她将再次踏入那片充满神秘与危险的土地。或许，她可以借此机会与瑟琳和乔重聚，甚至一起探索新的乐队——毕竟，音乐总是能让人找到共鸣。而瑟琳，那个总是满心满眼装着她，还带着小饼干来实验室的女孩，或许会成为她最亲密的伙伴。女孩子们之间，总是有着说不完的话题。</p>
+
+                    <p>然而，阿卡姆的阴影从未真正消散。那座小镇仿佛一个巨大的漩涡，吞噬着一切靠近它的灵魂。爱丽丝的邀请，究竟是命运的馈赠，还是某种将她拽出平静生活的陷阱？</p>
+                </div>
+
+                <div class="story-divider">—————————————————————————————————————</div>
+
+                <div class="story-section">
+                    <h2>瑟琳的故事</h2>
+                    <p>或许是因为有着一起"做傻事"的情谊在，费萨南教授主动向他们提出了是否有在神秘学上深耕的想法，卡维和乔自然欣然同意。然而，瑟琳却陷入了深深的犹豫。尽管她对刚结识的朋友们感到不舍，但一想到家中那个如严父慈母般照顾她长大的哥哥，她的心便沉了下来。最终，她婉拒了教授的提议，选择继续在心理学的道路上深耕。</p>
+
+                    <p>瑟琳的拒绝并非出于对神秘学的排斥，而是因为她深知自己的使命。那次事件让她深刻意识到，自己在心理学上的造诣还远远不够。面对卡维的痛苦与无力，她感到了一种前所未有的挫败感——以她目前的水平，根本无法帮助她的哥哥，更别提那些像他一样饱受心理创伤折磨的人。她在成为合格心理学医生的道路上，依然任重道远。尽管乔极力挽留，瑟琳还是坚定地选择了离开。不过，她并未完全切断与他们的联系。她时常会带着刚烤好的小饼干，前往费萨南教授的实验室，探望那些她珍视的朋友们。毕竟，这些人是她在密大难得的珍贵羁绊。</p>
+
+                    <p>然而，命运的齿轮从未停止转动。经历了那次事件后，瑟琳早已不再是那个坚定的唯物主义者。或许是因为她与神秘学之间那若即若离的联系，她在心理学的研究中意外发现了一种通过梦境治疗心理创伤的方法。这种方法能够绕过患者清醒时的心理防御，直接触及他们内心最深处的伤痛。起初，瑟琳为这一发现感到振奋，但随着研究的深入，她逐渐意识到，这种疗法的效果虽然显著，但其背后的机制却远非传统心理学所能解释。梦境的边界似乎与某种神秘的力量交织在一起，而那些无法用科学解释的现象，恰恰是治疗的关键。</p>
+
+                    <p>瑟琳的内心开始动摇。因为卡维和乔的关系，她对神秘学早已不再陌生。她曾以为自己可以完全远离那个领域，专注于心理学的纯粹研究，但现实却让她不得不面对一个残酷的事实：要真正帮助她的哥哥，以及那些像他一样被困在心理阴影中的人，借助神秘学的力量或许是一条可行的捷径。</p>
+
+                    <p>最终，瑟琳决定再次联系费萨南教授。她带着自己的研究成果和满腹疑问，敲开了教授实验室的门。费萨南教授对她的发现表现出了极大的兴趣，并建议她深入研究梦境与神秘学的关系。乔知晓昔日好友能够再次共事后，高兴的为瑟琳办了一个迎新派对。在教授的指导下，瑟琳开始探索那些隐藏在梦境背后的神秘力量，试图找到一种能够结合心理学与神秘学的全新治疗方式。</p>
+
+                    <p>随着研究的推进，瑟琳逐渐意识到，梦境或许不仅仅是潜意识的投射，它可能是连接现实与更高维度的桥梁。她开始思考，是否有一天，心理学和神秘学可以真正融合，找到一种能够治愈人类心灵的全新方法。尽管这条路充满未知与危险，但为了她的哥哥，为了那些像他一样被困在心理阴影中的人，瑟琳决定继续走下去。</p>
+                </div>
+
+                <div class="story-divider">—————————————————————————————————————</div>
+
+                <div class="story-section">
+                    <h2>卡维的故事</h2>
+                    <p>卡维在费萨南教授的指点下，决定在精进长号技术的同时，跟随费萨南教授深入研究神秘学，他寄希望于人类未曾涉足的更高远的领域，或许会有拯救他的对策。同时，或许这里也掺杂着一点点他的私心，因为这里有乔的陪伴——那个如阳光般耀眼的男人。</p>
+
+                    <p>然而，日复一日依赖乔的生活，让卡维一方面开心于和乔增添的更多相处的时间，更多伴随而来的是痛苦和屈辱——被迫依赖着乔的日日夜夜让他感觉愈发的自卑和难堪，认为自己是乔无法甩开的包袱的认知如附骨之疽一样蚕食着他身为一个艺术家敏感的内心。他的自尊心不容许他只是一个拖油瓶，然而，残酷的现实又不得不把他固定在这个该死的轮椅上。虽然乔并没有表述过任何的不满，乃至可以说无微不至。但卡维无法如此理所当然地接受对方的好意。腐烂的树木上怎会开出美丽的花，狠狠压抑着内心宛如毒液一般肆意流淌的痛苦就已经耗费了卡维全部的心智。可恶…可恶！理智上，卡维深知自己的残疾是天灾，并非人祸，能保下一条性命已是万幸。然而，他的情感却总会在半夜纠缠着他。。那些夜半无人，孤枕难眠的夜晚他总是暗自神伤，无数次在深夜咬紧牙关，【如果自己没有双腿残疾，他本应该能光明正大的和乔并肩而行，享受着众人的瞩目，成为一名优秀的长号手，亦或是别的什么！而不是成为一个彻头彻尾的累赘…】</p>
+
+                    <p>可惜的是，随着对神秘学的深入研究，卡维逐渐绝望地意识到一个残酷的事实：在那些更高维度的存在眼中，人类的一切根本不值一提，人类不过是蝼蚁，帮人类如此脆弱的蝼蚁修复他们不堪大用的躯壳更是无稽之谈。他的双腿，或许永远无法痊愈。然而…然而——此时那个大胆的想法终于借由合适的时机破土而出，
+                    【如果他愿意，如果他愿意舍弃这副脆弱的躯壳的话…亦或是，选择当年那个，选择那条通往禁忌的道路……】
+                    他在内心默默这样思忖着，不安的种子在他心中生根发芽，痛苦的情感如毒液般滋养着它，最终开出了一朵扭曲的花。
+                    （克疯，不定性疯狂）</p>
+
+                    <p>乔在费萨南教授的刻意栽培下，更早的在神秘学上展现出了过人的天赋。他比某条时间线更早地领悟了《时空门法术》的奥秘，并且在时空门的研究中取得了重大突破——他发现了一种稳定时空门的方法。然而，这种力量需要付出巨大的代价。乔开始犹豫是否该继续他的研究。尤其是当他察觉到卡维对那种禁忌力量产生了危险的兴趣时，出于对这位多年室友的情谊和忧虑，他的心中不免产生了一些犹豫。</p>
+
+                    <p>乔犹豫着想要寻找一个合适的时间与卡维进行一次深入的谈话，试图说服他放弃对时空门的探索——因为乔早已被廷达罗斯猎犬盯上，而卡维本应是自由的——他不该过着朝不保夕的生活，每日为猎犬的追杀而惴惴不安。然而，卡维却推三阻四的多次以身体不适的理由避开了乔的谈话请求。</p>
+
+                    <p>卡维偶尔流露出的偏执的态度让乔感到深深的不安。他开始怀疑，自己究竟是该继续帮助卡维深入研究那不能直视的领域，还是该阻止他滑向那危险的深渊……</p>
+                </div>
+            </div>
+
+            <div class="document-actions">
+                <a href="../documents.html" class="prev-link"><i class="fas fa-arrow-left"></i> 返回文档列表</a>
+                <a href="peter3-afterstory2.html" class="next-link">下一篇后日谈 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="../index.html">首页</a></li>
+                    <li><a href="../blog.html">博客文章</a></li>
+                    <li><a href="../documents.html">跑团文档</a></li>
+                    <li><a href="../dicebot.html">骰点功能</a></li>
+                    <li><a href="../about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        // 禁用右键菜单
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 禁用快捷键
+        document.addEventListener('keydown', function(e) {
+            // 禁用Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+A, Ctrl+S, Ctrl+P, F12
+            if (
+                (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 88 || e.keyCode === 65 || e.keyCode === 83 || e.keyCode === 80)) ||
+                e.keyCode === 123
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

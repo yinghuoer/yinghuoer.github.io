@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>异时空存档点 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 文档页面特定样式 */
+        .documents-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .documents-sidebar {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .documents-sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .documents-categories {
+            list-style: none;
+            padding: 0;
+        }
+
+        .documents-categories li {
+            margin-bottom: 0.8rem;
+        }
+
+        .documents-categories a {
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .documents-categories a:hover {
+            background-color: rgba(255, 155, 179, 0.1);
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .documents-categories a i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .documents-categories a.active {
+            background-color: rgba(255, 155, 179, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .documents-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .document-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .document-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .document-info {
+            padding: 1.5rem;
+        }
+
+        .document-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .document-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .document-meta span {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+        .document-meta i {
+            margin-right: 0.3rem;
+        }
+
+        .document-excerpt {
+            margin-bottom: 1rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: #ffafcc; /* 深粉 - 主要按钮 */
+            color: white;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .download-btn:hover {
+            background-color: #FFD6FF; /* 浅粉 - 悬停效果 */
+            color: #333;
+            transform: translateY(-2px);
+        }
+
+        .download-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: transparent;
+            color: #FFAFCC; /* 深粉 - 主色调 */
+            border: 1px solid #FFAFCC;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-left: 0.5rem;
+        }
+
+        .view-btn:hover {
+            background-color: #FFD6FF; /* 浅粉 */
+            border-color: #FFD6FF;
+            color: #333;
+        }
+
+        .view-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .view-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .document-actions {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .featured-document {
+            position: relative;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .featured-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(255, 175, 204, 0.9), rgba(255, 214, 255, 0.7), rgba(231, 198, 255, 0.4), transparent);
+            color: white;
+        }
+
+        .featured-content h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .featured-meta {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .featured-meta span {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .featured-meta i {
+            margin-right: 0.3rem;
+        }
+
+        .featured-excerpt {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .featured-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .featured-buttons .download-btn, .featured-buttons .view-btn {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .featured-buttons .download-btn {
+            background-color: #FFAFCC; /* 深粉 - 主色调 */
+        }
+
+        .featured-buttons .download-btn:hover {
+            background-color: #FFD6FF; /* 浅粉 */
+            color: #333;
+        }
+
+        .featured-buttons .view-btn {
+            background-color: #ADE8F4; /* 深蓝 - 辅助色 */
+            border-color: #ADE8F4;
+            color: white;
+        }
+
+        .featured-buttons .view-btn:hover {
+            background-color: #CAF0F8; /* 浅蓝 */
+            border-color: #CAF0F8;
+            color: #333;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(231, 198, 255, 0.2); /* 浅紫色半透明 - 新色板 */
+            color: #b28dff; /* 深一点的紫色 */
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background-color: #E7C6FF; /* 浅紫色 - 新色板 */
+            color: white;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-radius: var(--border-radius);
+            max-width: 600px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-right: none;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #FFAFCC; /* 深粉 - 主色调 */
+            box-shadow: 0 0 0 2px rgba(255, 175, 204, 0.2);
+        }
+
+        .search-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: #FFAFCC; /* 深粉 - 主色调 */
+            color: white;
+            border: none;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            background-color: #FFD6FF; /* 浅粉 */
+            color: #333;
+        }
+
+        .document-pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+        }
+
+        .page-link:hover, .page-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .documents-container {
+                grid-template-columns: 1fr;
+            }
+
+            .documents-sidebar {
+                position: static;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .featured-image {
+                height: 250px;
+            }
+
+            .featured-content h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* 无搜索结果样式 */
+        .no-results {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: var(--box-shadow);
+        }
+
+        .no-results h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .no-results p {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html" class="active"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>异时空存档点</h2>
+            <p>收集整理各种跑团相关文档，包括规则书、模组、后日谈存档等</p>
+        </div>
+    </div>
+
+    <main style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+        <!-- 特色文档 -->
+<!--        <div class="featured-document">-->
+<!--            <img src="image/peter3-featured.jpg" alt="彼得三后日谈" class="featured-image">-->
+<!--            <div class="featured-content">-->
+<!--                <h2>《你也想复活彼得三吗？》后日谈完整存档</h2>-->
+<!--                <div class="featured-meta">-->
+<!--                    <span><i class="far fa-calendar"></i> 2023-06-15</span>-->
+<!--                    <span><i class="far fa-folder"></i> 后日谈存档</span>-->
+<!--                    <span><i class="far fa-eye"></i> 1638 阅读</span>-->
+<!--                </div>-->
+<!--                <p class="featured-excerpt">这是一部完整的《你也想复活彼得三吗？》跑团后日谈存档，记录了卡维、瑟琳、米娅、霍比、慕娜等人物在密大的奇妙经历。包含两个车次的后日谈，展现了不同角色在事件结束后的生活和命运。</p>-->
+<!--                <div class="featured-buttons">-->
+<!--                    <a href="docs/peter3-afterstory1.html" class="view-btn"><i class="fas fa-eye"></i> 阅读第一车后日谈</a>-->
+<!--                    <a href="docs/peter3-afterstory2.html" class="view-btn"><i class="fas fa-eye"></i> 阅读第二车后日谈</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="搜索文档...">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="documents-container">
+            <!-- 侧边栏 -->
+            <aside class="documents-sidebar">
+                <h3>文档分类</h3>
+                <ul class="documents-categories">
+                    <li><a href="#" class="active"><i class="fas fa-th-large"></i> 全部文档</a></li>
+                    <li><a href="#"><i class="fas fa-book"></i> 规则书</a></li>
+                    <li><a href="#"><i class="fas fa-map"></i> 模组资料</a></li>
+                    <li><a href="#"><i class="fas fa-file-alt"></i> 后日谈存档</a></li>
+                    <li><a href="#"><i class="fas fa-dice-d20"></i> 骰点指南</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> 角色卡模板</a></li>
+                    <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> KP/GM指南</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> PL指南</a></li>
+                </ul>
+
+                <h3>热门标签</h3>
+                <div>
+                    <a href="#" class="tag">COC</a>
+                    <a href="#" class="tag">DND</a>
+                    <a href="#" class="tag">永夜</a>
+                    <a href="#" class="tag">克苏鲁</a>
+                    <a href="#" class="tag">彼得三</a>
+                    <a href="#" class="tag">密大</a>
+                    <a href="#" class="tag">模组</a>
+                    <a href="#" class="tag">规则书</a>
+                    <a href="#" class="tag">后日谈</a>
+                    <a href="#" class="tag">角色卡</a>
+                </div>
+
+                <h3>最新文档</h3>
+                <ul class="documents-categories">
+                    <li><a href="docs/peter3-afterstory1.html"><i class="far fa-file-alt"></i> 《你也想复活彼得三吗？》后日谈（乐鸽子君迁子车）</a></li>
+                    <li><a href="docs/peter3-afterstory2.html"><i class="far fa-file-alt"></i> 《你也想复活彼得三吗？》后日谈（兽人龟星夜车）</a></li>
+                    <li><a href="#"><i class="far fa-file-alt"></i> 《永夜》后日谈完整存档</a></li>
+                    <li><a href="#"><i class="far fa-file-alt"></i> COC 7版规则书中文版</a></li>
+                    <li><a href="#"><i class="far fa-file-alt"></i> 《迷雾小镇》模组资料</a></li>
+                </ul>
+            </aside>
+
+            <!-- 文档列表 -->
+            <div class="documents-content">
+                <article class="document-card">
+                    <img src="image/peter3-1.jpg" alt="彼得三后日谈封面" class="document-image">
+                    <div class="document-info">
+                        <h3>你也想复活彼得三吗？- 后日谈（乐鸽子君迁子车）</h3>
+                        <div class="document-meta">
+                            <span><i class="far fa-calendar"></i> 2023-06-15</span>
+                            <span><i class="far fa-folder"></i> 后日谈存档</span>
+                            <span><i class="far fa-eye"></i> 856 阅读</span>
+                        </div>
+                        <p class="document-excerpt">卡维、米娅、乔和瑟琳四人因费萨南教授那近乎偏执的坤持，意外避开了那场席卷一切的爆炸。尽管他们未能成功研发出真正的复活术，但劃后余生的庆幸感却如潮水般淹没了他们的心头——至少，他们还活着。</p>
+                        <div class="document-actions">
+                            <a href="docs/peter3-afterstory1.html" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="document-card">
+                    <img src="image/peter3-2.jpg" alt="彼得三后日谈封面" class="document-image">
+                    <div class="document-info">
+                        <h3>你也想复活彼得三吗？- 后日谈（兽人龟星夜车）</h3>
+                        <div class="document-meta">
+                            <span><i class="far fa-calendar"></i> 2023-06-15</span>
+                            <span><i class="far fa-folder"></i> 后日谈存档</span>
+                            <span><i class="far fa-eye"></i> 782 阅读</span>
+                        </div>
+                        <p class="document-excerpt">后台休息室中。一名年轻貌美的女性正端坐在镜子前，柔顺的金色长发乖巧的盘在她的脑后。慕娜·卡德莉雅，这位后起之秀对着镜子里的自己微微一笑，勾起的红唇为她稍稍的冲散了一点这不好相处的气场。</p>
+                        <div class="document-actions">
+                            <a href="docs/peter3-afterstory2.html" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="document-card">
+                    <img src="image/doc1.jpg" alt="文档封面" class="document-image">
+                    <div class="document-info">
+                        <h3>COC 7版规则书中文版</h3>
+                        <div class="document-meta">
+                            <span><i class="far fa-calendar"></i> 2023-10-15</span>
+                            <span><i class="far fa-folder"></i> 规则书</span>
+                            <span><i class="far fa-eye"></i> 2356 阅读</span>
+                        </div>
+                        <p class="document-excerpt">《克苏鲁的呼唤》(Call of Cthulhu, COC) 第7版规则书的中文翻译版本，包含完整的游戏规则、技能系统、战斗机制和理智系统等内容，是进行COC跑团的必备参考资料。</p>
+                        <div class="document-actions">
+                            <a href="#" class="download-btn"><i class="fas fa-download"></i> 下载文档</a>
+                            <a href="#" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="document-card">
+                    <img src="image/doc2.jpg" alt="文档封面" class="document-image">
+                    <div class="document-info">
+                        <h3>《迷雾小镇》模组资料</h3>
+                        <div class="document-meta">
+                            <span><i class="far fa-calendar"></i> 2023-09-28</span>
+                            <span><i class="far fa-folder"></i> 模组资料</span>
+                            <span><i class="far fa-eye"></i> 1845 阅读</span>
+                        </div>
+                        <p class="document-excerpt">《迷雾小镇》是一个原创的COC模组，讲述了调查员们前往一个被迷雾笼罩的小镇，调查一系列神秘失踪事件的故事。本文档包含完整的模组设定、NPC资料、地图和剧情线索。</p>
+                        <div class="document-actions">
+                            <a href="#" class="download-btn"><i class="fas fa-download"></i> 下载文档</a>
+                            <a href="#" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="document-card">
+                    <img src="image/doc3.jpg" alt="文档封面" class="document-image">
+                    <div class="document-info">
+                        <h3>DND 5e 角色卡模板</h3>
+                        <div class="document-meta">
+                            <span><i class="far fa-calendar"></i> 2023-09-15</span>
+                            <span><i class="far fa-folder"></i> 角色卡模板</span>
+                            <span><i class="far fa-eye"></i> 1532 阅读</span>
+                        </div>
+                        <p class="document-excerpt">为DND 5e设计的详细角色卡模板，包含属性、技能、装备、法术和背景故事等所有必要信息。提供PDF和可编辑的Word格式，方便玩家使用和打印。</p>
+                        <div class="document-actions">
+                            <a href="#" class="download-btn"><i class="fas fa-download"></i> 下载文档</a>
+                            <a href="#" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="document-card">
+                    <img src="image/doc4.jpg" alt="文档封面" class="document-image">
+                    <div class="document-info">
+                        <h3>新手KP指南</h3>
+                        <div class="document-meta">
+                            <span><i class="far fa-calendar"></i> 2023-08-20</span>
+                            <span><i class="far fa-folder"></i> KP/GM指南</span>
+                            <span><i class="far fa-eye"></i> 2145 阅读</span>
+                        </div>
+                        <p class="document-excerpt">专为初次担任COC守秘人(KP)的玩家编写的指南，详细介绍了如何准备和运行一场成功的跑团，包括规则解释、剧情设计、NPC扮演和场景描述等方面的技巧和建议。</p>
+                        <div class="document-actions">
+                            <a href="#" class="download-btn"><i class="fas fa-download"></i> 下载文档</a>
+                            <a href="#" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="document-card">
+                    <img src="image/doc5.jpg" alt="文档封面" class="document-image">
+                    <div class="document-info">
+                        <h3>《龙与地下城》战斗指南</h3>
+                        <div class="document-meta">
+                            <span><i class="far fa-calendar"></i> 2023-08-05</span>
+                            <span><i class="far fa-folder"></i> 规则书</span>
+                            <span><i class="far fa-eye"></i> 1876 阅读</span>
+                        </div>
+                        <p class="document-excerpt">详细解析DND 5e的战斗系统，包括先攻、行动、反应、移动和战术选择等内容。适合新手和有经验的玩家参考，帮助你在战斗中做出更明智的决策。</p>
+                        <div class="document-actions">
+                            <a href="#" class="download-btn"><i class="fas fa-download"></i> 下载文档</a>
+                            <a href="#" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="document-card">
+                    <img src="image/doc6.jpg" alt="文档封面" class="document-image">
+                    <div class="document-info">
+                        <h3>《古墓探险》后日谈存档</h3>
+                        <div class="document-meta">
+                            <span><i class="far fa-calendar"></i> 2023-07-25</span>
+                            <span><i class="far fa-folder"></i> 后日谈存档</span>
+                            <span><i class="far fa-eye"></i> 1245 阅读</span>
+                        </div>
+                        <p class="document-excerpt">记录了一次DND 5e的完整跑团过程，讲述了一群冒险者探索古代遗迹的故事。包含详细的对话记录、战斗描述和角色互动，是了解DND游戏流程的好资料。</p>
+                        <div class="document-actions">
+                            <a href="#" class="download-btn"><i class="fas fa-download"></i> 下载文档</a>
+                            <a href="#" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 分页 -->
+                <div class="document-pagination">
+                    <a href="#" class="page-link active">1</a>
+                    <a href="#" class="page-link">2</a>
+                    <a href="#" class="page-link">3</a>
+                    <a href="#" class="page-link"><i class="fas fa-ellipsis-h"></i></a>
+                    <a href="#" class="page-link">8</a>
+                    <a href="#" class="page-link"><i class="fas fa-angle-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="documents-data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const documentsContent = document.querySelector('.documents-content');
+            const categoryLinks = document.querySelectorAll('.documents-categories a');
+            const tagLinks = document.querySelectorAll('.tag');
+            const searchForm = document.querySelector('.search-bar');
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            const paginationContainer = document.querySelector('.document-pagination');
+
+            // 当前状态
+            let currentDocuments = documentsData;
+            let currentPage = 1;
+            const documentsPerPage = 6;
+            let currentFilter = {
+                type: 'category',
+                value: '全部文档'
+            };
+
+            // 初始化页面
+            renderDocuments(currentDocuments, currentPage);
+            updatePagination(currentDocuments);
+
+            // 文档分类筛选功能
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // 移除所有链接的active类
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+
+                    // 为当前点击的链接添加active类
+                    this.classList.add('active');
+
+                    // 获取分类名称
+                    const categoryName = this.textContent.trim().replace(/^[\s\S]*\s/, '');
+
+                    // 筛选文档
+                    currentFilter = {
+                        type: 'category',
+                        value: categoryName
+                    };
+                    currentDocuments = filterByCategory(categoryName);
+                    currentPage = 1;
+
+                    // 更新UI
+                    renderDocuments(currentDocuments, currentPage);
+                    updatePagination(currentDocuments);
+                });
+            });
+
+            // 标签筛选功能
+            tagLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // 获取标签名称
+                    const tagName = this.textContent.trim();
+
+                    // 筛选文档
+                    currentFilter = {
+                        type: 'tag',
+                        value: tagName
+                    };
+                    currentDocuments = filterByTag(tagName);
+                    currentPage = 1;
+
+                    // 更新UI
+                    renderDocuments(currentDocuments, currentPage);
+                    updatePagination(currentDocuments);
+
+                    // 更新分类链接的active状态
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                });
+            });
+
+            // 搜索功能
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                performSearch();
+            });
+
+            // 为搜索按钮添加点击事件
+            searchBtn.addEventListener('click', function() {
+                performSearch();
+            });
+
+            // 搜索输入框回车事件
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // 执行搜索
+            function performSearch() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm) {
+                    // 搜索文档
+                    currentFilter = {
+                        type: 'search',
+                        value: searchTerm
+                    };
+                    currentDocuments = searchDocuments(searchTerm);
+                    currentPage = 1;
+
+                    // 更新UI
+                    renderDocuments(currentDocuments, currentPage);
+                    updatePagination(currentDocuments);
+
+                    // 更新分类链接的active状态
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                }
+            }
+
+            // 渲染文档列表
+            function renderDocuments(documents, page) {
+                // 清空文档容器，保留分页部分
+                const paginationElement = documentsContent.querySelector('.document-pagination');
+                documentsContent.innerHTML = '';
+
+                // 获取当前页的文档
+                const paginatedDocs = paginateDocuments(documents, page);
+
+                if (paginatedDocs.length === 0) {
+                    // 没有找到文档
+                    const noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.innerHTML = `
+                        <h3>没有找到相关文档</h3>
+                        <p>请尝试使用其他关键词或浏览所有文档。</p>
+                    `;
+                    documentsContent.appendChild(noResults);
+                } else {
+                    // 渲染文档卡片
+                    paginatedDocs.forEach(doc => {
+                        const article = document.createElement('article');
+                        article.className = 'document-card';
+
+                        let actionsHtml = '';
+                        if (doc.url && doc.url !== '#') {
+                            actionsHtml += `<a href="${doc.url}" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>`;
+                        } else {
+                            actionsHtml += `<a href="#" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>`;
+                        }
+
+                        if (doc.downloadUrl) {
+                            actionsHtml += `<a href="${doc.downloadUrl}" class="download-btn"><i class="fas fa-download"></i> 下载文档</a>`;
+                        }
+
+                        article.innerHTML = `
+                            <img src="${doc.image}" alt="${doc.title}" class="document-image">
+                            <div class="document-info">
+                                <h3>${doc.title}</h3>
+                                <div class="document-meta">
+                                    <span><i class="far fa-calendar"></i> ${doc.date}</span>
+                                    <span><i class="far fa-folder"></i> ${doc.category}</span>
+                                    <span><i class="far fa-eye"></i> ${doc.views} 阅读</span>
+                                </div>
+                                <p class="document-excerpt">${doc.excerpt}</p>
+                                <div class="document-actions">
+                                    ${actionsHtml}
+                                </div>
+                            </div>
+                        `;
+
+                        documentsContent.appendChild(article);
+                    });
+                }
+
+                // 添加分页
+                documentsContent.appendChild(paginationElement || createPagination(documents));
+            }
+
+            // 创建分页
+            function createPagination(documents) {
+                const paginationDiv = document.createElement('div');
+                paginationDiv.className = 'document-pagination';
+
+                const totalPages = getTotalPages(documents);
+
+                // 添加分页链接
+                if (totalPages <= 1) {
+                    return paginationDiv;
+                }
+
+                // 上一页
+                if (currentPage > 1) {
+                    const prevLink = document.createElement('a');
+                    prevLink.href = '#';
+                    prevLink.className = 'page-link';
+                    prevLink.innerHTML = '<i class="fas fa-angle-left"></i>';
+                    prevLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (currentPage > 1) {
+                            currentPage--;
+                            renderDocuments(currentDocuments, currentPage);
+                            updatePagination(currentDocuments);
+                        }
+                    });
+                    paginationDiv.appendChild(prevLink);
+                }
+
+                // 页码链接
+                for (let i = 1; i <= totalPages; i++) {
+                    // 如果页数太多，显示省略号
+                    if (totalPages > 7) {
+                        if (i === 1 || i === totalPages ||
+                            (i >= currentPage - 1 && i <= currentPage + 1)) {
+                            addPageLink(i);
+                        } else if (i === currentPage - 2 || i === currentPage + 2) {
+                            const ellipsis = document.createElement('a');
+                            ellipsis.href = '#';
+                            ellipsis.className = 'page-link';
+                            ellipsis.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+                            paginationDiv.appendChild(ellipsis);
+                        }
+                    } else {
+                        addPageLink(i);
+                    }
+                }
+
+                // 下一页
+                if (currentPage < totalPages) {
+                    const nextLink = document.createElement('a');
+                    nextLink.href = '#';
+                    nextLink.className = 'page-link';
+                    nextLink.innerHTML = '<i class="fas fa-angle-right"></i>';
+                    nextLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            renderDocuments(currentDocuments, currentPage);
+                            updatePagination(currentDocuments);
+                        }
+                    });
+                    paginationDiv.appendChild(nextLink);
+                }
+
+                function addPageLink(pageNum) {
+                    const pageLink = document.createElement('a');
+                    pageLink.href = '#';
+                    pageLink.className = 'page-link' + (pageNum === currentPage ? ' active' : '');
+                    pageLink.textContent = pageNum;
+                    pageLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        currentPage = pageNum;
+                        renderDocuments(currentDocuments, currentPage);
+                        updatePagination(currentDocuments);
+                    });
+                    paginationDiv.appendChild(pageLink);
+                }
+
+                return paginationDiv;
+            }
+
+            // 更新分页
+            function updatePagination(documents) {
+                const paginationElement = documentsContent.querySelector('.document-pagination');
+                if (paginationElement) {
+                    const newPagination = createPagination(documents);
+                    paginationElement.parentNode.replaceChild(newPagination, paginationElement);
+                }
+            }
+        });
+    </script>
+    <script src="paw-effect.js"></script>
+</body>
+</html>

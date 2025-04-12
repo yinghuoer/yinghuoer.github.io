@@ -1,8 +1,10 @@
 /* 全局样式 */
 :root {
-    --primary-color: #ff9bb3;
-    --secondary-color: #ffcad4;
-    --accent-color: #b892ff;
+    --primary-color: #FFAFCC; /* 深粉 - 主色调 */
+    --secondary-color: #FFD6FF; /* 浅粉 */
+    --accent-color: #E7C6FF; /* 浅紫 */
+    --blue-primary: #ADE8F4; /* 深蓝 */
+    --blue-secondary: #CAF0F8; /* 浅蓝 */
     --text-color: #333;
     --light-text: #fff;
     --background-color: #f9f9f9;
@@ -48,23 +50,25 @@ a:hover {
 .primary-btn {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: var(--light-text);
+    box-shadow: 0 4px 15px rgba(255, 175, 204, 0.3);
 }
 
 .primary-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(255, 126, 95, 0.3);
+    box-shadow: 0 6px 15px rgba(255, 175, 204, 0.4);
     color: var(--light-text);
 }
 
 .secondary-btn {
     background-color: transparent;
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
+    border: 2px solid var(--blue-primary);
+    color: var(--blue-primary);
 }
 
 .secondary-btn:hover {
-    background-color: var(--primary-color);
+    background-color: var(--blue-primary);
     color: var(--light-text);
+    transform: translateY(-3px);
 }
 
 .small-btn {
@@ -78,6 +82,7 @@ a:hover {
     position: relative;
     font-size: 2rem;
     color: var(--primary-color);
+    text-shadow: 1px 1px 3px rgba(255, 175, 204, 0.3);
 }
 
 .section-title::after {
@@ -85,7 +90,7 @@ a:hover {
     display: block;
     width: 60px;
     height: 3px;
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--accent-color));
     margin: 10px auto 0;
     border-radius: 3px;
 }
@@ -141,6 +146,7 @@ header {
     margin-left: 15px;
     font-size: 1.5rem;
     color: var(--primary-color);
+    text-shadow: 1px 1px 2px rgba(255, 175, 204, 0.3);
 }
 
 .english-name {
@@ -166,7 +172,7 @@ nav ul li a {
 
 nav ul li a:hover, nav ul li a.active {
     color: var(--primary-color);
-    background-color: rgba(255, 126, 95, 0.1);
+    background-color: rgba(255, 175, 204, 0.1);
 }
 
 nav ul li a i {
@@ -175,7 +181,7 @@ nav ul li a i {
 
 /* 英雄区域样式 */
 .hero {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
     color: var(--light-text);
     padding: 0;
     overflow: visible;
@@ -283,6 +289,7 @@ section {
     font-size: 2.5rem;
     color: var(--primary-color);
     margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(255, 175, 204, 0.3);
 }
 
 .feature-card h3 {
@@ -417,6 +424,7 @@ footer {
     margin-bottom: 1rem;
     position: relative;
     padding-bottom: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .footer-section h3::after {
@@ -426,7 +434,7 @@ footer {
     left: 0;
     width: 40px;
     height: 2px;
-    background-color: var(--secondary-color);
+    background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
 }
 
 .contact-list, .quick-links {
@@ -444,6 +452,7 @@ footer {
 
 .contact-list a:hover, .quick-links a:hover {
     color: var(--secondary-color);
+    text-shadow: 0 0 3px rgba(255, 214, 255, 0.5);
 }
 
 .contact-list i {
@@ -582,9 +591,9 @@ footer {
 .sidebar-toc {
     position: fixed;
     left: 20px;
-    bottom: 80px;
+    bottom: 180px; /* 将目录容器往上移动，距离底部更远 */
     width: 300px;
-    max-height: 70vh;
+    max-height: 60vh; /* 稍微减小高度，确保不会超出屏幕 */
     overflow-y: auto;
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
@@ -704,5 +713,20 @@ footer {
         bottom: 65px;
     }
 
+    .tabs-container {
+        margin-bottom: 1.5rem;
+    }
 
+    .tabs {
+        padding: 0 20px; /* 增加左右填充以留出指示器的空间 */
+    }
+
+    .tab {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    .tabs-scroll-indicator {
+        width: 20px;
+    }
 }

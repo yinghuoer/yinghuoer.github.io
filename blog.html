@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时空枢纽 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 博客页面特定样式 */
+        .blog-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .blog-sidebar {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .blog-sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            text-shadow: 1px 1px 2px rgba(255, 175, 204, 0.3);
+        }
+
+        .blog-categories {
+            list-style: none;
+            padding: 0;
+        }
+
+        .blog-categories li {
+            margin-bottom: 0.8rem;
+        }
+
+        .blog-categories a {
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .blog-categories a:hover {
+            background-color: rgba(255, 175, 204, 0.1);
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .blog-categories a i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .blog-categories a.active {
+            background-color: rgba(255, 155, 179, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .blog-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .blog-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 175, 204, 0.2);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .blog-info {
+            padding: 1.5rem;
+        }
+
+        .blog-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            transition: var(--transition);
+        }
+
+        .blog-card:hover .blog-meta span {
+            color: var(--secondary-color);
+        }
+
+        .blog-meta i {
+            margin-right: 0.3rem;
+        }
+
+        .blog-excerpt {
+            margin-bottom: 1rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: var(--primary-color);
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .read-more::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            transition: var(--transition);
+        }
+
+        .read-more:hover {
+            color: var(--primary-color);
+        }
+
+        .read-more:hover::after {
+            width: 100%;
+        }
+
+        .blog-pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+            box-shadow: 0 3px 8px rgba(255, 175, 204, 0.1);
+        }
+
+        .page-link:hover, .page-link.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(255, 175, 204, 0.3);
+        }
+
+        .featured-post {
+            position: relative;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .featured-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+
+        .featured-content h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .featured-meta {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .featured-meta span {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .featured-meta i {
+            margin-right: 0.3rem;
+        }
+
+        .featured-excerpt {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .featured-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .featured-button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(255, 155, 179, 0.1);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .blog-container {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-sidebar {
+                position: static;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .featured-image {
+                height: 300px;
+            }
+
+            .featured-content h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* 无搜索结果样式 */
+        .no-results {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: var(--box-shadow);
+        }
+
+        .no-results h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .no-results p {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html" class="active"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>时空枢纽</h2>
+            <p>分享我的跑团经验、游戏心得和各种创意想法</p>
+        </div>
+    </div>
+
+    <main style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+        <!-- 特色文章 -->
+<!--        <div class="featured-post">-->
+<!--            <img src="image/blog-featured.jpg" alt="特色文章" class="featured-image">-->
+<!--            <div class="featured-content">-->
+<!--                <h2>如何成为一名优秀的跑团主持人</h2>-->
+<!--                <div class="featured-meta">-->
+<!--                    <span><i class="far fa-calendar"></i> 2023-12-15</span>-->
+<!--                    <span><i class="far fa-folder"></i> 跑团技巧</span>-->
+<!--                    <span><i class="far fa-eye"></i> 1024 阅读</span>-->
+<!--                </div>-->
+<!--                <p class="featured-excerpt">作为一名跑团主持人（KP/GM/DM），不仅需要熟悉规则，还需要具备良好的叙事能力、即兴发挥能力和团队协调能力。本文将分享我多年跑团经验中总结的一些技巧和心得...</p>-->
+<!--                <a href="#" class="featured-button">阅读全文</a>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="search-bar" style="margin: 2rem 0; max-width: 600px; display: flex; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); border-radius: 30px; overflow: hidden;">
+            <input type="text" class="search-input" placeholder="搜索文章..." style="flex: 1; padding: 0.8rem 1rem; border: 1px solid #e0e0e0; border-right: none; border-radius: 30px 0 0 30px; font-size: 1rem; transition: all 0.3s ease;">
+            <button class="search-btn" style="padding: 0.8rem 1.5rem; background-color: #FFAFCC; color: white; border: none; border-radius: 0 30px 30px 0; cursor: pointer; transition: all 0.3s ease;"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="blog-container">
+            <!-- 侧边栏 -->
+            <aside class="blog-sidebar">
+                <h3>文章分类</h3>
+                <ul class="blog-categories">
+                    <li><a href="#" class="active"><i class="fas fa-th-large"></i> 全部文章</a></li>
+                    <li><a href="#"><i class="fas fa-dice-d20"></i> 跑团技巧</a></li>
+                    <li><a href="#"><i class="fas fa-book"></i> 规则解析</a></li>
+                    <li><a href="#"><i class="fas fa-map"></i> 模组推荐</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> 角色创建</a></li>
+                    <li><a href="#"><i class="fas fa-robot"></i> 骰子机器人</a></li>
+                    <li><a href="#"><i class="fas fa-lightbulb"></i> 创意灵感</a></li>
+                </ul>
+
+                <h3>热门标签</h3>
+                <div>
+                    <a href="#" class="tag">COC</a>
+                    <a href="#" class="tag">DND</a>
+                    <a href="#" class="tag">新手指南</a>
+                    <a href="#" class="tag">角色扮演</a>
+                    <a href="#" class="tag">战斗技巧</a>
+                    <a href="#" class="tag">世界观</a>
+                    <a href="#" class="tag">故事构建</a>
+                    <a href="#" class="tag">即兴表演</a>
+                </div>
+
+                <h3>最近文章</h3>
+                <ul class="blog-categories">
+                    <li><a href="#"><i class="far fa-file-alt"></i> 如何成为一名优秀的跑团主持人</a></li>
+                    <li><a href="#"><i class="far fa-file-alt"></i> COC 7版规则详解与技巧分享</a></li>
+                    <li><a href="#"><i class="far fa-file-alt"></i> 我的第一次跑团经历</a></li>
+                    <li><a href="#"><i class="far fa-file-alt"></i> 如何设计引人入胜的剧情</a></li>
+                    <li><a href="#"><i class="far fa-file-alt"></i> 骰子机器人使用进阶技巧</a></li>
+                </ul>
+            </aside>
+
+            <!-- 时空枢纽列表 -->
+            <div class="blog-content">
+                <article class="blog-card">
+                    <img src="image/blog1.jpg" alt="时空枢纽" class="blog-image">
+                    <div class="blog-info">
+                        <h3>COC 7版规则详解与技巧分享</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2023-12-10</span>
+                            <span><i class="far fa-folder"></i> 规则解析</span>
+                            <span><i class="far fa-eye"></i> 856 阅读</span>
+                        </div>
+                        <p class="blog-excerpt">《克苏鲁的呼唤》(Call of Cthulhu, COC)是一款经典的恐怖类TRPG游戏，本文将详细解析COC 7版的核心规则，包括技能检定、战斗系统、理智检定等，并分享一些实用的游戏技巧...</p>
+                        <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="image/blog2.jpg" alt="时空枢纽" class="blog-image">
+                    <div class="blog-info">
+                        <h3>我的第一次跑团经历</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2023-11-28</span>
+                            <span><i class="far fa-folder"></i> 创意灵感</span>
+                            <span><i class="far fa-eye"></i> 723 阅读</span>
+                        </div>
+                        <p class="blog-excerpt">还记得我第一次接触跑团是在大学时期，朋友邀请我参加一个COC的团，当时对这种游戏完全没有概念。本文将分享我的第一次跑团经历，以及这次经历如何改变了我对桌游的看法...</p>
+                        <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="image/blog3.jpg" alt="时空枢纽" class="blog-image">
+                    <div class="blog-info">
+                        <h3>如何设计引人入胜的剧情</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2023-11-15</span>
+                            <span><i class="far fa-folder"></i> 跑团技巧</span>
+                            <span><i class="far fa-eye"></i> 912 阅读</span>
+                        </div>
+                        <p class="blog-excerpt">一个好的TRPG剧本需要有吸引人的故事背景、丰富的NPC设定、合理的冲突设置和多样化的解决方案。本文将分享如何设计一个能够吸引玩家、让他们沉浸其中的跑团剧情...</p>
+                        <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="image/blog4.jpg" alt="时空枢纽" class="blog-image">
+                    <div class="blog-info">
+                        <h3>骰子机器人使用进阶技巧</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2023-11-05</span>
+                            <span><i class="far fa-folder"></i> 骰子机器人</span>
+                            <span><i class="far fa-eye"></i> 678 阅读</span>
+                        </div>
+                        <p class="blog-excerpt">骰子机器人是现代跑团的重要工具，特别是在线上跑团中。本文将介绍Miss Foxsan骰子机器人的一些进阶用法，包括自定义骰点表达式、角色卡管理、日志记录等功能的详细使用方法...</p>
+                        <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="image/blog5.jpg" alt="时空枢纽" class="blog-image">
+                    <div class="blog-info">
+                        <h3>DND 5e职业选择指南</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2023-10-25</span>
+                            <span><i class="far fa-folder"></i> 角色创建</span>
+                            <span><i class="far fa-eye"></i> 845 阅读</span>
+                        </div>
+                        <p class="blog-excerpt">在《龙与地下城》(D&D)中，职业选择是创建角色的核心步骤之一。本文将详细介绍DND 5e中的各个职业特点、优势和劣势，帮助新手玩家找到最适合自己的职业...</p>
+                        <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="image/blog6.jpg" alt="时空枢纽" class="blog-image">
+                    <div class="blog-info">
+                        <h3>跑团中的即兴表演技巧</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2023-10-15</span>
+                            <span><i class="far fa-folder"></i> 跑团技巧</span>
+                            <span><i class="far fa-eye"></i> 732 阅读</span>
+                        </div>
+                        <p class="blog-excerpt">即兴表演是TRPG中不可或缺的一部分，无论是作为GM还是玩家。本文将分享一些提升即兴表演能力的实用技巧，帮助你在跑团中创造更生动、更有趣的角色和场景...</p>
+                        <a href="#" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <!-- 分页 -->
+                <div class="blog-pagination">
+                    <a href="#" class="page-link active">1</a>
+                    <a href="#" class="page-link">2</a>
+                    <a href="#" class="page-link">3</a>
+                    <a href="#" class="page-link"><i class="fas fa-ellipsis-h"></i></a>
+                    <a href="#" class="page-link">10</a>
+                    <a href="#" class="page-link"><i class="fas fa-angle-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="blog-data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const blogContent = document.querySelector('.blog-content');
+            const categoryLinks = document.querySelectorAll('.blog-categories a');
+            const tagLinks = document.querySelectorAll('.tag');
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            const searchBar = document.querySelector('.search-bar');
+
+            // 当前状态
+            let currentBlogs = blogData;
+            let currentPage = 1;
+            const blogsPerPage = 6;
+            let currentFilter = {
+                type: 'category',
+                value: '全部文章'
+            };
+
+            // 初始化页面
+            renderBlogs(currentBlogs, currentPage);
+            updatePagination(currentBlogs);
+
+            // 文章分类筛选功能
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // 移除所有链接的active类
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+
+                    // 为当前点击的链接添加active类
+                    this.classList.add('active');
+
+                    // 获取分类名称
+                    const categoryName = this.textContent.trim().replace(/^[\s\S]*\s/, '');
+
+                    // 筛选文章
+                    currentFilter = {
+                        type: 'category',
+                        value: categoryName
+                    };
+                    currentBlogs = filterByCategory(categoryName);
+                    currentPage = 1;
+
+                    // 更新UI
+                    renderBlogs(currentBlogs, currentPage);
+                    updatePagination(currentBlogs);
+                });
+            });
+
+            // 标签筛选功能
+            tagLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // 获取标签名称
+                    const tagName = this.textContent.trim();
+
+                    // 筛选文章
+                    currentFilter = {
+                        type: 'tag',
+                        value: tagName
+                    };
+                    currentBlogs = filterByTag(tagName);
+                    currentPage = 1;
+
+                    // 更新UI
+                    renderBlogs(currentBlogs, currentPage);
+                    updatePagination(currentBlogs);
+
+                    // 更新分类链接的active状态
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                });
+            });
+
+            // 搜索功能
+            searchBar.addEventListener('submit', function(e) {
+                e.preventDefault();
+                performSearch();
+            });
+
+            // 为搜索按钮添加点击事件
+            searchBtn.addEventListener('click', function() {
+                performSearch();
+            });
+
+            // 搜索输入框回车事件
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // 执行搜索
+            function performSearch() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm) {
+                    // 搜索文章
+                    currentFilter = {
+                        type: 'search',
+                        value: searchTerm
+                    };
+                    currentBlogs = searchBlogs(searchTerm);
+                    currentPage = 1;
+
+                    // 更新UI
+                    renderBlogs(currentBlogs, currentPage);
+                    updatePagination(currentBlogs);
+
+                    // 更新分类链接的active状态
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                }
+            }
+
+            // 渲染博客列表
+            function renderBlogs(blogs, page) {
+                // 清空博客容器，保留分页部分
+                const paginationElement = blogContent.querySelector('.blog-pagination');
+                blogContent.innerHTML = '';
+
+                // 获取当前页的博客
+                const paginatedBlogs = paginateBlogs(blogs, page);
+
+                if (paginatedBlogs.length === 0) {
+                    // 没有找到文章
+                    const noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.innerHTML = `
+                        <h3>没有找到相关文章</h3>
+                        <p>请尝试使用其他关键词或浏览所有文章。</p>
+                    `;
+                    blogContent.appendChild(noResults);
+                } else {
+                    // 渲染博客卡片
+                    paginatedBlogs.forEach(blog => {
+                        const article = document.createElement('article');
+                        article.className = 'blog-card';
+
+                        article.innerHTML = `
+                            <img src="${blog.image}" alt="${blog.title}" class="blog-image">
+                            <div class="blog-info">
+                                <h3>${blog.title}</h3>
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> ${blog.date}</span>
+                                    <span><i class="far fa-folder"></i> ${blog.category}</span>
+                                    <span><i class="far fa-eye"></i> ${blog.views} 阅读</span>
+                                </div>
+                                <p class="blog-excerpt">${blog.excerpt}</p>
+                                <a href="${blog.url}" class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        `;
+
+                        blogContent.appendChild(article);
+                    });
+                }
+
+                // 添加分页
+                blogContent.appendChild(paginationElement || createPagination(blogs));
+            }
+
+            // 创建分页
+            function createPagination(blogs) {
+                const paginationDiv = document.createElement('div');
+                paginationDiv.className = 'blog-pagination';
+
+                const totalPages = getTotalPages(blogs);
+
+                // 添加分页链接
+                if (totalPages <= 1) {
+                    return paginationDiv;
+                }
+
+                // 上一页
+                if (currentPage > 1) {
+                    const prevLink = document.createElement('a');
+                    prevLink.href = '#';
+                    prevLink.className = 'page-link';
+                    prevLink.innerHTML = '<i class="fas fa-angle-left"></i>';
+                    prevLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (currentPage > 1) {
+                            currentPage--;
+                            renderBlogs(currentBlogs, currentPage);
+                            updatePagination(currentBlogs);
+                        }
+                    });
+                    paginationDiv.appendChild(prevLink);
+                }
+
+                // 页码链接
+                for (let i = 1; i <= totalPages; i++) {
+                    // 如果页数太多，显示省略号
+                    if (totalPages > 7) {
+                        if (i === 1 || i === totalPages ||
+                            (i >= currentPage - 1 && i <= currentPage + 1)) {
+                            addPageLink(i);
+                        } else if (i === currentPage - 2 || i === currentPage + 2) {
+                            const ellipsis = document.createElement('a');
+                            ellipsis.href = '#';
+                            ellipsis.className = 'page-link';
+                            ellipsis.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+                            paginationDiv.appendChild(ellipsis);
+                        }
+                    } else {
+                        addPageLink(i);
+                    }
+                }
+
+                // 下一页
+                if (currentPage < totalPages) {
+                    const nextLink = document.createElement('a');
+                    nextLink.href = '#';
+                    nextLink.className = 'page-link';
+                    nextLink.innerHTML = '<i class="fas fa-angle-right"></i>';
+                    nextLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            renderBlogs(currentBlogs, currentPage);
+                            updatePagination(currentBlogs);
+                        }
+                    });
+                    paginationDiv.appendChild(nextLink);
+                }
+
+                function addPageLink(pageNum) {
+                    const pageLink = document.createElement('a');
+                    pageLink.href = '#';
+                    pageLink.className = 'page-link' + (pageNum === currentPage ? ' active' : '');
+                    pageLink.textContent = pageNum;
+                    pageLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        currentPage = pageNum;
+                        renderBlogs(currentBlogs, currentPage);
+                        updatePagination(currentBlogs);
+                    });
+                    paginationDiv.appendChild(pageLink);
+                }
+
+                return paginationDiv;
+            }
+
+            // 更新分页
+            function updatePagination(blogs) {
+                const paginationElement = blogContent.querySelector('.blog-pagination');
+                if (paginationElement) {
+                    const newPagination = createPagination(blogs);
+                    paginationElement.parentNode.replaceChild(newPagination, paginationElement);
+                }
+            }
+        });
+    </script>
+    <script src="paw-effect.js"></script>
+</body>
+</html>

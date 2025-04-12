@@ -18,17 +18,19 @@
 
         .filter-btn {
             padding: 0.5rem 1.2rem;
-            background-color: #f0f0f0;
+            background-color: rgba(255, 214, 255, 0.2); /* 浅粉半透明 */
             border: none;
             border-radius: 20px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            color: #666;
         }
 
         .filter-btn:hover, .filter-btn.active {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
+            box-shadow: 0 3px 8px rgba(255, 175, 204, 0.3);
         }
 
         .video-grid {
@@ -47,7 +49,7 @@
 
         .video-item:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px rgba(255, 175, 204, 0.2);
         }
 
         .video-thumbnail {
@@ -72,11 +74,12 @@
             position: absolute;
             bottom: 10px;
             right: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(255, 175, 204, 0.8); /* 深粉半透明 */
             color: white;
             padding: 3px 8px;
             border-radius: 4px;
             font-size: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .video-play {
@@ -95,6 +98,8 @@
             color: var(--primary-color);
             opacity: 0;
             transition: var(--transition);
+            box-shadow: 0 0 20px rgba(255, 175, 204, 0.5);
+            text-shadow: 0 0 3px rgba(255, 175, 204, 0.3);
         }
 
         .video-item:hover .video-play {
@@ -108,7 +113,12 @@
         .video-title {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
-            color: var(--text-color);
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .video-item:hover .video-title {
+            color: var(--primary-color);
         }
 
         .video-meta {
@@ -210,12 +220,12 @@
             <nav>
                 <ul>
                     <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 博客文章</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 跑团文档</a></li>
                     <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
                     <li><a href="videos.html" class="active"><i class="fas fa-video"></i> 跑团视频</a></li>
-                    <li><a href="character.html"><i class="fas fa-user"></i> 角色设定</a></li>
                     <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
-                    <li><a href="history.html"><i class="fas fa-history"></i> 历史记录</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
                 </ul>
             </nav>
         </div>
@@ -461,9 +471,10 @@
             <div class="footer-section">
                 <h3>联系方式</h3>
                 <ul class="contact-list">
-                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/" target="_blank">B站主页</a></li>
-                    <li><i class="fab fa-discord"></i> <a href="#" target="_blank">Discord服务器</a></li>
-                    <li><i class="fab fa-qq"></i> <a href="#" target="_blank">QQ群</a></li>
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -471,8 +482,9 @@
                 <ul class="quick-links">
                     <li><a href="index.html">首页</a></li>
                     <li><a href="dicebot.html">骰点功能</a></li>
-                    <li><a href="character.html">角色设定</a></li>
-                    <li><a href="about.html">关于</a></li>
+                    <li><a href="blog.html">博客文章</a></li>
+                    <li><a href="documents.html">跑团文档</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
                 </ul>
             </div>
         </div>
@@ -539,5 +551,6 @@
             });
         });
     </script>
+    <script src="paw-effect.js"></script>
 </body>
 </html>
