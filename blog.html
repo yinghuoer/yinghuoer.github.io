@@ -7,6 +7,18 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* 浅蓝糖果色主题变量 */
+        :root {
+            --primary-color: #79C2F2;    /* 浅蓝糖果色 */
+            --secondary-color: #A5DEF1;  /* 浅海蓝 */
+            --accent-color: #5DADE2;     /* 中蓝色，用于强调 */
+            --light-bg: #E8F6FD;         /* 极浅蓝背景 */
+            --hover-color: #7BD4F1;      /* 浅蓝悬停色 */
+            --card-bg: #FFFFFF;          /* 白色卡片背景 */
+            --box-shadow: 0 4px 15px rgba(121, 194, 242, 0.2); /* 浅蓝阴影 */
+            --border-radius: 12px;       /* 圆角半径 */
+        }
+
         /* 博客页面特定样式 */
         .blog-container {
             display: grid;
@@ -30,7 +42,7 @@
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--secondary-color);
-            text-shadow: 1px 1px 2px rgba(255, 175, 204, 0.3);
+            text-shadow: 1px 1px 2px rgba(121, 194, 242, 0.3);
         }
 
         .blog-categories {
@@ -52,7 +64,7 @@
         }
 
         .blog-categories a:hover {
-            background-color: rgba(255, 175, 204, 0.1);
+            background-color: rgba(121, 194, 242, 0.1);
             color: var(--primary-color);
             transform: translateX(5px);
         }
@@ -63,7 +75,7 @@
         }
 
         .blog-categories a.active {
-            background-color: rgba(255, 155, 179, 0.2);
+            background-color: rgba(121, 194, 242, 0.2);
             color: var(--primary-color);
             font-weight: 600;
         }
@@ -84,7 +96,7 @@
 
         .blog-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(255, 175, 204, 0.2);
+            box-shadow: 0 10px 20px rgba(121, 194, 242, 0.2);
         }
 
         .blog-image {
@@ -176,14 +188,14 @@
             background-color: var(--card-bg);
             color: var(--text-color);
             transition: var(--transition);
-            box-shadow: 0 3px 8px rgba(255, 175, 204, 0.1);
+            box-shadow: 0 3px 8px rgba(121, 194, 242, 0.1);
         }
 
         .page-link:hover, .page-link.active {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(255, 175, 204, 0.3);
+            box-shadow: 0 5px 12px rgba(121, 194, 242, 0.3);
         }
 
         .featured-post {
@@ -254,7 +266,7 @@
         .tag {
             display: inline-block;
             padding: 0.3rem 0.8rem;
-            background-color: rgba(255, 155, 179, 0.1);
+            background-color: rgba(121, 194, 242, 0.1);
             color: var(--primary-color);
             border-radius: 20px;
             font-size: 0.8rem;
@@ -322,7 +334,7 @@
                     <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
                     <li><a href="blog.html" class="active"><i class="fas fa-blog"></i> 时空枢纽</a></li>
                     <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
-                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 功能简览</a></li>
                     <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
                     <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
                     <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
@@ -356,7 +368,7 @@
 
         <div class="search-bar" style="margin: 2rem 0; max-width: 600px; display: flex; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); border-radius: 30px; overflow: hidden;">
             <input type="text" class="search-input" placeholder="搜索文章..." style="flex: 1; padding: 0.8rem 1rem; border: 1px solid #e0e0e0; border-right: none; border-radius: 30px 0 0 30px; font-size: 1rem; transition: all 0.3s ease;">
-            <button class="search-btn" style="padding: 0.8rem 1.5rem; background-color: #FFAFCC; color: white; border: none; border-radius: 0 30px 30px 0; cursor: pointer; transition: all 0.3s ease;"><i class="fas fa-search"></i></button>
+            <button class="search-btn" style="padding: 0.8rem 1.5rem; background-color: #79C2F2; color: white; border: none; border-radius: 0 30px 30px 0; cursor: pointer; transition: all 0.3s ease;"><i class="fas fa-search"></i></button>
         </div>
 
         <div class="blog-container">
@@ -513,7 +525,7 @@
                 <h3>快速链接</h3>
                 <ul class="quick-links">
                     <li><a href="index.html">首页</a></li>
-                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="dicebot.html">功能简览</a></li>
                     <li><a href="blog.html">时空枢纽</a></li>
                     <li><a href="documents.html">异时空存档点</a></li>
                     <li><a href="about.html">好奇豹豹</a></li>

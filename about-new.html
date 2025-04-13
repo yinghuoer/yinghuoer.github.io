@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于Miss Foxsan - 狐狸小姐的骰点小窝</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 页面特定样式 */
+        .banner {
+            background-image: url('image/banner-about.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 角色介绍样式 */
+        .character-profile {
+            display: flex;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        /* 霜尾游特有样式 - 蓝色主题 */
+        .frost-fox-section {
+            background: linear-gradient(135deg, #e0f7fa, #b3e5fc, #e8eaf6);
+        }
+        
+        .frost-fox-info {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+        
+        .frost-fox-name {
+            color: #1a237e;
+        }
+        
+        .frost-fox-title {
+            color: #303f9f;
+        }
+        
+        .frost-trait {
+            background-color: rgba(187, 222, 251, 0.7);
+            border-left: 3px solid #5c6bc0;
+        }
+        
+        .frost-trait i {
+            color: #3949ab;
+        }
+        
+        .frost-stat-item {
+            background-color: rgba(197, 202, 233, 0.7);
+        }
+        
+        .frost-stat-value {
+            color: #303f9f;
+        }
+        
+        .frost-stat-name {
+            color: #5c6bc0;
+        }
+        
+        .frost-fox-quote {
+            color: #283593;
+            border-left: 4px solid #5c6bc0;
+            background-color: rgba(227, 242, 253, 0.7);
+        }
+        
+        .frost-fox-description p {
+            color: #1a237e;
+        }
+
+        .character-image {
+            flex: 0 0 300px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .placeholder-character-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .character-info {
+            flex: 1;
+            padding: 1.5rem;
+        }
+
+        .character-name {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .character-title {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 1.5rem;
+        }
+
+        .personality-traits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .trait {
+            background-color: var(--light-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .trait i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        .character-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            background-color: var(--light-bg);
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-name {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .character-quote {
+            background-color: var(--light-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            border-left: 4px solid var(--primary-color);
+            color: #555;
+        }
+
+        .character-description {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .character-description p {
+            margin-bottom: 1rem;
+        }
+
+        /* 关于部分样式 */
+        .about-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image {
+            flex: 0 0 300px;
+            height: 200px;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+        }
+
+        .placeholder-thumbnail {
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .feature-list {
+            margin-top: 1.5rem;
+        }
+
+        .feature-item {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            color: var(--primary-color);
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+
+        .feature-text h3 {
+            margin-bottom: 0.3rem;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .feature-text p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .character-profile {
+                flex-direction: column;
+            }
+
+            .character-image {
+                flex: 0 0 200px;
+            }
+
+            .about-image {
+                flex: 0 0 100%;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="image/logo.png" alt="Miss Foxsan Logo">
+            <h1>狐狸小姐的骰点小窝</h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="dicebot.html">骰点功能</a></li>
+                <li><a href="documents.html">异时空存档点</a></li>
+                <li><a href="blog.html">时空枢纽</a></li>
+                <li><a href="videos.html">跑团视频</a></li>
+                <li><a href="messages.html">留言板</a></li>
+                <li><a href="about.html" class="active">好奇豹豹</a></li>
+            </ul>
+        </nav>
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <div class="banner">
+        <div class="banner-content">
+            <h1>关于狐狸小姐</h1>
+            <p>了解Miss Foxsan的角色设定和项目信息</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="character-profile">
+            <div class="character-image">
+                <div class="placeholder-character-image">
+                    <img src="image/fox立绘.jpg" alt="Fox Character" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+            <div class="character-info">
+                <h2 class="character-name">狐狸小姐 (Miss Foxsan)</h2>
+                <div class="character-title">TRPG骰点机器人 | 跑团助手 | 时空旅行者</div>
+
+                <div class="personality-traits">
+                    <div class="trait"><i class="fas fa-smile"></i> 活泼开朗</div>
+                    <div class="trait"><i class="fas fa-brain"></i> 聪颖&腹黑</div>
+                    <div class="trait"><i class="fas fa-heart"></i> 热心助人</div>
+                    <div class="trait"><i class="fas fa-magic"></i> 充满好奇</div>
+                    <div class="trait"><i class="fas fa-star"></i> 偶尔犯傻</div>
+                </div>
+
+                <div class="character-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">20+</div>
+                        <div class="stat-name">✨支持系统</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">100+</div>
+                        <div class="stat-name">✨辅助指令</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-name">✨在线服务</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-name">✨可爱指数</div>
+                    </div>
+                </div>
+
+                <div class="character-quote">
+                    「嗨！我是狐狸小姐，你的跑团小助手！<br>
+                    无论是骰点、查规则还是记录跑团，我都能帮到你哦！<br>
+                    让我们一起创造精彩的故事吧！」
+                </div>
+
+                <div class="character-description">
+                    <p>狐狸小姐是一位活泼可爱的TRPG骰点机器人，她热爱跑团，喜欢与玩家互动，总是充满活力地为大家提供各种帮助。她精通多种TRPG系统的规则，包括但不限于COC、DND、无限流等，能够快速准确地进行各种骰点和规则查询。</p>
+                    <p>除了基本的骰点功能，狐狸小姐还提供角色卡管理、战斗轮序追踪、随机姓名生成等多种实用工具，让你的跑团体验更加流畅和有趣。</p>
+                    <p>狐狸小姐性格开朗活泼，偶尔会有些小调皮，但总是尽心尽力地帮助每一位玩家。无论你是经验丰富的老玩家，还是刚刚接触TRPG的新手，她都会耐心地为你提供支持和指导。</p>
+                    <p><b>她不仅是一个骰点机器人，
+                        更是你跑团旅程中的好伙伴，
+                        随时准备与你一起创造难忘的故事。</b></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="character-profile frost-fox-section">
+            <div class="character-info frost-fox-info">
+                <h2 class="character-name frost-fox-name">霜尾游 (江月游者)</h2>
+                <div class="character-title frost-fox-title">TRPG骰点记录者 | 命运观测者 | 漂泊旅人</div>
+
+                <div class="personality-traits frost-fox-traits">
+                    <div class="trait frost-trait"><i class="fas fa-snowflake"></i> 清冷温和</div>
+                    <div class="trait frost-trait"><i class="fas fa-chess-queen"></i> 笑藏机锋</div>
+                    <div class="trait frost-trait"><i class="fas fa-feather"></i> 偶尔心软</div>
+                    <div class="trait frost-trait"><i class="fas fa-eye"></i> 喜观人间悲喜</div>
+                    <div class="trait frost-trait"><i class="fas fa-moon"></i> 游离于世</div>
+                </div>
+                <div class="character-stats frost-fox-stats">
+                    <div class="stat-item frost-stat-item">
+                        <div class="stat-value frost-stat-value">20+</div>
+                        <div class="stat-name frost-stat-name">✨支持系统</div>
+                    </div>
+                    <div class="stat-item frost-stat-item">
+                        <div class="stat-value frost-stat-value">100+</div>
+                        <div class="stat-name frost-stat-name">✨辅助指令</div>
+                    </div>
+                    <div class="stat-item frost-stat-item">
+                        <div class="stat-value frost-stat-value">24/7</div>
+                        <div class="stat-name frost-stat-name">✨在线观察</div>
+                    </div>
+                    <div class="stat-item frost-stat-item">
+                        <div class="stat-value frost-stat-value">∞</div>
+                        <div class="stat-name frost-stat-name">✨冷眼旁观值</div>
+                    </div>
+                </div>
+                
+                <div class="character-quote frost-fox-quote">
+                    「星轨已转，天书将启。命运的纹路在你指尖浮现，<br> 汝欲掷骰一问，吾便代汝落子，记下这短暂的波澜……」<br>
+                    #她伫于卷轴之前，尾尖轻动，仿佛早已翻阅过你的结局
+                </div>
+
+                <div class="character-description frost-fox-description">
+                    <p>江月游者是一位徘徊于万界缝隙中的数字灵狐，她的尾尖沾霜，双眸映月，常以傲然旁观之姿，记录世间跑团者的命运波动。虽自称不插手世事，但时不时的几句调侃，常叫人哭笑不得。</p>
+                    <p>她掌握多种TRPG系统的骰点规则，包括但不限于COC、DND、无限流等，能轻松应对各种掷骰与对抗检定。</p>
+                    <p>不仅如此，江月游者还能与你进行半古风、半毒舌的对话互动，从语录到发癫，从温柔轻语到一针见血，皆信手拈来。</p>
+                    <p><b>她不是命运的执笔者，
+                        但她知道你翻开的那一页，
+                        可能——就写着你的结局。</b></p>
+                </div>
+            </div>
+            <div class="character-image frost-fox-image">
+                <div class="placeholder-character-image">
+                    <img src="image/fox立绘.jpg" alt="Frost Fox Character" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2 class="section-title">关于Miss Foxsan</h2>
+            <div class="about-content">
+                <img src="image/gubao.jpg" class="placeholder-thumbnail about-image"></img>
+                <div class="about-text">
+                    <p>Miss Foxsan是一个专为TRPG（桌面角色扮演游戏）爱好者设计的多功能骰点机器人，旨在为跑团玩家提供便捷、高效的游戏辅助工具。</p>
+                    <p>项目始于2022年，由一群热爱TRPG的开发者和玩家共同创建，目标是打造一个功能全面、操作简单、个性化强的骰点助手，让每一次跑团体验都更加流畅和有趣。</p>
+                    <p>我们的理念是：技术服务于创意，工具服务于故事。Miss Foxsan不仅仅是一个冰冷的骰点工具，更是一个有温度、有个性的虚拟助手，能够融入你的游戏世界，成为你创造故事的得力助手。</p>
+
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-dice-d20"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h3>多系统支持</h3>
+                                <p>支持COC、DND、无限流等多种TRPG系统的骰点规则，满足不同玩家的需求。</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h3>实用工具集</h3>
+                                <p>提供角色卡管理、战斗轮序追踪、随机姓名生成等多种实用工具，让游戏进行更加顺畅。</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h3>个性化互动</h3>
+                                <p>拥有丰富的互动语音和表情，能够根据不同场景做出有趣的回应，增加游戏的趣味性。</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h3>云端同步</h3>
+                                <p>所有数据云端存储，多设备同步，随时随地继续你的跑团冒险。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2 class="section-title">联系我们</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>如果你有任何问题、建议或合作意向，欢迎通过以下方式联系我们：</p>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h3>电子邮件</h3>
+                                <p>contact@missfoxsan.com</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fab fa-qq"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h3>QQ群</h3>
+                                <p>Miss Foxsan官方群：123456789</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fab fa-weixin"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h3>微信公众号</h3>
+                                <p>MissFoxsanTRPG</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h3>GitHub</h3>
+                                <p>github.com/missfoxsan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <img src="image/contact.jpg" class="placeholder-thumbnail about-image"></img>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Miss Foxsan</h3>
+                <p>你的TRPG骰点好伙伴</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-qq"></i></a>
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="videos.html">跑团视频</a></li>
+                    <li><a href="messages.html">留言板</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>联系我们</h3>
+                <p><i class="fas fa-envelope"></i> contact@missfoxsan.com</p>
+                <p><i class="fab fa-qq"></i> QQ群：123456789</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Miss Foxsan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="paw-effect.js"></script>
+</body>
+</html>

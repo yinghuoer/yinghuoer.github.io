@@ -111,6 +111,70 @@
             color: var(--primary-color);
         }
 
+        /* 霜尾游特有样式 - 蓝色主题 */
+        .frost-fox-section {
+            background: linear-gradient(135deg, #e0f7fa, #b3e5fc, #e8eaf6);
+            display: flex;
+            align-items: center;
+        }
+
+        .frost-fox-info {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .frost-fox-name {
+            color: #1a237e;
+        }
+
+        .frost-fox-title {
+            color: #303f9f;
+        }
+
+        .frost-trait {
+            background-color: rgba(187, 222, 251, 0.7);
+            border-left: 3px solid #5c6bc0;
+        }
+
+        .frost-trait i {
+            color: #3949ab;
+        }
+
+        .frost-stat-item {
+            background-color: rgba(197, 202, 233, 0.7);
+        }
+
+        .frost-stat-value {
+            color: #303f9f;
+        }
+
+        .frost-stat-name {
+            color: #5c6bc0;
+        }
+
+        .frost-fox-quote {
+            color: #283593;
+            border-left: 4px solid #5c6bc0;
+            background-color: rgba(227, 242, 253, 0.7);
+        }
+
+        .frost-fox-description p {
+            color: #1a237e;
+        }
+
+        .frost-fox-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(41, 121, 255, 0.2);
+            width: 100%;
+            height: 100%;
+        }
+
         .placeholder-character-image {
             width: 100%;
             aspect-ratio: 3/4;
@@ -121,6 +185,12 @@
             align-items: center;
             color: white;
             font-size: 3rem;
+        }
+
+        .frost-fox-image .placeholder-character-image {
+            width: 100%;
+            height: 100%;
+            margin: auto;
         }
 
         /* 背景故事和能力特点样式 */
@@ -229,7 +299,7 @@
         }
 
         .creator-title {
-            color: var(--secondary-color);
+            color: var(--primary-color);
             font-size: 1.1rem;
             margin-bottom: 1.5rem;
         }
@@ -405,7 +475,7 @@
                     <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
                     <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
                     <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
-                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 骰点功能</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 功能简览</a></li>
                     <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
                     <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
                     <li><a href="about.html" class="active"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
@@ -465,15 +535,69 @@
 
                 <div class="character-description">
                     <p>Miss Foxsan是一位活泼可爱的数字狐娘，她的主要职责是为TRPG玩家提供骰点服务。她拥有丰富的规则知识，能够支持多种TRPG系统的骰点需求，包括COC、DND等主流规则。</p>
-                    <p>除了骰点功能外，Miss Foxsan还具备AI对话能力，可以与玩家进行有趣的互动。她喜欢听取玩家的故事，也会分享自己的见解和想法。</p>
+                    <p>除了功能简览外，Miss Foxsan还具备AI对话能力，可以与玩家进行有趣的互动。她喜欢听取玩家的故事，也会分享自己的见解和想法。</p>
                     <p>作为一个数字助手，Miss Foxsan非常重视玩家的游戏体验，她会尽力提供最准确、最便捷的服务，让每一次跑团都充满乐趣。</p>
                 </div>
             </div>
         </section>
+
+        <section class="character-profile frost-fox-section">
+            <div class="character-info frost-fox-info">
+                <h2 class="character-name frost-fox-name">霜尾游 (江月游者)</h2>
+                <div class="character-title frost-fox-title">TRPG骰点记录者 | 命运观测者 | 漂泊旅人</div>
+
+                <div class="personality-traits frost-fox-traits">
+                    <div class="trait frost-trait"><i class="fas fa-snowflake"></i> 清冷温和</div>
+                    <div class="trait frost-trait"><i class="fas fa-chess-queen"></i> 笑藏机锋</div>
+                    <div class="trait frost-trait"><i class="fas fa-feather"></i> 偶尔心软</div>
+                    <div class="trait frost-trait"><i class="fas fa-eye"></i> 喜观人间悲喜</div>
+                    <div class="trait frost-trait"><i class="fas fa-moon"></i> 游离于世</div>
+                </div>
+
+                <div class="character-stats">
+                    <div class="stat-item frost-stat-item">
+                        <div class="stat-value frost-stat-value">20+</div>
+                        <div class="stat-name frost-stat-name">✨支持系统</div>
+                    </div>
+                    <div class="stat-item frost-stat-item">
+                        <div class="stat-value frost-stat-value">100+</div>
+                        <div class="stat-name frost-stat-name">✨辅助指令</div>
+                    </div>
+                    <div class="stat-item frost-stat-item">
+                        <div class="stat-value frost-stat-value">24/7</div>
+                        <div class="stat-name frost-stat-name">✨在线观察</div>
+                    </div>
+                    <div class="stat-item frost-stat-item">
+                        <div class="stat-value frost-stat-value">∞</div>
+                        <div class="stat-name frost-stat-name">✨冷眼旁观值</div>
+                    </div>
+                </div>
+
+                <div class="character-quote frost-fox-quote">
+                    「星轨已转，天书将启。命运的纹路在你指尖浮现，<br> 汝欲掷骰一问，吾便代汝落子，记下这短暂的波澜……」<br>
+                    #她伫于卷轴之前，尾尖轻动，仿佛早已翻阅过你的结局
+                </div>
+
+                <div class="character-description frost-fox-description">
+                    <p>江月游者是一位徘徊于万界缝隙中的数字灵狐，她的尾尖沾霜，双眸映月，常以傲然旁观之姿，记录世间跑团者的命运波动。虽自称不插手世事，但时不时的几句调侃，常叫人哭笑不得。</p>
+                    <p>她掌握多种TRPG系统的骰点规则，包括但不限于COC、DND、无限流等，能轻松应对各种掷骰与对抗检定。</p>
+                    <p>不仅如此，江月游者还能与你进行半古风、半毒舌的对话互动，从语录到发癫，从温柔轻语到一针见血，皆信手拈来。</p>
+                    <p><b>她不是命运的执笔者，
+                        但她知道你翻开的那一页，
+                        可能——就写着你的结局。</b></p>
+                </div>
+            </div>
+            <div class="character-image frost-fox-image">
+                <div class="placeholder-character-image">
+                    <img src="image/xiaoshimei.png" alt="Frost Fox Character" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </section>
+
         <section class="about-section">
             <h2 class="section-title">关于Miss Foxsan</h2>
             <div class="about-content">
-                <div class="placeholder-thumbnail about-image"></div>
+                <img src="image/gubao.jpg" class="placeholder-thumbnail about-image"></img>
                 <p>Miss Foxsan是一个为TRPG（桌面角色扮演游戏）爱好者提供骰点服务的免费公益机器人。她的设计灵感来源于东方神话中的狐仙形象，聪明、机智且略带神秘。</p>
                 <p>这个项目始于2021年初，最初只是一个简单的骰点工具，用于满足创作者自己和朋友们的跑团需求。随着时间的推移，Miss Foxsan不断发展壮大，功能也越来越丰富。从最初的基本骰点，到现在支持多种TRPG系统，再到能够记录跑团历史、提供数据分析等高级功能。</p>
                 <p>Miss Foxsan的核心理念是"让跑团更简单，让故事更精彩"。我们希望通过提供便捷、友好的骰点服务，让玩家们能够专注于故事的创作和角色的扮演，而不是被繁琐的规则和计算所困扰。</p>
@@ -520,28 +644,36 @@
             <h2 class="section-title">角色画廊</h2>
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
-                    <div class="gallery-caption">Miss Foxsan 日常形象</div>
+                    <img src="image/chushi.jpg" class="placeholder-thumbnail" style="width: 100%; height: 100%;"></img>
+                    <div class="gallery-caption">Miss Foxsan 初始形象</div>
                 </div>
                 <div class="gallery-item">
-                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <img src="image/chunjie.jpg" class="placeholder-thumbnail" style="width: 100%; height: 100%;"></img>
                     <div class="gallery-caption">Miss Foxsan 节日装扮</div>
                 </div>
                 <div class="gallery-item">
-                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <img src="image/yueguang.jpg" class="placeholder-thumbnail" style="width: 100%; height: 100%;"></img>
+                    <div class="gallery-caption">Miss Foxsan 月下古堡主人</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="image/dc01.jpg" class="placeholder-thumbnail" style="width: 100%; height: 100%;"></img>
                     <div class="gallery-caption">Miss Foxsan 冒险者造型</div>
                 </div>
                 <div class="gallery-item">
-                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <img src="image/magic.jpg" class="placeholder-thumbnail" style="width: 100%; height: 100%;"></img>
                     <div class="gallery-caption">Miss Foxsan 魔法师造型</div>
                 </div>
                 <div class="gallery-item">
-                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <img src="image/qq01.jpg" class="placeholder-thumbnail" style="width: 100%; height: 100%;"></img>
                     <div class="gallery-caption">Miss Foxsan 现代休闲装</div>
                 </div>
                 <div class="gallery-item">
-                    <div class="placeholder-thumbnail" style="width: 100%; height: 100%;"></div>
+                    <img src="image/hudong.png" class="placeholder-thumbnail" style="width: 100%; height: 100%;"></img>
                     <div class="gallery-caption">Miss Foxsan 与玩家互动</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="image/can.jpg" class="placeholder-thumbnail" style="width: 100%; height: 100%;"></img>
+                    <div class="gallery-caption">Miss Foxsan 变成草莓罐子</div>
                 </div>
             </div>
         </section>
@@ -565,13 +697,13 @@
             <h2 class="section-title">关于创作者</h2>
             <div class="creator-profile">
                 <div class="creator-image">
-                    <div class="placeholder-creator-image">
-                        <i class="fas fa-user"></i>
-                    </div>
+                    <img src="image/qq03.jpg" class="placeholder-creator-image">
+<!--                        <i class="fas fa-users"></i>-->
+                    </img>
                 </div>
                 <div class="creator-info">
                     <h3 class="creator-name">荧惑（骰主）</h3>
-                    <div class="creator-title">TRPG爱好者 | 内容创作者 | 羊驼</div>
+                    <div class="creator-title">TRPG爱好者 | 内容创作者 | 浪漫主义者</div>
                     <div class="creator-bio">
                         <p>我是一名热爱TRPG的个人内容创作者，运营着一个免费公益机器人——狐狸小姐（Miss Foxsan）。这个项目源于我对TRPG的热爱，希望能够为TRPG社区做出一些贡献。</p>
                         <p>狐狸小姐是我的原创角色（Original Character），主要在Discord和QQ上为TRPG游戏提供骰点服务，并且内置了一些娱乐项目和AI对话功能。</p>
@@ -579,13 +711,13 @@
                         <p>特别感谢炽热佬、014老师、白鱼佬、茶叶佬等骰主朋友们提供的协助，以及错误佬的技术协助。因为有大家的帮助，才有现在的狐狸小姐！</p>
                     </div>
                     <div class="social-links">
-                        <a href="https://space.bilibili.com/" target="_blank" class="social-link">
+                        <a href="https://space.bilibili.com/2876867" target="_blank" class="social-link">
                             <i class="fab fa-bilibili"></i>
                         </a>
-                        <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank" class="social-link">
+                        <a href="https://discord.gg/Bkx8dJxyTB" target="_blank" class="social-link">
                             <i class="fab fa-discord"></i>
                         </a>
-                        <a href="#" target="_blank" class="social-link" title="QQ用户群：241639081">
+                        <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank" class="social-link" title="QQ用户群：241639081">
                             <i class="fab fa-qq"></i>
                         </a>
                     </div>
@@ -657,7 +789,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Miss Foxsan是一个完全免费的公益项目，所有基本功能都可以免费使用。我们不会对核心骰点功能收费，也不会在使用过程中强制插入广告。</p>
+                        <p>Miss Foxsan是一个完全免费的公益项目，所有基本功能都可以免费使用。我们不会对核心功能简览收费，也不会在使用过程中强制插入广告。</p>
                         <p>如果您喜欢Miss Foxsan并希望支持这个项目的发展，可以考虑通过赞助的方式提供帮助，但这完全是自愿的。</p>
                     </div>
                 </div>
@@ -760,13 +892,13 @@
                 <div style="margin-top: 2rem; text-align: center;">
                     <p>您也可以通过以下方式关注我们：</p>
                     <div class="social-links" style="justify-content: center; margin-top: 1rem;">
-                        <a href="https://space.bilibili.com/" target="_blank" class="social-link">
+                        <a href="https://space.bilibili.com/2876867" target="_blank" class="social-link">
                             <i class="fab fa-bilibili"></i>
                         </a>
-                        <a href="#" target="_blank" class="social-link">
+                        <a href="https://discord.gg/Bkx8dJxyTB" target="_blank" class="social-link">
                             <i class="fab fa-discord"></i>
                         </a>
-                        <a href="#" target="_blank" class="social-link">
+                        <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank" class="social-link">
                             <i class="fab fa-qq"></i>
                         </a>
                         <a href="#" target="_blank" class="social-link">
@@ -799,7 +931,7 @@
                     <li><a href="index.html">首页</a></li>
                     <li><a href="blog.html">时空枢纽</a></li>
                     <li><a href="documents.html">异时空存档点</a></li>
-                    <li><a href="dicebot.html">骰点功能</a></li>
+                    <li><a href="dicebot.html">功能简览</a></li>
                 </ul>
             </div>
         </div>
