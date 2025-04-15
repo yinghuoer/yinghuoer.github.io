@@ -7,6 +7,42 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* 高对比度标题样式 */
+        .hero {
+            background-color: #333;
+            padding: 1.2rem 0;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .hero h2 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.6rem;
+            margin-right: 1rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            color: #f0f0f0;
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: normal;
+            position: relative;
+            padding-left: 1rem;
+            max-width: 600px;
+            border-left: 2px solid rgba(255, 175, 204, 0.6);
+        }
+
         /* 文档页面特定样式 */
         .documents-container {
             display: grid;
@@ -263,18 +299,22 @@
         .tag {
             display: inline-block;
             padding: 0.3rem 0.8rem;
-            background-color: rgba(231, 198, 255, 0.2); /* 浅紫色半透明 - 新色板 */
-            color: #b28dff; /* 深一点的紫色 */
+            background-color: #dde5b6; /* 柔和的浅绿色背景 */
+            color: #6a7a41; /* 深一点的绿色文字，增强可读性 */
             border-radius: 20px;
             font-size: 0.8rem;
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
             transition: var(--transition);
+            border: 1px solid #adc178; /* 使用您提供的绿色作为边框 */
+            font-weight: 500; /* 增加字重提高可读性 */
         }
 
         .tag:hover {
-            background-color: #E7C6FF; /* 浅紫色 - 新色板 */
-            color: white;
+            background-color: #adc178; /* 悬停时变为您提供的绿色 */
+            color: #333;
+            box-shadow: 0 2px 5px rgba(173, 193, 120, 0.3); /* 添加阴影效果 */
+            transform: translateY(-2px); /* 轻微上浮效果 */
         }
 
         .search-bar {
@@ -450,7 +490,7 @@
                     <li><a href="#"><i class="fas fa-user"></i> PL指南</a></li>
                 </ul>
 
-                <h3>热门标签</h3>
+                <h3 style="color: #6a7a41; border-bottom: 2px solid #adc178;">热门标签</h3>
                 <div>
                     <a href="#" class="tag">COC</a>
                     <a href="#" class="tag">DND</a>
@@ -924,5 +964,10 @@
         });
     </script>
     <script src="paw-effect.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="clicks_count.js"></script>
+
 </body>
 </html>

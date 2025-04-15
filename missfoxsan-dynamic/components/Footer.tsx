@@ -10,13 +10,13 @@ export default function Footer() {
             狐狸小姐是一个免费公益机器人，为TRPG游戏提供骰点服务，并内置娱乐项目和AI对话功能。
           </p>
           <div className="social-icons">
-            <a href="#" aria-label="QQ">
+            <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank" rel="noopener noreferrer" aria-label="QQ">
               <i className="fab fa-qq"></i>
             </a>
-            <a href="#" aria-label="Discord">
+            <a href="https://discord.gg/Bkx8dJxyTB" target="_blank" rel="noopener noreferrer" aria-label="Discord">
               <i className="fab fa-discord"></i>
             </a>
-            <a href="#" aria-label="Bilibili">
+            <a href="https://space.bilibili.com/2876867" target="_blank" rel="noopener noreferrer" aria-label="Bilibili">
               <i className="fab fa-bilibili"></i>
             </a>
           </div>
@@ -29,16 +29,22 @@ export default function Footer() {
               <Link href="/">首页</Link>
             </li>
             <li>
-              <Link href="/dicebot">骰点功能</Link>
+              <Link href="/blog">时空枢纽</Link>
             </li>
             <li>
-              <Link href="/character">角色设定</Link>
+              <Link href="/documents">异时空存档点</Link>
+            </li>
+            <li>
+              <Link href="/dicebot">功能简览</Link>
+            </li>
+            <li>
+              <Link href="/videos">跑团视频</Link>
             </li>
             <li>
               <Link href="/messages">留言板</Link>
             </li>
             <li>
-              <Link href="/about">关于</Link>
+              <Link href="/about">好奇豹豹</Link>
             </li>
           </ul>
         </div>
@@ -69,7 +75,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="copyright">
-        <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        <p>&copy; 2025 Miss Foxsan. 保留所有权利。</p>
       </div>
     </footer>
   );

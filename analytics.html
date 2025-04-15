@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网站数据分析 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 引入 Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <!-- 引入 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入 heatmap.js -->
+    <script src="https://cdn.jsdelivr.net/npm/heatmap.js@2.0.5/build/heatmap.min.js"></script>
+    <!-- 引入地图库 -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        /* 高对比度标题样式 */
+        .hero {
+            background-color: #333;
+            padding: 1.2rem 0;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .hero h2 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.6rem;
+            margin-right: 1rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            color: #f0f0f0;
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: normal;
+            position: relative;
+            padding-left: 1rem;
+            max-width: 600px;
+            border-left: 2px solid rgba(255, 175, 204, 0.6);
+        }
+
+        /* 数据分析页面特定样式 */
+        .analytics-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .analytics-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .analytics-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        /* 数据表格样式 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background-color: rgba(255, 175, 204, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background-color: rgba(255, 175, 204, 0.05);
+        }
+
+        /* 数据统计卡片样式 */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* 图表容器样式 */
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 1rem;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+
+        /* 图表尺寸调整 */
+        canvas {
+            max-height: 250px;
+            margin: 0 auto;
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        #chartView {
+            padding: 1rem 0;
+            max-height: 300px;
+        }
+
+        #tableView {
+            overflow-x: auto;
+        }
+
+        /* 文字居中 */
+        .text-center {
+            text-align: center;
+        }
+
+        /* 标签切换样式 */
+        .tab-container {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            background-color: rgba(255, 175, 204, 0.05);
+        }
+
+        /* 热力图样式 */
+        .heatmap-wrapper {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+            background-color: #f8f8f8;
+            background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee),
+                            linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        .draggable-heatmap {
+            position: absolute;
+            cursor: move;
+            transform-origin: 0 0;
+            transition: transform 0.1s ease;
+            min-width: 100%;
+            min-height: 100%;
+        }
+
+        .page-outline {
+            position: absolute;
+            border: 2px solid #FFAFCC;
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        #heatmapCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .heatmap-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 0.4rem 0.8rem;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .zoom-level, .click-count {
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* 页面选择器样式 */
+        .page-selector {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .page-select {
+            margin-left: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            min-width: 200px;
+            background-color: white;
+        }
+
+        /* 页面信息样式 */
+        .page-info {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background-color: #f8f8f8;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            margin-right: 0.5rem;
+        }
+
+        /* 访问地区分析样式 */
+        .geo-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f8f8f8;
+            border-radius: var(--border-radius);
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .geo-select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            min-width: 120px;
+        }
+
+        .search-group {
+            flex-grow: 1;
+            display: flex;
+            max-width: 300px;
+        }
+
+        .geo-search {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            border-right: none;
+        }
+
+        .geo-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .geo-btn:hover {
+            background-color: #ff8fac;
+        }
+
+        .export-btn {
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .geo-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: rgba(255, 175, 204, 0.1);
+            border-radius: var(--border-radius);
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .summary-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .geo-table-container {
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+        }
+
+        .geo-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .geo-table th,
+        .geo-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .geo-table th {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 10;
+            box-shadow: 0 1px 0 #eee;
+        }
+
+        .geo-table tbody tr:hover {
+            background-color: rgba(255, 175, 204, 0.05);
+        }
+
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .sortable i {
+            margin-left: 0.5rem;
+            color: #ccc;
+        }
+
+        .sortable i.fa-sort-up,
+        .sortable i.fa-sort-down {
+            color: var(--primary-color);
+        }
+
+        .geo-table .country-row {
+            font-weight: 600;
+            background-color: rgba(255, 175, 204, 0.05);
+        }
+
+        .geo-table .city-row {
+            padding-left: 2rem;
+        }
+
+        .geo-table .city-row td:first-child {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .geo-table .city-row td:first-child::before {
+            content: '└';
+            position: absolute;
+            left: 1.5rem;
+            color: #999;
+        }
+
+        .percentage-bar {
+            display: inline-block;
+            height: 0.5rem;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .recent-time {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .recent-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .recent-today {
+            background-color: #4CAF50;
+        }
+
+        .recent-week {
+            background-color: #2196F3;
+        }
+
+        .recent-month {
+            background-color: #FF9800;
+        }
+
+        .recent-older {
+            background-color: #9E9E9E;
+        }
+
+        .geo-export {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* 折叠/展开国家行 */
+        .toggle-cities {
+            cursor: pointer;
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+            transition: transform 0.2s;
+        }
+
+        .toggle-cities.collapsed {
+            transform: rotate(-90deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <h2>网站数据分析</h2>
+            <p>用户行为、访问统计和页面活跃度分析</p>
+        </div>
+    </div>
+
+    <div class="analytics-container">
+        <!-- 概览统计卡片 -->
+        <div class="analytics-card">
+            <h3>数据概览</h3>
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-visits">--</div>
+                    <div class="stat-label">总访问量</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="monthly-visits">--</div>
+                    <div class="stat-label">本月访问</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="daily-visits">--</div>
+                    <div class="stat-label">今日访问</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avg-time">--</div>
+                    <div class="stat-label">平均停留时间</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="bounce-rate">--</div>
+                    <div class="stat-label">跳出率</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页面访问统计图表 -->
+        <div class="analytics-card">
+            <h3>页面访问统计</h3>
+            <div class="tab-container">
+                <div class="tab active" id="tableViewTab" onclick="switchView('table')"><i class="fas fa-table"></i> 表格视图</div>
+                <div class="tab" id="chartViewTab" onclick="switchView('chart')"><i class="fas fa-chart-bar"></i> 图表视图</div>
+            </div>
+            <div id="tableView">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>页面名称</th>
+                            <th>访问量</th>
+                            <th>平均停留时间</th>
+                            <th>跳出率</th>
+                            <th>转化率</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pageStatsTableBody">
+                        <!-- 表格数据将由JavaScript动态填充 -->
+                        <tr>
+                            <td colspan="5" class="text-center">正在加载数据...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="chartView" style="display: none;">
+                <div class="chart-wrapper" style="position: relative; height: 250px; width: 90%; margin: 0 auto;">
+                    <canvas id="pageVisitsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 时间段分析 -->
+        <div class="analytics-card">
+            <h3>时间段分析</h3>
+            <p>一天中不同时段的访问量分布（小时粒度）</p>
+            <div class="chart-wrapper" style="position: relative; height: 250px; width: 90%; margin: 0 auto;">
+                <canvas id="hourlyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 热力图 -->
+        <div class="analytics-card">
+            <h3>热力图分析</h3>
+            <p>按页面分类查看用户点击的位置分布</p>
+
+            <!-- 页面选择器 -->
+            <div class="page-selector">
+                <label for="pageSelect">选择页面：</label>
+                <select id="pageSelect" class="page-select">
+                    <option value="loading" selected>正在加载页面列表...</option>
+                </select>
+            </div>
+
+            <!-- 热力图控制按钮 -->
+            <div class="heatmap-controls">
+                <button id="zoomInBtn" class="control-btn"><i class="fas fa-search-plus"></i> 放大</button>
+                <button id="zoomOutBtn" class="control-btn"><i class="fas fa-search-minus"></i> 缩小</button>
+                <button id="resetViewBtn" class="control-btn"><i class="fas fa-sync"></i> 重置视图</button>
+                <span class="zoom-level">缩放级别: <span id="zoomLevel">100%</span></span>
+                <span class="click-count" id="pageClickCount">点击数: 0</span>
+            </div>
+
+            <!-- 热力图容器 -->
+            <div class="heatmap-wrapper">
+                <div id="heatmapContainer" class="draggable-heatmap">
+                    <div id="pageOutline" class="page-outline"></div>
+                    <div id="heatmapCanvas"></div>
+                </div>
+            </div>
+
+            <!-- 页面信息 -->
+            <div class="page-info" id="pageInfo">
+                <div class="info-item">
+                    <span class="info-label">页面尺寸：</span>
+                    <span id="pageDimensions">1200 x 3000 像素</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">最后更新：</span>
+                    <span id="lastUpdated">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 访问地区分析 -->
+        <div class="analytics-card">
+            <h3>访问地区分析</h3>
+            <p>根据用户IP显示全球访问分布和详细统计</p>
+
+            <!-- 控制面板 -->
+            <div class="geo-controls">
+                <div class="control-group">
+                    <label for="timeRange">时间范围:</label>
+                    <select id="timeRange" class="geo-select">
+                        <option value="all" selected>全部</option>
+                        <option value="today">今天</option>
+                        <option value="week">本周</option>
+                        <option value="month">本月</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="geoLevel">地区级别:</label>
+                    <select id="geoLevel" class="geo-select">
+                        <option value="country" selected>国家</option>
+                        <option value="city">城市</option>
+                        <option value="all">全部显示</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="geoSort">排序方式:</label>
+                    <select id="geoSort" class="geo-select">
+                        <option value="visits" selected>访问次数</option>
+                        <option value="recent">最近访问</option>
+                        <option value="name">名称</option>
+                    </select>
+                </div>
+
+                <div class="control-group search-group">
+                    <input type="text" id="geoSearch" class="geo-search" placeholder="搜索国家或城市...">
+                    <button id="geoSearchBtn" class="geo-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <!-- 数据概要 -->
+            <div class="geo-summary">
+                <div class="summary-item">
+                    <span class="summary-label">总访问国家/地区:</span>
+                    <span class="summary-value" id="totalCountries">--</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">总访问城市:</span>
+                    <span class="summary-value" id="totalCities">--</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">最多访问来源:</span>
+                    <span class="summary-value" id="topLocation">--</span>
+                </div>
+            </div>
+
+            <!-- 表格容器 -->
+            <div class="geo-table-container">
+                <table class="geo-table" id="geoTable">
+                    <thead>
+                        <tr>
+                            <th class="sortable" data-sort="name">国家/地区 <i class="fas fa-sort"></i></th>
+                            <th class="sortable" data-sort="city">城市 <i class="fas fa-sort"></i></th>
+                            <th class="sortable" data-sort="visits">访问次数 <i class="fas fa-sort-down"></i></th>
+                            <th class="sortable" data-sort="recent">最近访问 <i class="fas fa-sort"></i></th>
+                            <th class="sortable" data-sort="percentage">占比 <i class="fas fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="geoTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center">正在加载数据...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 导出按钮 -->
+            <div class="geo-export">
+                <button id="exportGeoData" class="geo-btn export-btn">
+                    <i class="fas fa-download"></i> 导出数据
+                </button>
+            </div>
+        </div>
+
+        <!-- 访问来源分析 -->
+        <div class="analytics-card">
+            <h3>访问来源分析</h3>
+            <p>用户访问网站的来源渠道分布</p>
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-value">--</div>
+                    <div class="stat-label">直接访问</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">--</div>
+                    <div class="stat-label">搜索引擎</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">--</div>
+                    <div class="stat-label">社交媒体</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">--</div>
+                    <div class="stat-label">站内跳转</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">--</div>
+                    <div class="stat-label">其他来源</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="analytics.js"></script>
+    <script src="clicks_count.js"></script>
+
+    <script>window.addEventListener("load", () => {
+        const geoRef = firebase.database().ref("geo");
+        const tableBody = document.getElementById("geoTableBody");
+
+        const timeRangeSelector = document.getElementById("timeRange");
+        const levelSelector = document.getElementById("geoLevel");
+        const sortSelector = document.getElementById("geoSort");
+        const searchInput = document.getElementById("geoSearch");
+        const exportBtn = document.getElementById("exportGeoData");
+
+        let allGeoData = []; // 扁平化数据
+        let processedData = []; // 处理后的数据
+        let totalVisits = 0;
+        let currentSortField = "visits";
+        let currentSortDirection = "desc";
+
+        // 格式化时间
+        function formatTime(iso) {
+            if (!iso) return "-";
+            const date = new Date(iso);
+            return date.toLocaleString("zh-CN", {
+                hour12: false,
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        }
+
+        // 获取时间过滤函数
+        function getTimeFilterFn(range) {
+            const now = new Date();
+            return (timeStr) => {
+                if (!timeStr) return false;
+                const t = new Date(timeStr);
+                const diff = now - t;
+
+                if (range === "today") return t.toDateString() === now.toDateString();
+                if (range === "week") return diff <= 7 * 86400000;
+                if (range === "month") return t.getMonth() === now.getMonth() && t.getFullYear() === now.getFullYear();
+                return true;
+            };
+        }
+
+        // 获取时间指示器类
+        function getTimeIndicatorClass(timeStr) {
+            if (!timeStr) return "recent-older";
+
+            const now = new Date();
+            const t = new Date(timeStr);
+            const diff = now - t;
+
+            if (t.toDateString() === now.toDateString()) return "recent-today";
+            if (diff <= 7 * 86400000) return "recent-week";
+            if (t.getMonth() === now.getMonth() && t.getFullYear() === now.getFullYear()) return "recent-month";
+            return "recent-older";
+        }
+
+        // 判断时间距离
+        function getTimeAgo(timeStr) {
+            if (!timeStr) return "未知";
+
+            const now = new Date();
+            const t = new Date(timeStr);
+            const diff = now - t;
+
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (days > 30) return formatTime(timeStr);
+            if (days > 0) return `${days}天前`;
+            if (hours > 0) return `${hours}小时前`;
+            if (minutes > 0) return `${minutes}分钟前`;
+            return `${seconds}秒前`;
+        }
+
+        // 切换国家行的展开/折叠状态
+        function toggleCountryRow(countryName) {
+            const cityRows = document.querySelectorAll(`.city-row[data-country="${countryName}"]`);
+            const toggleIcon = document.querySelector(`.toggle-cities[data-country="${countryName}"]`);
+
+            let isCollapsed = toggleIcon.classList.contains('collapsed');
+
+            cityRows.forEach(row => {
+                row.style.display = isCollapsed ? 'table-row' : 'none';
+            });
+
+            if (isCollapsed) {
+                toggleIcon.classList.remove('collapsed');
+                toggleIcon.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            } else {
+                toggleIcon.classList.add('collapsed');
+                toggleIcon.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            }
+        }
+
+        // 渲染地理数据表格
+        function renderGeoTable(data) {
+            tableBody.innerHTML = "";
+            processedData = data;
+
+            if (data.length === 0) {
+                const emptyRow = document.createElement("tr");
+                emptyRow.innerHTML = `<td colspan="5" class="text-center">没有找到匹配的数据</td>`;
+                tableBody.appendChild(emptyRow);
+                return;
+            }
+
+            const total = data.reduce((sum, d) => sum + d.count, 0);
+            totalVisits = total;
+
+            const countrySet = new Set();
+            const citySet = new Set();
+            const countryData = {};
+
+            // 首先按国家分组
+            data.forEach(entry => {
+                countrySet.add(entry.country);
+                if (entry.city && entry.city !== "Unknown" && entry.city !== "-") {
+                    citySet.add(entry.city);
+                }
+
+                // 如果是国家级别的数据，或者是城市级别但没有国家分组
+                if (entry.city === "-" || !countryData[entry.country]) {
+                    countryData[entry.country] = {
+                        country: entry.country,
+                        count: entry.city === "-" ? entry.count : 0,
+                        latest: entry.city === "-" ? entry.latest : null,
+                        cities: []
+                    };
+                }
+
+                // 如果是城市级别的数据
+                if (entry.city !== "-") {
+                    countryData[entry.country].cities.push(entry);
+                    // 更新国家的最新访问时间
+                    if (!countryData[entry.country].latest ||
+                        new Date(entry.latest) > new Date(countryData[entry.country].latest)) {
+                        countryData[entry.country].latest = entry.latest;
+                    }
+                }
+            });
+
+            // 计算国家总访问量
+            Object.values(countryData).forEach(country => {
+                country.cities.forEach(city => {
+                    country.count += city.count;
+                });
+            });
+
+            // 按当前排序方式排序国家
+            const sortedCountries = Object.values(countryData).sort((a, b) => {
+                if (currentSortField === "name") {
+                    return currentSortDirection === "asc" ?
+                        a.country.localeCompare(b.country) :
+                        b.country.localeCompare(a.country);
+                } else if (currentSortField === "recent") {
+                    return currentSortDirection === "asc" ?
+                        new Date(a.latest) - new Date(b.latest) :
+                        new Date(b.latest) - new Date(a.latest);
+                } else { // visits
+                    return currentSortDirection === "asc" ?
+                        a.count - b.count :
+                        b.count - a.count;
+                }
+            });
+
+            // 渲染国家和城市行
+            sortedCountries.forEach(country => {
+                // 添加国家行
+                const countryRow = document.createElement("tr");
+                countryRow.className = "country-row";
+                countryRow.dataset.country = country.country;
+
+                const percentage = (country.count / total) * 100;
+                const timeClass = getTimeIndicatorClass(country.latest);
+                const timeAgo = getTimeAgo(country.latest);
+
+                countryRow.innerHTML = `
+                    <td>
+                        <span class="toggle-cities" data-country="${country.country}" onclick="event.stopPropagation(); toggleCountryRow('${country.country}')">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                        ${country.country}
+                    </td>
+                    <td>-</td>
+                    <td>${country.count}</td>
+                    <td>
+                        <div class="recent-time">
+                            <span class="recent-indicator ${timeClass}"></span>
+                            ${timeAgo}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="percentage-bar" style="width: ${Math.min(percentage * 2, 100)}px"></span>
+                        ${percentage.toFixed(1)}%
+                    </td>
+                `;
+                tableBody.appendChild(countryRow);
+
+                // 按当前排序方式排序城市
+                const sortedCities = country.cities.sort((a, b) => {
+                    if (currentSortField === "name") {
+                        return currentSortDirection === "asc" ?
+                            a.city.localeCompare(b.city) :
+                            b.city.localeCompare(a.city);
+                    } else if (currentSortField === "recent") {
+                        return currentSortDirection === "asc" ?
+                            new Date(a.latest) - new Date(b.latest) :
+                            new Date(b.latest) - new Date(a.latest);
+                    } else { // visits
+                        return currentSortDirection === "asc" ?
+                            a.count - b.count :
+                            b.count - a.count;
+                    }
+                });
+
+                // 添加城市行
+                sortedCities.forEach(city => {
+                    if (city.city === "-" || city.city === "Unknown") return;
+
+                    const cityRow = document.createElement("tr");
+                    cityRow.className = "city-row";
+                    cityRow.dataset.country = country.country;
+                    cityRow.dataset.city = city.city;
+
+                    const cityPercentage = (city.count / total) * 100;
+                    const cityTimeClass = getTimeIndicatorClass(city.latest);
+                    const cityTimeAgo = getTimeAgo(city.latest);
+
+                    cityRow.innerHTML = `
+                        <td>${city.city}</td>
+                        <td>${city.city}</td>
+                        <td>${city.count}</td>
+                        <td>
+                            <div class="recent-time">
+                                <span class="recent-indicator ${cityTimeClass}"></span>
+                                ${cityTimeAgo}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="percentage-bar" style="width: ${Math.min(cityPercentage * 2, 100)}px"></span>
+                            ${cityPercentage.toFixed(1)}%
+                        </td>
+                    `;
+                    tableBody.appendChild(cityRow);
+                });
+            });
+
+            // 更新汇总信息
+            document.getElementById("totalCountries").textContent = countrySet.size;
+            document.getElementById("totalCities").textContent = citySet.size;
+
+            // 根据当前级别显示最多访问来源
+            const topLocationEl = document.getElementById("topLocation");
+            if (levelSelector.value === "city" && data.length > 0 && data[0].isCity) {
+                // 城市级别显示最多访问的城市
+                topLocationEl.textContent = data[0].country;
+                // 更新汇总信息标签
+                document.querySelector('.summary-item:first-child .summary-label').textContent = "总访问城市:";
+                document.querySelector('.summary-item:nth-child(2) .summary-label').textContent = "总访问国家/地区:";
+                document.querySelector('.summary-item:last-child .summary-label').textContent = "最多访问城市:";
+            } else {
+                // 国家级别显示最多访问的国家
+                topLocationEl.textContent = sortedCountries[0]?.country || "--";
+                // 恢复汇总信息标签
+                document.querySelector('.summary-item:first-child .summary-label').textContent = "总访问国家/地区:";
+                document.querySelector('.summary-item:nth-child(2) .summary-label').textContent = "总访问城市:";
+                document.querySelector('.summary-item:last-child .summary-label').textContent = "最多访问来源:";
+            }
+
+            // 默认折叠城市行
+            if (levelSelector.value !== "all") {
+                document.querySelectorAll('.city-row').forEach(row => {
+                    row.style.display = 'none';
+                });
+                document.querySelectorAll('.toggle-cities').forEach(toggle => {
+                    toggle.classList.add('collapsed');
+                    toggle.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                });
+            }
+        }
+
+        // 应用过滤并渲染
+        function applyFiltersAndRender() {
+            const level = levelSelector.value;
+            const range = timeRangeSelector.value;
+            const keyword = searchInput.value.trim().toLowerCase();
+
+            const timeFilter = getTimeFilterFn(range);
+
+            // 先按时间过滤
+            let filtered = allGeoData.filter(d => timeFilter(d.latest));
+
+            // 如果有搜索关键词，再过滤
+            if (keyword) {
+                filtered = filtered.filter(d =>
+                    d.country.toLowerCase().includes(keyword) ||
+                    (d.city && d.city.toLowerCase().includes(keyword))
+                );
+            }
+
+            // 根据级别过滤
+            if (level === "country") {
+                const byCountry = {};
+                filtered.forEach(d => {
+                    if (!byCountry[d.country]) {
+                        byCountry[d.country] = { country: d.country, city: "-", count: 0, latest: d.latest };
+                    }
+                    byCountry[d.country].count += d.count;
+                    if (new Date(d.latest) > new Date(byCountry[d.country].latest)) {
+                        byCountry[d.country].latest = d.latest;
+                    }
+                });
+                filtered = Object.values(byCountry);
+            } else if (level === "city") {
+                // 只显示城市数据，并将城市作为主要分类
+                filtered = filtered.filter(d => d.city && d.city !== "Unknown" && d.city !== "-");
+
+                // 将城市数据转换为主要分类
+                filtered = filtered.map(d => ({
+                    country: d.city, // 将城市放在国家/地区列
+                    city: d.country, // 将国家放在城市列
+                    count: d.count,
+                    latest: d.latest,
+                    isCity: true // 标记这是城市数据
+                }));
+
+                // 合并同名城市的数据
+                const cityMap = {};
+                filtered.forEach(d => {
+                    if (!cityMap[d.country]) {
+                        cityMap[d.country] = { ...d, count: 0 };
+                    }
+                    cityMap[d.country].count += d.count;
+                    if (new Date(d.latest) > new Date(cityMap[d.country].latest)) {
+                        cityMap[d.country].latest = d.latest;
+                    }
+                });
+                filtered = Object.values(cityMap);
+            }
+
+            // 更新表头显示
+            updateTableHeaders();
+
+            // 渲染表格
+            renderGeoTable(filtered);
+        }
+
+        // 导出数据为CSV
+        function exportToCSV() {
+            if (!processedData || processedData.length === 0) {
+                alert('没有数据可导出');
+                return;
+            }
+
+            // 准备CSV内容
+            let csvContent = '国家/地区,城市,访问次数,最近访问,占比\n';
+
+            processedData.forEach(item => {
+                const percentage = ((item.count / totalVisits) * 100).toFixed(1);
+                const row = [
+                    `"${item.country}"`,
+                    `"${item.city || '-'}"`,
+                    item.count,
+                    `"${formatTime(item.latest)}"`,
+                    `${percentage}%`
+                ];
+                csvContent += row.join(',') + '\n';
+            });
+
+            // 创建BLOB对象
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+
+            // 创建下载链接
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `访问地区分析_${new Date().toISOString().slice(0,10)}.csv`);
+            link.style.display = 'none';
+
+            // 模拟点击下载
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 更新表头显示
+        function updateTableHeaders() {
+            const headers = document.querySelectorAll('#geoTable th');
+            const level = levelSelector.value;
+
+            if (level === "city") {
+                // 城市视图
+                headers[0].innerHTML = '城市 <i class="fas fa-sort"></i>';
+                headers[1].innerHTML = '所属国家/地区 <i class="fas fa-sort"></i>';
+            } else {
+                // 国家视图或全部视图
+                headers[0].innerHTML = '国家/地区 <i class="fas fa-sort"></i>';
+                headers[1].innerHTML = '城市 <i class="fas fa-sort"></i>';
+            }
+
+            // 更新当前排序列的图标
+            headers.forEach(th => {
+                if (th.dataset.sort === currentSortField) {
+                    const icon = th.querySelector('i');
+                    icon.className = `fas fa-sort-${currentSortDirection === 'asc' ? 'up' : 'down'}`;
+                }
+            });
+        }
+
+        // 处理表头排序
+        function handleTableHeaderClick(e) {
+            const th = e.target.closest('th');
+            if (!th || !th.classList.contains('sortable')) return;
+
+            const sortField = th.dataset.sort;
+            const icons = document.querySelectorAll('.sortable i');
+
+            // 重置所有图标
+            icons.forEach(icon => {
+                icon.className = 'fas fa-sort';
+            });
+
+            // 设置新的排序方向
+            if (currentSortField === sortField) {
+                currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortField = sortField;
+                currentSortDirection = 'desc';
+            }
+
+            // 更新图标
+            const icon = th.querySelector('i');
+            icon.className = `fas fa-sort-${currentSortDirection === 'asc' ? 'up' : 'down'}`;
+
+            // 重新渲染表格
+            applyFiltersAndRender();
+        }
+
+        // 加载数据
+        geoRef.once("value").then(snapshot => {
+            const data = snapshot.val() || {};
+            allGeoData = [];
+
+            console.log('加载地理数据:', data);
+
+            for (const country in data) {
+                for (const timestamp in data[country]) {
+                    const entry = data[country][timestamp];
+                    allGeoData.push({
+                        country: country,
+                        city: entry.city || "Unknown",
+                        latest: entry.time,
+                        count: 1
+                    });
+                }
+            }
+
+            applyFiltersAndRender();
+        }).catch(error => {
+            console.error('加载地理数据失败:', error);
+            tableBody.innerHTML = `<tr><td colspan="5" class="text-center">加载数据失败: ${error.message}</td></tr>`;
+        });
+
+        // 绑定事件
+        [timeRangeSelector, levelSelector, sortSelector].forEach(sel => {
+            sel.addEventListener("change", applyFiltersAndRender);
+        });
+
+        searchInput.addEventListener("keyup", function(e) {
+            if (e.key === "Enter") {
+                applyFiltersAndRender();
+            }
+        });
+
+        document.getElementById("geoSearchBtn").addEventListener("click", applyFiltersAndRender);
+        document.querySelector('#geoTable thead').addEventListener('click', handleTableHeaderClick);
+        exportBtn.addEventListener('click', exportToCSV);
+
+        // 全局定义toggleCountryRow函数
+        window.toggleCountryRow = toggleCountryRow;
+    });
+    </script>
+</body>
+</html>

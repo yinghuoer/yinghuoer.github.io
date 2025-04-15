@@ -236,15 +236,45 @@ nav ul li a i {
     justify-content: center; /* 垂直居中 */
 }
 
+/* 新样式：白色背景 + 彩色边框 */
+.hero-text-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+}
+
+.hero-text-container::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: linear-gradient(135deg, #ADE8F4, #FFD6FF, #E7C6FF);
+    border-radius: 16px;
+    z-index: -1;
+}
+
 .hero h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
+    color: #333;
+    background: linear-gradient(135deg, #FFAFCC, #E7C6FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
 }
 
 .hero p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    opacity: 0.9;
+    color: #555;
+    font-weight: 500;
 }
 
 .hero-buttons {

@@ -28,10 +28,12 @@ export default function Header() {
 
         <div className="nav-links">
           <Link href="/">首页</Link>
-          <Link href="/dicebot">骰点功能</Link>
-          <Link href="/character">角色设定</Link>
+          <Link href="/blog">时空枢纽</Link>
+          <Link href="/documents">异时空存档点</Link>
+          <Link href="/dicebot">功能简览</Link>
+          <Link href="/videos">跑团视频</Link>
           <Link href="/messages">留言板</Link>
-          <Link href="/about">关于</Link>
+          <Link href="/about">好奇豹豹</Link>
         </div>
 
         <div className="auth-buttons">
@@ -99,10 +101,12 @@ export default function Header() {
         </div>
         <div className="mobile-nav-links">
           <Link href="/" onClick={toggleMobileMenu}>首页</Link>
-          <Link href="/dicebot" onClick={toggleMobileMenu}>骰点功能</Link>
-          <Link href="/character" onClick={toggleMobileMenu}>角色设定</Link>
+          <Link href="/blog" onClick={toggleMobileMenu}>时空枢纽</Link>
+          <Link href="/documents" onClick={toggleMobileMenu}>异时空存档点</Link>
+          <Link href="/dicebot" onClick={toggleMobileMenu}>功能简览</Link>
+          <Link href="/videos" onClick={toggleMobileMenu}>跑团视频</Link>
           <Link href="/messages" onClick={toggleMobileMenu}>留言板</Link>
-          <Link href="/about" onClick={toggleMobileMenu}>关于</Link>
+          <Link href="/about" onClick={toggleMobileMenu}>好奇豹豹</Link>
         </div>
         <div className="mobile-auth-buttons">
           {status === 'loading' ? (

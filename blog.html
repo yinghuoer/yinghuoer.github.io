@@ -7,16 +7,56 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* 浅蓝糖果色主题变量 */
+        /* 使用与index.html相同的主题变量，保持一致性 */
         :root {
-            --primary-color: #79C2F2;    /* 浅蓝糖果色 */
-            --secondary-color: #A5DEF1;  /* 浅海蓝 */
-            --accent-color: #5DADE2;     /* 中蓝色，用于强调 */
-            --light-bg: #E8F6FD;         /* 极浅蓝背景 */
-            --hover-color: #7BD4F1;      /* 浅蓝悬停色 */
-            --card-bg: #FFFFFF;          /* 白色卡片背景 */
-            --box-shadow: 0 4px 15px rgba(121, 194, 242, 0.2); /* 浅蓝阴影 */
-            --border-radius: 12px;       /* 圆角半径 */
+            --primary-color: #FFAFCC; /* 深粉 - 主色调 */
+            --secondary-color: #FFD6FF; /* 浅粉 */
+            --accent-color: #E7C6FF; /* 浅紫 */
+            --blue-primary: #ADE8F4; /* 深蓝 */
+            --blue-secondary: #CAF0F8; /* 浅蓝 */
+            --text-color: #333;
+            --light-text: #fff;
+            --background-color: #f9f9f9;
+            --card-bg: #fff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* 高对比度标题样式 */
+        .hero {
+            background-color: #333;
+            padding: 1.2rem 0;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .hero h2 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.6rem;
+            margin-right: 1rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            color: #f0f0f0;
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: normal;
+            position: relative;
+            padding-left: 1rem;
+            max-width: 600px;
+            border-left: 2px solid rgba(255, 175, 204, 0.6);
         }
 
         /* 博客页面特定样式 */
@@ -42,7 +82,7 @@
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--secondary-color);
-            text-shadow: 1px 1px 2px rgba(121, 194, 242, 0.3);
+            text-shadow: 1px 1px 2px rgba(255, 175, 204, 0.3);
         }
 
         .blog-categories {
@@ -64,7 +104,7 @@
         }
 
         .blog-categories a:hover {
-            background-color: rgba(121, 194, 242, 0.1);
+            background-color: rgba(255, 175, 204, 0.1);
             color: var(--primary-color);
             transform: translateX(5px);
         }
@@ -75,7 +115,7 @@
         }
 
         .blog-categories a.active {
-            background-color: rgba(121, 194, 242, 0.2);
+            background-color: rgba(255, 175, 204, 0.2);
             color: var(--primary-color);
             font-weight: 600;
         }
@@ -266,18 +306,22 @@
         .tag {
             display: inline-block;
             padding: 0.3rem 0.8rem;
-            background-color: rgba(121, 194, 242, 0.1);
-            color: var(--primary-color);
+            background-color: #bde0fe; /* 新的浅蓝色背景 */
+            color: #1a5f8a; /* 调整的深蓝色文字，增强可读性 */
             border-radius: 20px;
             font-size: 0.8rem;
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
             transition: var(--transition);
+            border: 1px solid #bde0fe; /* 边框颜色与背景一致 */
+            font-weight: 500; /* 增加字重提高可读性 */
         }
 
         .tag:hover {
-            background-color: var(--primary-color);
+            background-color: #a2d2ff; /* 新的悬停背景色 */
             color: white;
+            box-shadow: 0 2px 5px rgba(162, 210, 255, 0.5); /* 调整阴影效果 */
+            transform: translateY(-2px); /* 轻微上浮效果 */
         }
 
         /* 响应式设计 */
@@ -368,7 +412,7 @@
 
         <div class="search-bar" style="margin: 2rem 0; max-width: 600px; display: flex; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); border-radius: 30px; overflow: hidden;">
             <input type="text" class="search-input" placeholder="搜索文章..." style="flex: 1; padding: 0.8rem 1rem; border: 1px solid #e0e0e0; border-right: none; border-radius: 30px 0 0 30px; font-size: 1rem; transition: all 0.3s ease;">
-            <button class="search-btn" style="padding: 0.8rem 1.5rem; background-color: #79C2F2; color: white; border: none; border-radius: 0 30px 30px 0; cursor: pointer; transition: all 0.3s ease;"><i class="fas fa-search"></i></button>
+            <button class="search-btn" style="padding: 0.8rem 1.5rem; background-color: #FFAFCC; color: white; border: none; border-radius: 0 30px 30px 0; cursor: pointer; transition: all 0.3s ease;"><i class="fas fa-search"></i></button>
         </div>
 
         <div class="blog-container">
@@ -385,7 +429,7 @@
                     <li><a href="#"><i class="fas fa-lightbulb"></i> 创意灵感</a></li>
                 </ul>
 
-                <h3>热门标签</h3>
+                <h3 style="color: #1a5f8a; border-bottom: 2px solid #a2d2ff;">热门标签</h3>
                 <div>
                     <a href="#" class="tag">COC</a>
                     <a href="#" class="tag">DND</a>
@@ -793,5 +837,10 @@
         });
     </script>
     <script src="paw-effect.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="clicks_count.js"></script>
+
 </body>
 </html>

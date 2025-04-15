@@ -7,6 +7,42 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* 高对比度标题样式 */
+        .hero {
+            background-color: #333;
+            padding: 1.2rem 0;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .hero h2 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.6rem;
+            margin-right: 1rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            color: #f0f0f0;
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: normal;
+            position: relative;
+            padding-left: 1rem;
+            max-width: 600px;
+            border-left: 2px solid rgba(255, 175, 204, 0.6);
+        }
+
         /* 功能简览页面特定样式 */
         .command-card {
             background-color: var(--card-bg);
@@ -1832,5 +1868,9 @@
         });
     </script>
     <script src="paw-effect.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="clicks_count.js"></script>
 </body>
 </html>
