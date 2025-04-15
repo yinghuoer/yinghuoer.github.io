@@ -188,18 +188,138 @@ if (!isAnalyticsPage) {
 
 // ✅ IP 地理记录（跳过 analytics）
 if (!isAnalyticsPage) {
-    fetch('https://ipapi.co/json/')
-        .then(res => res.json())
-        .then(data => {
-            var country = data.country_name || "Unknown";
-            var city = data.city || "Unknown";
+    // 检查缓存中是否有地理位置数据
+    var cachedGeoData = localStorage.getItem('foxseal_geoData');
+    var lastGeoFetch = localStorage.getItem('foxseal_lastGeoFetch');
+    var now = Date.now();
+    var ONE_DAY = 24 * 60 * 60 * 1000; // 24小时的毫秒数
+
+    // 如果有缓存数据且不超过24小时，直接使用缓存数据
+    if (cachedGeoData && lastGeoFetch && (now - parseInt(lastGeoFetch)) < ONE_DAY) {
+        try {
+            var geoData = JSON.parse(cachedGeoData);
+            var country = geoData.country_name || "Unknown";
+            var city = geoData.city || "Unknown";
             var timestamp = Date.now();
             db.ref(`geo/${country}/${timestamp}`).set({
                 city: city,
                 time: new Date().toISOString()
             });
-        })
-        .catch(() => console.warn("IP 地理定位失败"));
+            console.log("使用缓存的地理位置数据:", country, city);
+        } catch (e) {
+            console.warn("解析缓存的地理数据失败:", e);
+            // 缓存数据无效，清除缓存
+            localStorage.removeItem('foxseal_geoData');
+            localStorage.removeItem('foxseal_lastGeoFetch');
+        }
+    } else {
+        // 尝试多个地理位置 API
+        fetchGeoLocation()
+            .then(data => {
+                if (!data) throw new Error("所有API请求失败");
+
+                var country = data.country_name || "Unknown";
+                var city = data.city || "Unknown";
+                var timestamp = Date.now();
+
+                // 存储到 Firebase
+                db.ref(`geo/${country}/${timestamp}`).set({
+                    city: city,
+                    time: new Date().toISOString()
+                });
+
+                // 缓存地理数据
+                localStorage.setItem('foxseal_geoData', JSON.stringify(data));
+                localStorage.setItem('foxseal_lastGeoFetch', now.toString());
+
+                console.log("获取并缓存新的地理位置数据:", country, city);
+            })
+            .catch(error => {
+                console.warn("地理位置获取失败:", error);
+
+                // 如果所有API都失败，使用“未知”作为默认值
+                var timestamp = Date.now();
+                db.ref(`geo/Unknown/${timestamp}`).set({
+                    city: "Unknown",
+                    time: new Date().toISOString()
+                });
+            });
+    }
+}
+
+// 尝试多个地理位置 API
+async function fetchGeoLocation() {
+    // 尝试的API列表
+    const apis = [
+        { url: 'https://ipapi.co/json/', responseType: 'json' },
+        { url: 'https://ipinfo.io/json', responseType: 'json' },
+        { url: 'https://api.ipdata.co?api-key=test', responseType: 'json' },
+        { url: 'https://api.ipgeolocation.io/ipgeo?apiKey=API_KEY', responseType: 'json' } // 替换为您的API密钥
+    ];
+
+    // 对每个API进行尝试，直到成功或全部失败
+    for (const api of apis) {
+        try {
+            const response = await fetch(api.url, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' },
+                timeout: 5000 // 5秒超时
+            });
+
+            if (!response.ok) {
+                console.warn(`API ${api.url} 返回状态码: ${response.status}`);
+                continue; // 尝试下一个API
+            }
+
+            const data = await response.json();
+
+            // 根据不同API的响应格式标准化数据
+            return standardizeGeoData(data, api.url);
+
+        } catch (error) {
+            console.warn(`API ${api.url} 请求失败:`, error);
+            // 继续尝试下一个API
+        }
+    }
+
+    // 所有API都失败了
+    return null;
+}
+
+// 标准化不同API的地理数据格式
+function standardizeGeoData(data, apiUrl) {
+    // 默认值
+    let standardData = {
+        country_name: "Unknown",
+        city: "Unknown"
+    };
+
+    try {
+        if (apiUrl.includes('ipapi.co')) {
+            // ipapi.co格式
+            standardData.country_name = data.country_name || data.country || "Unknown";
+            standardData.city = data.city || "Unknown";
+        }
+        else if (apiUrl.includes('ipinfo.io')) {
+            // ipinfo.io格式
+            standardData.country_name = data.country_name || data.country || "Unknown";
+            standardData.city = data.city || "Unknown";
+        }
+        else if (apiUrl.includes('ipdata.co')) {
+            // ipdata.co格式
+            standardData.country_name = data.country_name || "Unknown";
+            standardData.city = data.city || "Unknown";
+        }
+        else if (apiUrl.includes('ipgeolocation.io')) {
+            // ipgeolocation.io格式
+            standardData.country_name = data.country_name || "Unknown";
+            standardData.city = data.city || "Unknown";
+        }
+    } catch (e) {
+        console.warn('标准化地理数据失败:', e);
+    }
+
+    return standardData;
 }
 
 // ✅ 记录页面停留时间
