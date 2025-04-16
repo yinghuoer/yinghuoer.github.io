@@ -23,42 +23,93 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     .counter-box {
-      position: fixed;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid #ccc;
-      padding: 8px 12px;
-      border-radius: 10px;
+      display: flex;
+      align-items: center;
       font-family: sans-serif;
       font-size: 14px;
       color: #333;
-      z-index: 99999;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 5px;
+      transition: opacity 0.3s ease;
+      position: relative;
     }
 
-    #paw-counter {
-      bottom: 65px;
+    .counter-box:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -7.5px;
+      height: 20px;
+      width: 1px;
+      background-color: rgba(0, 0, 0, 0.1);
     }
 
-    #sticker-counter {
-      bottom: 20px;
+    .counter-box i {
+      margin-right: 5px;
+      font-size: 16px;
+    }
+
+    #paw-counter i {
+      color: #FFAFCC;
+    }
+
+    #sticker-counter i {
+      color: #A2D2FF;
     }
   `;
   document.head.appendChild(style);
 
-  // 创建计数器
+  // 创建计数器容器
+  const counterContainer = document.createElement('div');
+  counterContainer.style.position = 'fixed';
+  counterContainer.style.left = '50%';
+  counterContainer.style.bottom = '20px';
+  counterContainer.style.transform = 'translateX(-50%)';
+  counterContainer.style.display = 'flex';
+  counterContainer.style.flexDirection = 'row';
+  counterContainer.style.alignItems = 'center';
+  counterContainer.style.justifyContent = 'center';
+  counterContainer.style.gap = '15px';
+  counterContainer.style.zIndex = '99999';
+  counterContainer.style.background = 'rgba(255, 255, 255, 0.5)';
+  counterContainer.style.backdropFilter = 'blur(5px)';
+  counterContainer.style.borderRadius = '30px';
+  counterContainer.style.padding = '8px 15px';
+  counterContainer.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+  counterContainer.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+  counterContainer.style.transition = 'opacity 0.3s ease';
+  document.body.appendChild(counterContainer);
+
+  // 创建爪印计数器
   const pawCounter = document.createElement('div');
   pawCounter.id = 'paw-counter';
   pawCounter.className = 'counter-box';
-  pawCounter.textContent = '爪印数量：0';
-  document.body.appendChild(pawCounter);
+  pawCounter.innerHTML = '<i class="fas fa-paw"></i>爪印：0';
+  counterContainer.appendChild(pawCounter);
 
+  // 创建贴纸计数器
   const stickerCounter = document.createElement('div');
   stickerCounter.id = 'sticker-counter';
   stickerCounter.className = 'counter-box';
-  stickerCounter.textContent = '小狐狸贴纸！：0';
-  document.body.appendChild(stickerCounter);
+  stickerCounter.innerHTML = '<i class="fas fa-star"></i>贴纸：0';
+  counterContainer.appendChild(stickerCounter);
+
+  // 添加自动淡出效果
+  let fadeTimeout;
+  const fadeCounters = () => {
+    counterContainer.style.opacity = '0.4';
+  };
+
+  // 初始设置低透明度
+  setTimeout(fadeCounters, 2000);
+
+  // 鼠标移入时显示
+  counterContainer.addEventListener('mouseenter', () => {
+    clearTimeout(fadeTimeout);
+    counterContainer.style.opacity = '1';
+  });
+
+  // 鼠标移出时淡出
+  counterContainer.addEventListener('mouseleave', () => {
+    fadeTimeout = setTimeout(fadeCounters, 1000);
+  });
 
   // 预加载图片
   const pawImage = new Image();
@@ -81,6 +132,13 @@ document.addEventListener('DOMContentLoaded', function() {
   let stickerCount = 0;
   const pawCounterEl = document.getElementById('paw-counter');
   const stickerCounterEl = document.getElementById('sticker-counter');
+
+  // 点击时显示计数器
+  const showCounters = () => {
+    clearTimeout(fadeTimeout);
+    counterContainer.style.opacity = '1';
+    fadeTimeout = setTimeout(fadeCounters, 3000);
+  };
 
   // 小狐狸贴纸数组
   const stickerImages = [sticker1Image, sticker2Image];
@@ -159,7 +217,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 更新贴纸计数
         stickerCount++;
-        stickerCounterEl.textContent = `小狐狸贴纸！：${stickerCount}`;
+        stickerCounterEl.innerHTML = `<i class="fas fa-star"></i>贴纸：${stickerCount}`;
+
+        // 显示计数器
+        showCounters();
 
         // 贴纸不会消失
       } else {
@@ -204,7 +265,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 更新爪印计数
         pawCount++;
-        pawCounterEl.textContent = `爪印数量：${pawCount}`;
+        pawCounterEl.innerHTML = `<i class="fas fa-paw"></i>爪印：${pawCount}`;
+
+        // 显示计数器
+        showCounters();
 
         // 淡出并销毁
         setTimeout(() => container.classList.add('fade-out'), 5000);
