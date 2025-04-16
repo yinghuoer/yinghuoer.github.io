@@ -255,6 +255,7 @@ Promise.all([
         else if (name === "messages") name = "留言板";
         else if (name === "about") name = "好奇豹豹";
         else if (name === "analytics") name = "数据洞察";
+        else if (name === "dicebot-guide") name = "骰子指南";
 
         labels.push(name);
         values.push(data[key]);

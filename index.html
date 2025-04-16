@@ -3,10 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>狐狸小姐 (Miss Foxsan) - 骰点机器人</title>
+    <title>狐狸小姐 (Miss Foxsan) - 个人主页</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* 页面加载动画 */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; /* 添加顶部填充，确保锚点跳转时目标部分不被导航栏遮挡 */
+        }
+
+        body {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        /* 返回顶部按钮样式 */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFAFCC, #FFC8DD);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
+            z-index: 1000;
+        }
+
+        #back-to-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #back-to-top:hover {
+            background: linear-gradient(135deg, #FFC8DD, #FFAFCC);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        /* 滑入动画效果 */
+        .portfolio-item, .interaction-card, .character-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .portfolio-item.animate, .interaction-card.animate, .character-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 微妙的背景元素 */
+        main {
+            position: relative;
+            overflow: hidden;
+        }
+
+        main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="1" fill="%23FFAFCC" fill-opacity="0.05"/></svg>');
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 全屏 Hero Banner 样式 */
+        .fullscreen-hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 1;
+            transform: scale(1.05);
+            animation: slowZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5));
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.6);
+            animation: fadeInDown 1.2s ease-out;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 1);
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.6);
+            animation: fadeInDown 1.2s ease-out 0.2s both;
+            font-weight: 600;
+        }
+
+        .hero-description {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 1);
+            margin-bottom: 2.5rem;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.6);
+            animation: fadeInDown 1.2s ease-out 0.4s both;
+            line-height: 1.8;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: fadeInUp 1.2s ease-out 0.6s both;
+        }
+
+        .hero-btn {
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .primary-hero-btn {
+            background: linear-gradient(135deg, #FFAFCC, #FFC8DD);
+            color: white;
+            border: none;
+        }
+
+        .secondary-hero-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-btn:hover::after {
+            left: 100%;
+        }
+
+        .primary-hero-btn:hover {
+            background: linear-gradient(135deg, #FFC8DD, #FFAFCC);
+            color: white;
+        }
+
+        .secondary-hero-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+        }
+
+        /* 滚动指示器 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+            animation: fadeInUp 1.2s ease-out 1s both;
+        }
+
+        .mouse {
+            width: 30px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .wheel {
+            width: 6px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 3px;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scrollWheel 2s ease-out infinite;
+        }
+
+        @keyframes scrollWheel {
+            0% { top: 10px; opacity: 1; }
+            100% { top: 30px; opacity: 0; }
+        }
+
+        .scroll-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* 页面装饰元素 */
+        .page-decoration {
+            position: relative;
+            height: 5px;
+            background: linear-gradient(90deg, #FFAFCC, #A2D2FF, #FFAFCC);
+            background-size: 200% 100%;
+            animation: gradientMove 8s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .decoration-line {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: decorationLineMove 3s linear infinite;
+        }
+
+        @keyframes decorationLineMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(200%); }
+        }
+
+        /* 导航栏增强 */
+        .header-container {
+            position: relative;
+        }
+
+        nav ul li a {
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        nav ul li a:hover::after, nav ul li a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
         /* 历史记录相关样式 */
         .stats-container {
             display: flex;
@@ -115,6 +490,658 @@
             margin-bottom: 0.5rem;
         }
 
+        /* 个人介绍部分样式 */
+        .about-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 3rem;
+        }
+
+        .about-content {
+            line-height: 1.8;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* 新的关于我部分样式 */
+        .about-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .about-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 5px solid white;
+            margin-right: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.05);
+        }
+
+        .about-header-text {
+            flex: 1;
+        }
+
+        .about-name {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .about-tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .skill-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .skill-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .skill-badge i {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .about-section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            display: inline-block;
+        }
+
+        .about-story, .about-mission, .about-thanks {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+        }
+
+        .about-thanks .character-quote {
+            font-style: italic;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .about-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about-image {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+                width: 150px;
+                height: 150px;
+            }
+
+            .skill-badges {
+                justify-content: center;
+            }
+        }
+
+        /* 作品集样式 */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-item {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease, filter 0.5s ease;
+        }
+
+        .portfolio-item:hover .portfolio-image {
+            transform: scale(1.05);
+            filter: brightness(1.05);
+        }
+
+        .portfolio-info {
+            padding: 1.5rem;
+        }
+
+        .portfolio-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .portfolio-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-tag {
+            background-color: #bde0fe;
+            color: #1a5f8a;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* 新的按钮样式 */
+        .portfolio-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #A2D2FF, #BDE0FE);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(162, 210, 255, 0.3);
+        }
+
+        .portfolio-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(162, 210, 255, 0.5);
+            color: white;
+        }
+
+        .portfolio-button i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-button:hover i {
+            transform: translateX(5px);
+        }
+
+        .interaction-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #FFAFCC, #FFC8DD);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 175, 204, 0.3);
+        }
+
+        .interaction-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 175, 204, 0.5);
+            color: white;
+        }
+
+        .interaction-button i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .interaction-button:hover i {
+            transform: translateX(5px);
+        }
+
+        /* 互动部分样式 */
+        .interaction-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .interaction-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .interaction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .interaction-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Q&A板块样式 */
+        .qa-section {
+            padding: 3rem 0;
+            background: linear-gradient(135deg, #f0f8ff, #f5f5f5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qa-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="20" fill="%23A2D2FF" fill-opacity="0.05"/></svg>');
+            background-size: 100px 100px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .qa-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .qa-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px dashed rgba(162, 210, 255, 0.3);
+        }
+
+        .qa-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #A2D2FF, #BDE0FE);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            box-shadow: 0 10px 20px rgba(162, 210, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .qa-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .qa-title {
+            flex: 1;
+        }
+
+        .qa-title h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #A2D2FF, #BDE0FE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .qa-title p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .qa-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .qa-item {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .qa-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .qa-question {
+            background: linear-gradient(135deg, #A2D2FF, #BDE0FE);
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .qa-question i {
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .qa-question h3 {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            flex: 1;
+        }
+
+        .qa-answer {
+            padding: 1.5rem;
+            background: white;
+        }
+
+        .qa-answer p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .qa-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .qa-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .qa-question {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .qa-question i {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* 彩蛋部分样式 */
+        .easter-egg-section {
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f9fa, #f0f4f8);
+            margin-top: 3rem;
+        }
+
+        .easter-egg-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="%23FFAFCC" fill-opacity="0.05"/></svg>');
+            background-size: 100px 100px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .easter-egg-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .easter-egg-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px dashed rgba(255, 175, 204, 0.3);
+        }
+
+        .easter-egg-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FFAFCC, #FFC8DD);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            box-shadow: 0 10px 20px rgba(255, 175, 204, 0.3);
+            flex-shrink: 0;
+        }
+
+        .easter-egg-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .easter-egg-title {
+            flex: 1;
+        }
+
+        .easter-egg-title h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .easter-egg-title p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .easter-egg-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .easter-egg-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            height: 100%;
+        }
+
+        .easter-egg-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .easter-egg-card-icon {
+            width: 70px;
+            background: linear-gradient(to bottom, #FFAFCC, #FFC8DD);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .easter-egg-card:nth-child(2n) .easter-egg-card-icon {
+            background: linear-gradient(to bottom, #BDE0FE, #A2D2FF);
+        }
+
+        .easter-egg-card:nth-child(3n) .easter-egg-card-icon {
+            background: linear-gradient(to bottom, #CDB4DB, #A2D2FF);
+        }
+
+        .easter-egg-card-content {
+            padding: 1.5rem;
+            flex: 1;
+        }
+
+        .easter-egg-card-content h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.8rem;
+        }
+
+        .easter-egg-card-content p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .easter-egg-action {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .easter-egg-action p {
+            margin-bottom: 1.5rem;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .easter-egg-button {
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 175, 204, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .easter-egg-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .easter-egg-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 175, 204, 0.4);
+        }
+
+        .easter-egg-button:hover::before {
+            left: 100%;
+        }
+
+        .button-text {
+            margin-right: 0.8rem;
+        }
+
+        .button-icon {
+            font-size: 1.2rem;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .easter-egg-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .easter-egg-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .easter-egg-content {
+                grid-template-columns: 1fr;
+            }
+
+            .easter-egg-card {
+                flex-direction: column;
+            }
+
+            .easter-egg-card-icon {
+                width: 100%;
+                height: 60px;
+            }
+        }
+
+        /* 响应式调整 */
         @media (max-width: 768px) {
             .timeline::after {
                 left: 31px;
@@ -133,10 +1160,22 @@
             .timeline-right {
                 left: 0;
             }
+
+            .about-image {
+                float: none;
+                margin: 0 auto 1.5rem;
+                display: block;
+                width: 100%;
+                max-width: 300px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="page-decoration">
+        <div class="decoration-line"></div>
+    </div>
+
     <header>
         <div class="header-container">
             <div class="logo">
@@ -145,10 +1184,10 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="index_new.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
                     <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
                     <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
-                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 功能简览</a></li>
+                    <li><a href="dicebot-guide.html"><i class="fas fa-dice"></i> 骰子指南</a></li>
                     <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
                     <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
                     <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
@@ -157,230 +1196,568 @@
         </div>
     </header>
 
-    <div class="hero">
+    <div class="fullscreen-hero">
+        <div class="hero-background" style="background-image: url('image/banner.png');"></div>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <div class="hero-flex">
-                <div class="hero-image-container">
-                    <img src="image/missfoxtrasp.png" alt="Miss Foxsan" class="hero-image">
-                </div>
-                <div class="hero-text">
-                    <div class="hero-text-container">
-                        <h2>欢迎来到我的世界！</h2>
-                        <p id="total-counter">载入总访问中…</p>
-                        <p id="daily-counter">载入今日访问中…</p>
-                        <p>——一位少女微笑在此迎接，另一位持扇旁观正在记录。<br>
-                            #页面文字间仿佛掠过两道身影，一明一暗，交错而立</p>
-                        <div class="hero-buttons">
-                            <a href="dicebot.html" class="btn primary-btn">功能简览</a>
-                            <a href="https://space.bilibili.com/" target="_blank" class="btn secondary-btn">访问B站主页</a>
-                        </div>
-                    </div>
-                </div>
+            <h1 class="hero-title">欢迎来到我的世界！</h1>
+            <p class="hero-subtitle" id="total-counter">载入总访问中…</p>
+            <p class="hero-subtitle" id="daily-counter">载入今日访问中…</p>
+            <p class="hero-description">——一位少女微笑在此迎接，另一位持扇旁观正在记录。<br>
+                #页面文字间仿佛掠过两道身影，一明一暗，交错而立</p>
+            <div class="hero-buttons">
+                <a href="#about" class="hero-btn primary-hero-btn">了解我</a>
+                <a href="#portfolio" class="hero-btn secondary-hero-btn">查看作品</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <div>
+                <span class="scroll-text">向下滚动</span>
             </div>
         </div>
     </div>
 
     <main>
-        <section class="features">
-            <h2 class="section-title">主要功能</h2>
-            <div class="feature-cards">
-                <div class="feature-card" onclick="window.location.href='dicebot.html'" style="cursor: pointer;">
-                    <div class="feature-icon"><i class="fas fa-dice-d20"></i></div>
-                    <h3>骰点服务</h3>
-                    <p>支持多种TRPG规则系统的骰点，包括COC、DND等</p>
-                    <div class="feature-link" style="margin-top: 10px;">
-                        <a href="dicebot.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
+        <!-- 个人介绍部分 -->
+        <section id="about" class="about-section">
+            <h2 class="section-title">关于我</h2>
+            <div class="about-content">
+                <div class="about-header">
+                    <img src="image/qq03.jpg" class="about-image">
+                    <div class="about-header-text">
+                        <h2 class="about-name">荧惑</h2>
+                        <div class="about-tagline">“让跑团更简单，让故事更精彩”</div>
+                        <div class="skill-badges">
+                            <span class="skill-badge"><i class="fas fa-dice-d20"></i> TRPG爱好者</span>
+                            <span class="skill-badge"><i class="fas fa-code"></i> 骰点机器人开发者</span>
+                            <span class="skill-badge"><i class="fas fa-video"></i> 内容创作者</span>
+                            <span class="skill-badge"><i class="fas fa-book"></i> 规则研究者</span>
+                            <span class="skill-badge"><i class="fas fa-users"></i> 社区贡献者</span>
+                        </div>
                     </div>
                 </div>
-                <div class="feature-card" onclick="window.location.href='character.html'" style="cursor: pointer;">
-                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
-                    <h3>AI对话</h3>
-                    <p>与Miss Foxsan进行有趣的AI对话互动</p>
-                    <div class="feature-link" style="margin-top: 10px;">
-                        <a href="about.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
-                    </div>
+
+                <div class="about-story">
+                    <div class="about-section-title">我的故事</div>
+                    <p>我是荧惑，一名TRPG（桌面角色扮演游戏）爱好者和内容创作者，运营着一个免费公益骰点机器人——狐狸小姐（Miss Foxsan）。</p>
+                    <p>我的骰点机器人项目始于2021年初，最初只是一个简单的骰点工具，用于满足我自己和朋友们的跑团需求。随着时间的推移，项目不断发展壮大，功能也越来越丰富。</p>
                 </div>
-                <div class="feature-card" onclick="window.location.href='about.html'" style="cursor: pointer;">
-                    <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
-                    <h3>娱乐功能</h3>
-                    <p>内置多种娱乐小游戏和互动功能</p>
-                    <div class="feature-link" style="margin-top: 10px;">
-                        <a href="about.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
-                    </div>
+
+                <div class="about-mission">
+                    <div class="about-section-title">我的使命</div>
+                    <p>除了开发和维护Miss Foxsan，我还在B站上分享TRPG相关的视频内容，包括跑团实录、规则讲解和游戏体验等。希望通过这些内容，能够让更多人了解和喜欢上TRPG这种充满想象力和创造力的游戏形式。</p>
+                    <p>我的创作理念是“让跑团更简单，让故事更精彩”。我希望通过提供便捷、友好的工具和内容，让玩家们能够专注于故事的创作和角色的扮演，而不是被繁琐的规则和计算所困扰。</p>
                 </div>
-                <div class="feature-card" onclick="document.querySelector('.stats-overview').scrollIntoView({behavior: 'smooth'})" style="cursor: pointer;">
-                    <div class="feature-icon"><i class="fas fa-history"></i></div>
-                    <h3>历史记录</h3>
-                    <p>详细的跑团历史记录和数据统计</p>
-                    <div class="feature-link" style="margin-top: 10px;">
-                        <a href="javascript:void(0)" onclick="document.querySelector('.stats-overview').scrollIntoView({behavior: 'smooth'})" style="color: var(--primary-color); font-size: 0.9rem;">查看数据 <i class="fas fa-arrow-down"></i></a>
+
+                <div class="about-thanks">
+                    <div class="about-section-title">感谢</div>
+                    <div class="character-quote">
+                        “特别感谢炽热佬、014老师、白鱼佬、茶叶佬等骰主朋友们提供的协助，以及错误佬的技术协助。因为有大家的帮助，才有现在的狐狸小姐！”
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="platforms">
-            <h2 class="section-title">支持平台</h2>
-            <div class="platform-container">
-                <div class="platform">
-                    <img src="image/dc01.jpg" alt="Discord" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
-                    <h3>Discord</h3>
-                    <p>在Discord服务器上使用骰点功能</p>
-                    <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank" class="btn small-btn">添加到服务器</a>
-                </div>
-                <div class="platform">
-                    <img src="image/qq01.jpg" alt="QQ初号机" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
-                    <h3>QQ初号机</h3>
-                    <p>西幻/现代风格的骰点机器人</p>
-                    <div style="text-align: center; margin: 1rem 0;">
-                        <p><strong>QQ号码：</strong> 3989736640</p>
+        <!-- 作品集部分 -->
+        <section id="portfolio">
+            <h2 class="section-title">我的作品</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <img src="image/dc01.jpg" alt="骰点机器人" class="portfolio-image">
+                    <div class="portfolio-info">
+                        <h3>Miss Foxsan骰点机器人</h3>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">TRPG</span>
+                            <span class="portfolio-tag">骰点服务</span>
+                            <span class="portfolio-tag">原创角色</span>
+                        </div>
+                        <p>我开发的免费公益骰点机器人，支持多种规则系统，包括COC、DND等。提供骰点、AI对话、娱乐功能等多种服务。</p>
+                        <a href="dicebot-guide.html" class="portfolio-button">查看详情 <i class="fas fa-arrow-right"></i></a>
                     </div>
-                    <a href="#" class="btn small-btn">添加初号机</a>
                 </div>
-                <div class="platform">
-                    <img src="image/qq02.jpg" alt="QQ二号机" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
-                    <h3>QQ二号机</h3>
-                    <p>古风/和风风格的骰点机器人</p>
-                    <div style="text-align: center; margin: 1rem 0;">
-                        <p><strong>QQ号码：</strong> 1783352478</p>
-                        <p><strong>用户群：</strong> 241639081</p>
-                    </div>
-                    <a href="https://qm.qq.com/q/DwGV5e5ECk" class="btn small-btn">添加二号机</a>
-                </div>
-            </div>
-        </section>
 
-        <section class="stats-overview">
-            <h2 class="section-title">数据统计</h2>
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-dice-d20"></i></div>
-                    <div class="stat-value">222,190</div>
-                    <div class="stat-label">累计响应指令</div>
+                <div class="portfolio-item">
+                    <img src="image/xiaoshimei.png" alt="骰点机器人" class="portfolio-image">
+                    <div class="portfolio-info">
+                        <h3>霜尾游（江月游者）</h3>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">TRPG</span>
+                            <span class="portfolio-tag">骰点服务</span>
+                            <span class="portfolio-tag">古风角色</span>
+                        </div>
+                        <p>我设计的第二个骰点机器人角色，采用古风/和风风格，为喜欢东方风格的玩家提供骰点服务。</p>
+                        <a href="dicebot-guide.html" class="portfolio-button">查看详情 <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-users"></i></div>
-                    <div class="stat-value">1,072</div>
-                    <div class="stat-label">服务用户数</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
-                    <div class="stat-value">1,017</div>
-                    <div class="stat-label">log跑团日志</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
-                    <div class="stat-value">1,413,873</div>
-                    <div class="stat-label">总跑团消息（条）</div>
-                </div>
-            </div>
-        </section>
 
-        <section class="history-milestones">
-            <h2 class="section-title">发展历程</h2>
-            <div class="timeline">
-                <div class="timeline-item timeline-left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024年6月</div>
-                        <h3>Miss Foxsan骰娘诞生！</h3>
-                        <p>Miss Foxsan正式启动，接入海豹框架，主营qq平台。</p>
+                <div class="portfolio-item">
+                    <img src="image/yueguang.jpg" alt="跑团视频" class="portfolio-image">
+                    <div class="portfolio-info">
+                        <h3>跑团实录视频系列</h3>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">B站</span>
+                            <span class="portfolio-tag">视频创作</span>
+                            <span class="portfolio-tag">跑团实录</span>
+                        </div>
+                        <p>我在B站分享的跑团实录视频，包括COC模组实演、DND冒险等多种类型的TRPG内容。</p>
+                        <a href="videos.html" class="portfolio-button">查看视频 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="timeline-item timeline-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024年7月</div>
-                        <h3>Discord版本&好感度系统发布</h3>
-                        <p>Miss Foxsan同时加入Discord。</p>
-                        <p>内置好感度系统&签到服务。</p>
+
+                <div class="portfolio-item">
+                    <img src="image/fox立绘.jpg" alt="时空枢纽" class="portfolio-image">
+                    <div class="portfolio-info">
+                        <h3>时空枢纽博客</h3>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">博客</span>
+                            <span class="portfolio-tag">跑团技巧</span>
+                            <span class="portfolio-tag">规则解析</span>
+                        </div>
+                        <p>我分享的跑团经验、游戏心得和各种创意想法的博客，帮助玩家提升跑团技巧。</p>
+                        <a href="blog.html" class="portfolio-button">阅读博客 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="timeline-item timeline-left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024年8月</div>
-                        <h3>更新入群&加好友指引</h3>
-                        <p>更新了入群&新好友消息，使使用方式更加通俗易懂。</p>
-                    </div>
-                </div>
-                <div class="timeline-item timeline-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024年10月</div>
-                        <h3>点歌功能上线</h3>
-                        <p>增加了在qq中直接听歌的功能，为qq跑团提供bgm。</p>
-                    </div>
-                </div>
-                <div class="timeline-item timeline-left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024年11月</div>
-                        <h3>喵苏鲁规则&最终物语规则支持上线，敏感词拦截系统上线。</h3>
-                        <p>添加了对以上规则的支持，在进一步完善资料库方便用户查询的同时添加了敏感词拦截系统。</p>
-                    </div>
-                </div>
-                <div class="timeline-item timeline-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024年12月</div>
-                        <h3>历史记录系统上线</h3>
-                        <p>添加了历史记录系统，可以记录和查询跑团历史数据。</p>
-                    </div>
-                </div>
-                <div class="timeline-item timeline-left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2025年1月</div>
-                        <h3>team、群公告功能上线，开放打赏</h3>
-                        <p>有效的为管理员和主持人减少工作量，同时开放打赏渠道。</p>
-                    </div>
-                </div>
-                <div class="timeline-item timeline-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2025年2月</div>
-                        <h3>coc制卡功能优化</h3>
-                        <p>因为使用人数过多，机器人出现了消息超出每日上限的问题，对coc制卡进行了优化和折叠。</p>
-                    </div>
-                </div>
-                <div class="timeline-item timeline-left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2025年3月</div>
-                        <h3>忍神规则&永夜后日谈规则支持上线</h3>
-                        <p>支持了更多小众规则，如忍神及永夜后日谈等。</p>
-                    </div>
-                </div>
-                <div class="timeline-item timeline-right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2025年现在</div>
-                        <h3>持续发展中</h3>
-                        <p>Miss Foxsan正在不断完善和发展，添加多种规则，为TRPG玩家提供更好的服务。</p>
+
+                <div class="portfolio-item">
+                    <img src="image/gubao.jpg" alt="异时空存档点" class="portfolio-image">
+                    <div class="portfolio-info">
+                        <h3>异时空存档点</h3>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">资料库</span>
+                            <span class="portfolio-tag">规则文档</span>
+                            <span class="portfolio-tag">模组分享</span>
+                        </div>
+                        <p>我收集整理的TRPG规则文档、模组资料和学习材料，为玩家提供一站式资源中心。</p>
+                        <a href="documents.html" class="portfolio-button">浏览资料 <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="latest-videos">
-            <h2 class="section-title">最新跑团视频</h2>
-            <div class="video-container">
-                <div class="video-card">
-                    <div class="video-thumbnail placeholder-thumbnail">
-                        <div class="play-button"><i class="fas fa-play"></i></div>
+        <!-- 角色设定部分 -->
+        <section id="character-design">
+            <h2 class="section-title">角色设定</h2>
+            <div class="character-design-container">
+                <div class="character-card">
+                    <div class="character-card-image">
+                        <img src="image/qq01.jpg" alt="Miss Foxsan 角色设定" class="character-image">
                     </div>
-                    <h3>跑团实录：神秘的古堡</h3>
-                    <p>发布于 2023-05-15</p>
-                </div>
-                <div class="video-card">
-                    <div class="video-thumbnail placeholder-thumbnail">
-                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    <div class="character-card-content">
+                        <h3 class="character-card-title">好奇狐狸的秘密</h3>
+                        <p class="character-card-description">想了解更多关于Miss Foxsan和霜尾游的角色设定吗？她们的背景故事、性格特点、能力和趣味小知识都在等着你发现！</p>
+                        <p class="character-card-description">在《好奇豹豹》页面中，你可以看到完整的角色设定、精美的角色描述和丰富的角色画廊。不仅有Miss Foxsan的详细介绍，还有另一位骑士——霜尾游的古风设定。快来探索这些迷人角色的魔法世界吧！</p>
+                        <div class="character-card-tags">
+                            <span class="character-tag">角色设定</span>
+                            <span class="character-tag">背景故事</span>
+                            <span class="character-tag">画廊</span>
+                            <span class="character-tag">趣味小知识</span>
+                        </div>
+                        <a href="about.html" class="character-card-button">
+                            <span>探索角色世界</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
-                    <h3>COC模组：午夜来客</h3>
-                    <p>发布于 2023-04-22</p>
-                </div>
-                <div class="video-card">
-                    <div class="video-thumbnail placeholder-thumbnail">
-                        <div class="play-button"><i class="fas fa-play"></i></div>
-                    </div>
-                    <h3>DND冒险：龙与地下城</h3>
-                    <p>发布于 2023-03-10</p>
                 </div>
             </div>
-            <div class="more-link">
-                <a href="videos.html">查看更多视频 <i class="fas fa-arrow-right"></i></a>
+            <style>
+                /* 角色设定部分样式 */
+                .character-design-container {
+                    margin-top: 2rem;
+                }
+
+                .character-card {
+                    background: linear-gradient(135deg, #fff5f7, #fff0f3);
+                    border-radius: var(--border-radius);
+                    overflow: hidden;
+                    box-shadow: var(--box-shadow);
+                    display: flex;
+                    flex-direction: row;
+                    margin-bottom: 2rem;
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+
+                .character-card:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+                }
+
+                .character-card-image {
+                    width: 300px;
+                    height: 300px;
+                    overflow: hidden;
+                    position: relative;
+                    flex-shrink: 0;
+                }
+
+                .character-image {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.5s ease;
+                }
+
+                .character-card:hover .character-image {
+                    transform: scale(1.05);
+                }
+
+                .character-card-content {
+                    flex: 2;
+                    padding: 2rem;
+                    position: relative;
+                }
+
+                .character-card-title {
+                    font-size: 1.8rem;
+                    color: var(--primary-color);
+                    margin-bottom: 1rem;
+                }
+
+                .character-card-description {
+                    color: #666;
+                    line-height: 1.6;
+                    margin-bottom: 1.5rem;
+                    font-size: 1.1rem;
+                }
+
+                .character-card-tags {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+                    margin-bottom: 1.5rem;
+                }
+
+                .character-tag {
+                    background-color: #FFAFCC;
+                    color: white;
+                    padding: 0.3rem 0.8rem;
+                    border-radius: 20px;
+                    font-size: 0.9rem;
+                }
+
+                .character-card-button {
+                    display: inline-flex;
+                    align-items: center;
+                    background: linear-gradient(135deg, #FFAFCC, #FFC8DD);
+                    color: white;
+                    padding: 0.8rem 1.5rem;
+                    border-radius: 50px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    box-shadow: 0 5px 15px rgba(255, 175, 204, 0.3);
+                }
+
+                .character-card-button:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 20px rgba(255, 175, 204, 0.5);
+                }
+
+                .character-card-button i {
+                    margin-left: 0.5rem;
+                    transition: transform 0.3s ease;
+                }
+
+                .character-card-button:hover i {
+                    transform: translateX(5px);
+                }
+
+                /* 响应式调整 */
+                @media (max-width: 768px) {
+                    .character-card {
+                        flex-direction: column;
+                    }
+
+                    .character-card-image {
+                        width: 100%;
+                        height: 250px;
+                    }
+
+                    .character-card-content {
+                        padding: 1.5rem;
+                    }
+
+                    .character-card-title {
+                        font-size: 1.5rem;
+                    }
+
+                    .character-card-description {
+                        font-size: 1rem;
+                    }
+                }
+            </style>
+        </section>
+
+        <!-- 互动部分 -->
+        <section class="interaction">
+            <h2 class="section-title">与我互动</h2>
+            <div class="interaction-section">
+                <div class="interaction-card">
+                    <div class="interaction-icon"><i class="fas fa-comment"></i></div>
+                    <h3>留言板</h3>
+                    <p>在留言板上分享你的想法、建议或者跑团经历</p>
+                    <a href="messages.html" class="interaction-button">前往留言 <i class="fas fa-comment"></i></a>
+                </div>
+
+                <div class="interaction-card">
+                    <div class="interaction-icon"><i class="fab fa-bilibili"></i></div>
+                    <h3>B站互动</h3>
+                    <p>关注B站账号，观看跑团视频并参与评论互动</p>
+                    <a href="https://space.bilibili.com/2876867" target="_blank" class="interaction-button">访问B站 <i class="fab fa-bilibili"></i></a>
+                </div>
+
+                <div class="interaction-card">
+                    <div class="interaction-icon"><i class="fab fa-discord"></i></div>
+                    <h3>Discord服务器</h3>
+                    <p>加入Discord服务器，与其他TRPG爱好者交流讨论</p>
+                    <a href="https://discord.gg/Bkx8dJxyTB" target="_blank" class="interaction-button">加入服务器 <i class="fab fa-discord"></i></a>
+                </div>
+
+                <div class="interaction-card">
+                    <div class="interaction-icon"><i class="fab fa-qq"></i></div>
+                    <h3>QQ群聊</h3>
+                    <p>加入超时空管理总局QQ群，与更多玩家一起讨论</p>
+                    <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank" class="interaction-button">加入QQ群 <i class="fab fa-qq"></i></a>
+                </div>
             </div>
+        </section>
+
+        <!-- Q&A板块 -->
+        <section class="qa-section">
+            <div class="qa-container">
+                <div class="qa-header">
+                    <div class="qa-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="qa-title">
+                        <h2>常见问题</h2>
+                        <p>以下是一些关于我和骰点机器人的常见问题及回答</p>
+                    </div>
+                </div>
+
+                <div class="qa-content">
+                    <div class="qa-item">
+                        <div class="qa-question">
+                            <i class="fas fa-question"></i>
+                            <h3>如何将骰点机器人添加到我的群聊中？</h3>
+                        </div>
+                        <div class="qa-answer">
+                            <p>你可以通过点击骰点机器人详情页面中的“添加到服务器”或“添加好友”按钮来将Miss Foxsan或霜尾游添加到你的QQ群或Discord服务器。添加后，可以使用“.help”命令查看使用指南。</p>
+                        </div>
+                    </div>
+
+                    <div class="qa-item">
+                        <div class="qa-question">
+                            <i class="fas fa-question"></i>
+                            <h3>骰点机器人支持哪些规则系统？</h3>
+                        </div>
+                        <div class="qa-answer">
+                            <p>我的骰点机器人支持多种TRPG规则系统，包括COC、DND、无限流、赛博服克红、FFG系战锤规则、魔导书大战、BRP、LOM诡秘及诡秘琉璃版、最终物语、北欧奇谭、喵苏鲁、忍神、永夜后日谈等多种规则。完整支持列表可以在骰点机器人详情页面查看。</p>
+                        </div>
+                    </div>
+
+                    <div class="qa-item">
+                        <div class="qa-question">
+                            <i class="fas fa-question"></i>
+                            <h3>使用骰点机器人需要付费吗？</h3>
+                        </div>
+                        <div class="qa-answer">
+                            <p>不需要。Miss Foxsan和霜尾游都是免费的公益骰点机器人，所有功能都可以免费使用。如果你喜欢我的项目，可以通过分享给朋友或在B站关注我来支持我的工作。</p>
+                        </div>
+                    </div>
+
+                    <div class="qa-item">
+                        <div class="qa-question">
+                            <i class="fas fa-question"></i>
+                            <h3>我可以请求添加新功能吗？</h3>
+                        </div>
+                        <div class="qa-answer">
+                            <p>当然可以！我非常欢迎用户的反馈和建议。你可以通过留言板或加入我的QQ群提出你的功能需求或建议。我会尽力考虑并实现有价值的功能请求。</p>
+                        </div>
+                    </div>
+
+                    <div class="qa-item">
+                        <div class="qa-question">
+                            <i class="fas fa-question"></i>
+                            <h3>我可以在哪里找到使用指南？</h3>
+                        </div>
+                        <div class="qa-answer">
+                            <p>你可以在骰点机器人详情页面找到完整的使用指南。此外，在使用骰点机器人时，可以输入“.help”命令获取基本指南，或者输入“.help 命令名”获取特定命令的详细信息。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // 初始化时隐藏所有答案，只保留第一个显示
+                document.addEventListener('DOMContentLoaded', function() {
+                    const qaItems = document.querySelectorAll('.qa-item');
+
+                    // 默认显示第一个答案
+                    if (qaItems.length > 0) {
+                        qaItems[0].classList.add('active');
+                    }
+
+                    // 为每个问题添加点击事件
+                    qaItems.forEach(item => {
+                        const question = item.querySelector('.qa-question');
+                        const answer = item.querySelector('.qa-answer');
+
+                        // 初始化时隐藏答案，除了第一个
+                        if (!item.classList.contains('active')) {
+                            answer.style.display = 'none';
+                        }
+
+                        // 添加展开/折叠图标
+                        const toggleIcon = document.createElement('i');
+                        toggleIcon.className = item.classList.contains('active') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+                        toggleIcon.style.marginLeft = '1rem';
+                        toggleIcon.style.color = 'white';
+                        question.appendChild(toggleIcon);
+
+                        // 点击事件
+                        question.addEventListener('click', function() {
+                            // 切换当前项目的活动状态
+                            item.classList.toggle('active');
+
+                            // 切换答案的显示/隐藏
+                            if (answer.style.display === 'none') {
+                                answer.style.display = 'block';
+                                toggleIcon.className = 'fas fa-chevron-up';
+                            } else {
+                                answer.style.display = 'none';
+                                toggleIcon.className = 'fas fa-chevron-down';
+                            }
+                        });
+                    });
+                });
+            </script>
+        </section>
+
+        <!-- 彩蛋部分 -->
+        <section class="easter-egg-section">
+            <div class="easter-egg-container">
+                <div class="easter-egg-header">
+                    <div class="easter-egg-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="easter-egg-title">
+                        <h2>发现彩蛋！</h2>
+                        <p>恭喜你发现了隐藏内容！这里是一些关于Miss Foxsan的有趣小知识。</p>
+                    </div>
+                </div>
+
+                <div class="easter-egg-content">
+                    <div class="easter-egg-card">
+                        <div class="easter-egg-card-icon"><i class="fas fa-id-card"></i></div>
+                        <div class="easter-egg-card-content">
+                            <h3>身份之谜</h3>
+                            <p>Miss Foxsan是有本名的，现在账号的名字是她在每个不一样的世界里的代号。</p>
+                        </div>
+                    </div>
+
+                    <div class="easter-egg-card">
+                        <div class="easter-egg-card-icon"><i class="fas fa-dice-d20"></i></div>
+                        <div class="easter-egg-card-content">
+                            <h3>骰子偏好</h3>
+                            <p>Miss Foxsan最喜欢的骰子是透明渐变色的D20。</p>
+                        </div>
+                    </div>
+
+                    <div class="easter-egg-card">
+                        <div class="easter-egg-card-icon"><i class="fas fa-language"></i></div>
+                        <div class="easter-egg-card-content">
+                            <h3>名字由来</h3>
+                            <p>她的名字“Foxsan”是“Fox”（狐狸）和日语敬称“san”的组合。</p>
+                        </div>
+                    </div>
+
+                    <div class="easter-egg-card">
+                        <div class="easter-egg-card-icon"><i class="fas fa-book-open"></i></div>
+                        <div class="easter-egg-card-content">
+                            <h3>故事收藏家</h3>
+                            <p>虽然Miss Foxsan主要是一个骰点机器人，但她也非常喜欢听玩家讲述他们的冒险故事。</p>
+                        </div>
+                    </div>
+
+                    <div class="easter-egg-card">
+                        <div class="easter-egg-card-icon"><i class="fas fa-theater-masks"></i></div>
+                        <div class="easter-egg-card-content">
+                            <h3>戏剧女王</h3>
+                            <p>虽然理论上骰点是随机的，但是狐狸小姐的出目总是非常的富有戏剧性，指在特定的时间点给出大失败，增加节目效果，但又不至于真的把玩家撕卡。实为推拉无师自通的女王。</p>
+                        </div>
+                    </div>
+
+                    <div class="easter-egg-card">
+                        <div class="easter-egg-card-icon"><i class="fas fa-gem"></i></div>
+                        <div class="easter-egg-card-content">
+                            <h3>秘密收藏</h3>
+                            <p>Miss Foxsan有一个秘密的收藏，里面保存着她遇到的最有趣的跑团故事。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="easter-egg-action">
+                    <p>点击下面的按钮，可以触发一个特殊的彩蛋效果！</p>
+                    <button id="easter-egg-btn" class="easter-egg-button">
+                        <span class="button-text">触发彩蛋</span>
+                        <span class="button-icon"><i class="fas fa-dice-d20"></i></span>
+                    </button>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('easter-egg-btn').addEventListener('click', function() {
+                    // 创建浮动的骰子效果
+                    // 只使用D20骰子
+                    const diceIcon = 'fa-dice-d20';
+
+                    // 总共生成30个骰子
+                    for (let i = 0; i < 30; i++) {
+                        setTimeout(() => {
+                            // 使用D20骰子
+                            let selectedDiceType = diceIcon;
+
+                            const dice = document.createElement('div');
+                            dice.className = 'floating-dice';
+                            dice.innerHTML = `<i class="fas ${selectedDiceType}"></i>`;
+                            dice.style.left = Math.random() * 100 + 'vw';
+                            dice.style.top = '0';
+                            dice.style.color = `hsl(${Math.random() * 360}, 80%, 70%)`;
+                            dice.style.position = 'fixed';
+                            dice.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                            dice.style.zIndex = '9999';
+                            dice.style.animation = `fall ${Math.random() * 5 + 3}s linear forwards`;
+                            dice.style.transform = `rotate(${Math.random() * 360}deg)`; // 初始旋转角度随机
+                            document.body.appendChild(dice);
+
+                            // 清除骰子
+                            setTimeout(() => {
+                                document.body.removeChild(dice);
+                            }, 8000);
+                        }, i * 200); // 缩短间隔，使骰子出现更密集
+                    }
+
+                    // 添加动画样式
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes fall {
+                            0% {
+                                transform: translateY(0) rotate(0deg);
+                            }
+                            100% {
+                                transform: translateY(100vh) rotate(720deg);
+                            }
+                        }
+                    `;
+                    document.head.appendChild(style);
+
+                    // 显示消息
+                    alert('恭喜你触发了骰子雨彩蛋！享受这场神奇的D20骰子雨吧！');
+                });
+            </script>
         </section>
     </main>
 
@@ -404,7 +1781,7 @@
                 <ul class="quick-links">
                     <li><a href="blog.html">时空枢纽</a></li>
                     <li><a href="documents.html">异时空存档点</a></li>
-                    <li><a href="dicebot.html">功能简览</a></li>
+                    <li><a href="dicebot-guide.html">骰子指南</a></li>
                     <li><a href="about.html">好奇豹豹</a></li>
                 </ul>
             </div>
@@ -414,6 +1791,11 @@
         </div>
     </footer>
 
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" title="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script src="script.js"></script>
     <script src="paw-effect.js"></script>
 
@@ -422,5 +1804,78 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="clicks_count.js"></script>
 
+    <!-- 页面增强脚本 -->
+    <script>
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('loaded');
+
+            // 返回顶部按钮功能
+            const backToTopButton = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('show');
+                } else {
+                    backToTopButton.classList.remove('show');
+                }
+            });
+
+            backToTopButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 为作品项添加动画效果
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            portfolioItems.forEach(item => {
+                observer.observe(item);
+            });
+
+            // 为交互卡片添加动画效果
+            const interactionCards = document.querySelectorAll('.interaction-card');
+            interactionCards.forEach(card => {
+                observer.observe(card);
+            });
+
+            // 为角色设定卡片添加动画效果
+            const characterCard = document.querySelector('.character-card');
+            if (characterCard) {
+                observer.observe(characterCard);
+            }
+
+            // 增强锚点链接跳转功能
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        // 计算目标元素的位置，并考虑顶部填充
+                        const headerHeight = 80; // 导航栏高度估计值
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+
+                        // 平滑滚动到目标位置
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

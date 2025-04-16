@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狐狸小姐 (Miss Foxsan) - 骰点机器人</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 历史记录相关样式 */
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #FFAFCC; /* 深粉 - 主色调 */
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #FFAFCC; /* 深粉 - 主色调 */
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #eee;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #FFAFCC; /* 深粉 - 主色调 */
+            border: 4px solid white;
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .timeline-left {
+            left: 0;
+        }
+
+        .timeline-right {
+            left: 50%;
+        }
+
+        .timeline-left::after {
+            right: -10px;
+        }
+
+        .timeline-right::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .timeline-date {
+            color: #FFAFCC; /* 深粉 - 主色调 */
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-left::after, .timeline-right::after {
+                left: 21px;
+            }
+
+            .timeline-right {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                    <li><a href="dicebot.html"><i class="fas fa-dice"></i> 功能简览</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-flex">
+                <div class="hero-image-container">
+                    <img src="image/missfoxtrasp.png" alt="Miss Foxsan" class="hero-image">
+                </div>
+                <div class="hero-text">
+                    <div class="hero-text-container">
+                        <h2>欢迎来到我的世界！</h2>
+                        <p id="total-counter">载入总访问中…</p>
+                        <p id="daily-counter">载入今日访问中…</p>
+                        <p>——一位少女微笑在此迎接，另一位持扇旁观正在记录。<br>
+                            #页面文字间仿佛掠过两道身影，一明一暗，交错而立</p>
+                        <div class="hero-buttons">
+                            <a href="dicebot.html" class="btn primary-btn">功能简览</a>
+                            <a href="https://space.bilibili.com/" target="_blank" class="btn secondary-btn">访问B站主页</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="features">
+            <h2 class="section-title">主要功能</h2>
+            <div class="feature-cards">
+                <div class="feature-card" onclick="window.location.href='dicebot.html'" style="cursor: pointer;">
+                    <div class="feature-icon"><i class="fas fa-dice-d20"></i></div>
+                    <h3>骰点服务</h3>
+                    <p>支持多种TRPG规则系统的骰点，包括COC、DND等</p>
+                    <div class="feature-link" style="margin-top: 10px;">
+                        <a href="dicebot.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="window.location.href='character.html'" style="cursor: pointer;">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <h3>AI对话</h3>
+                    <p>与Miss Foxsan进行有趣的AI对话互动</p>
+                    <div class="feature-link" style="margin-top: 10px;">
+                        <a href="about.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="window.location.href='about.html'" style="cursor: pointer;">
+                    <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
+                    <h3>娱乐功能</h3>
+                    <p>内置多种娱乐小游戏和互动功能</p>
+                    <div class="feature-link" style="margin-top: 10px;">
+                        <a href="about.html" style="color: var(--primary-color); font-size: 0.9rem;">了解更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="feature-card" onclick="document.querySelector('.stats-overview').scrollIntoView({behavior: 'smooth'})" style="cursor: pointer;">
+                    <div class="feature-icon"><i class="fas fa-history"></i></div>
+                    <h3>历史记录</h3>
+                    <p>详细的跑团历史记录和数据统计</p>
+                    <div class="feature-link" style="margin-top: 10px;">
+                        <a href="javascript:void(0)" onclick="document.querySelector('.stats-overview').scrollIntoView({behavior: 'smooth'})" style="color: var(--primary-color); font-size: 0.9rem;">查看数据 <i class="fas fa-arrow-down"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="platforms">
+            <h2 class="section-title">支持平台</h2>
+            <div class="platform-container">
+                <div class="platform">
+                    <img src="image/dc01.jpg" alt="Discord" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>Discord</h3>
+                    <p>在Discord服务器上使用骰点功能</p>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank" class="btn small-btn">添加到服务器</a>
+                </div>
+                <div class="platform">
+                    <img src="image/qq01.jpg" alt="QQ初号机" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>QQ初号机</h3>
+                    <p>西幻/现代风格的骰点机器人</p>
+                    <div style="text-align: center; margin: 1rem 0;">
+                        <p><strong>QQ号码：</strong> 3989736640</p>
+                    </div>
+                    <a href="#" class="btn small-btn">添加初号机</a>
+                </div>
+                <div class="platform">
+                    <img src="image/qq02.jpg" alt="QQ二号机" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                    <h3>QQ二号机</h3>
+                    <p>古风/和风风格的骰点机器人</p>
+                    <div style="text-align: center; margin: 1rem 0;">
+                        <p><strong>QQ号码：</strong> 1783352478</p>
+                        <p><strong>用户群：</strong> 241639081</p>
+                    </div>
+                    <a href="https://qm.qq.com/q/DwGV5e5ECk" class="btn small-btn">添加二号机</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-overview">
+            <h2 class="section-title">数据统计</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-dice-d20"></i></div>
+                    <div class="stat-value">222,190</div>
+                    <div class="stat-label">累计响应指令</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-value">1,072</div>
+                    <div class="stat-label">服务用户数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="stat-value">1,017</div>
+                    <div class="stat-label">log跑团日志</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-value">1,413,873</div>
+                    <div class="stat-label">总跑团消息（条）</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="history-milestones">
+            <h2 class="section-title">发展历程</h2>
+            <div class="timeline">
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024年6月</div>
+                        <h3>Miss Foxsan骰娘诞生！</h3>
+                        <p>Miss Foxsan正式启动，接入海豹框架，主营qq平台。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024年7月</div>
+                        <h3>Discord版本&好感度系统发布</h3>
+                        <p>Miss Foxsan同时加入Discord。</p>
+                        <p>内置好感度系统&签到服务。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024年8月</div>
+                        <h3>更新入群&加好友指引</h3>
+                        <p>更新了入群&新好友消息，使使用方式更加通俗易懂。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024年10月</div>
+                        <h3>点歌功能上线</h3>
+                        <p>增加了在qq中直接听歌的功能，为qq跑团提供bgm。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024年11月</div>
+                        <h3>喵苏鲁规则&最终物语规则支持上线，敏感词拦截系统上线。</h3>
+                        <p>添加了对以上规则的支持，在进一步完善资料库方便用户查询的同时添加了敏感词拦截系统。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024年12月</div>
+                        <h3>历史记录系统上线</h3>
+                        <p>添加了历史记录系统，可以记录和查询跑团历史数据。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025年1月</div>
+                        <h3>team、群公告功能上线，开放打赏</h3>
+                        <p>有效的为管理员和主持人减少工作量，同时开放打赏渠道。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025年2月</div>
+                        <h3>coc制卡功能优化</h3>
+                        <p>因为使用人数过多，机器人出现了消息超出每日上限的问题，对coc制卡进行了优化和折叠。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025年3月</div>
+                        <h3>忍神规则&永夜后日谈规则支持上线</h3>
+                        <p>支持了更多小众规则，如忍神及永夜后日谈等。</p>
+                    </div>
+                </div>
+                <div class="timeline-item timeline-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025年现在</div>
+                        <h3>持续发展中</h3>
+                        <p>Miss Foxsan正在不断完善和发展，添加多种规则，为TRPG玩家提供更好的服务。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="latest-videos">
+            <h2 class="section-title">最新跑团视频</h2>
+            <div class="video-container">
+                <div class="video-card">
+                    <div class="video-thumbnail placeholder-thumbnail">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    </div>
+                    <h3>跑团实录：神秘的古堡</h3>
+                    <p>发布于 2023-05-15</p>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail placeholder-thumbnail">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    </div>
+                    <h3>COC模组：午夜来客</h3>
+                    <p>发布于 2023-04-22</p>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail placeholder-thumbnail">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    </div>
+                    <h3>DND冒险：龙与地下城</h3>
+                    <p>发布于 2023-03-10</p>
+                </div>
+            </div>
+            <div class="more-link">
+                <a href="videos.html">查看更多视频 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="dicebot.html">功能简览</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="paw-effect.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="clicks_count.js"></script>
+
+</body>
+</html>

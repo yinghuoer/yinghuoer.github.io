@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>骰点机器人指南 - Miss Foxsan & 霜尾游 | 荧惑</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 欢迎区域样式 */
+        .hero-banner {
+            position: relative;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            color: white;
+            padding: 4rem 0;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="white" fill-opacity="0.05"/></svg>');
+            background-size: 100px 100px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .hero-button {
+            background-color: white;
+            color: #FFAFCC;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .hero-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-button.primary {
+            background-color: white;
+            color: #FFAFCC;
+        }
+
+        .hero-button.secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .hero-button i {
+            margin-right: 0.5rem;
+        }
+
+        /* 骰娘展示区域 */
+        .characters-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .character-card {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            max-width: 300px;
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .character-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .character-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .character-description {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .character-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .character-tag {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(5px);
+        }
+
+        /* 滑动提示 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .scroll-indicator:hover {
+            opacity: 1;
+            transform: translate(-50%, -5px);
+        }
+
+        .scroll-indicator p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .scroll-indicator i {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* 为什么选择我们区域样式 */
+        .why-choose-us {
+            padding: 5rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            border-radius: 3px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 功能卡片样式 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 10px 20px rgba(255, 175, 204, 0.3);
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 支持平台部分样式 */
+        .platforms-section {
+            margin-bottom: 5rem;
+        }
+
+        .platforms-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .platform-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 300px;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .platform-icon {
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-icon i {
+            font-size: 3rem;
+            color: #7289DA; /* Discord蓝色 */
+        }
+
+        .platform-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .platform-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .platform-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-info {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .platform-info p {
+            margin: 0.5rem 0;
+            color: #555;
+        }
+
+        .platform-button {
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .platform-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 数据统计部分样式 */
+        .stats-section {
+            margin-bottom: 5rem;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 200px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 20px rgba(255, 175, 204, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stats-note {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stats-update-badge {
+            background-color: #A2D2FF;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        /* 如何使用区域样式 */
+        .how-to-use-section {
+            margin-top: 5rem;
+            margin-bottom: 5rem;
+        }
+
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .step-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: visible; /* 改为visible，允许内容溢出 */
+            display: flex;
+            position: relative;
+            margin-top: 25px; /* 添加上边距，为数字标记留出空间 */
+            margin-left: 25px; /* 添加左边距，为数字标记留出空间 */
+        }
+
+        .step-number {
+            position: absolute;
+            top: -25px;
+            left: -25px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 175, 204, 0.3);
+            z-index: 1;
+        }
+
+        .step-content {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-code {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .code-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .code-block {
+            font-family: monospace;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .code-block code {
+            background-color: #e9ecef;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #e83e8c;
+        }
+
+        .step-tips {
+            background-color: rgba(162, 210, 255, 0.1);
+            border-left: 4px solid #A2D2FF;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .tip-title i {
+            color: #A2D2FF;
+            margin-right: 0.5rem;
+        }
+
+        .step-image {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .step-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .advanced-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .advanced-feature {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .advanced-feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .advanced-feature-content {
+            flex: 1;
+        }
+
+        .advanced-feature-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .advanced-feature-content p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .get-started-cta {
+            background: linear-gradient(135deg, rgba(255, 175, 204, 0.1), rgba(162, 210, 255, 0.1));
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .get-started-cta h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .get-started-cta p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .cta-button {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .cta-button.primary {
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            color: white;
+        }
+
+        .cta-button.secondary {
+            background-color: white;
+            color: #FFAFCC;
+            border: 2px solid #FFAFCC;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 命令参考区域样式 */
+        .command-reference-section {
+            padding: 5rem 0;
+            background-color: #f8f9fa;
+        }
+
+        /* 命令参考重定向区域 */
+        .command-reference-redirect {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .redirect-content {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .redirect-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 2rem;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 10px 20px rgba(255, 175, 204, 0.3);
+            flex-shrink: 0;
+        }
+
+        .redirect-text {
+            flex: 1;
+        }
+
+        .redirect-text h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .redirect-text p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .redirect-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .redirect-button {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .redirect-button i {
+            margin-right: 0.8rem;
+        }
+
+        .redirect-button.primary {
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            color: white;
+        }
+
+        .redirect-button.secondary {
+            background-color: white;
+            color: #666;
+            border: 2px solid #eee;
+        }
+
+        .redirect-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 常用命令速览 */
+        .common-commands {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .common-commands h3 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .common-commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .common-command {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .common-command:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .common-command code {
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e83e8c;
+            margin-bottom: 0.5rem;
+        }
+
+        .common-command span {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* 发展历程与未来计划区域样式 */
+        .roadmap-section {
+            padding: 5rem 0;
+            background-color: #f8f9fa;
+        }
+
+        /* 发展历程时间线 */
+        .timeline-container {
+            margin-bottom: 5rem;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-header h3 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(to bottom, #FFAFCC, #A2D2FF);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 4px solid white;
+        }
+
+        .timeline-left {
+            left: 0;
+        }
+
+        .timeline-right {
+            left: 50%;
+        }
+
+        .timeline-left::after {
+            right: -12px;
+        }
+
+        .timeline-right::after {
+            left: -12px;
+        }
+
+        .timeline-content {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-date {
+            color: white;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(255, 175, 204, 0.3);
+        }
+
+        .timeline-content h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .timeline-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 未来计划区域 */
+        .future-plans {
+            margin-bottom: 5rem;
+        }
+
+        .future-plans-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .future-plans-header h3 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .future-plans-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .future-plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .future-plan-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+        }
+
+        .future-plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .plan-icon {
+            width: 80px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .plan-content {
+            padding: 1.5rem;
+            flex: 1;
+        }
+
+        .plan-content h4 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .plan-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .plan-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            background-color: #A2D2FF;
+        }
+
+        /* 参与贡献区域 */
+        .contribute-section {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .contribute-content {
+            flex: 1;
+        }
+
+        .contribute-content h3 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .contribute-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .contribute-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .contribute-method {
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 175, 204, 0.3);
+        }
+
+        .contribute-method:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 175, 204, 0.4);
+        }
+
+        .contribute-image {
+            flex-shrink: 0;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 10px solid #f8f9fa;
+        }
+
+        .contribute-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 页面内导航样式 */
+        .page-navigation {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            padding: 0.8rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 0 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: #FFAFCC;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 175, 204, 0.3);
+        }
+
+        /* 回到顶部按钮样式 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFAFCC, #A2D2FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 175, 204, 0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 175, 204, 0.4);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 页面加载动画样式 */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .dice-loader {
+            font-size: 3rem;
+            color: #FFAFCC;
+            animation: dice-spin 2s infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes dice-spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 微妙的背景元素 */
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="white" fill-opacity="0.05"/></svg>');
+            background-size: 100px 100px;
+            opacity: 0.5;
+            z-index: 0;
+            animation: background-move 30s linear infinite;
+        }
+
+        @keyframes background-move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 100px 100px;
+            }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .characters-showcase {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .character-card {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* 为什么选择我们区域响应式 */
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-subtitle {
+                font-size: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .platform-card {
+                width: 100%;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stat-card {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            /* 如何使用区域响应式 */
+            .step-card {
+                flex-direction: column;
+                margin-top: 30px; /* 增加上边距，为数字标记留出更多空间 */
+                margin-left: 15px; /* 减少左边距，节省空间 */
+            }
+
+            .step-number {
+                top: -20px;
+                left: -15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .advanced-features {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            /* 命令参考区域响应式 */
+            .command-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-tab {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .command-name {
+                font-size: 1.1rem;
+            }
+
+            .help-command-box {
+                font-size: 0.9rem;
+                padding: 1rem;
+            }
+
+            /* 发展历程与未来计划区域响应式 */
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-left::after, .timeline-right::after {
+                left: 15px;
+            }
+
+            .timeline-right {
+                left: 0;
+            }
+
+            .future-plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contribute-section {
+                flex-direction: column;
+                padding: 2rem;
+            }
+
+            .contribute-image {
+                width: 200px;
+                height: 200px;
+                order: -1;
+            }
+
+            .contribute-methods {
+                flex-direction: column;
+            }
+
+            .contribute-method {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* 页面内导航响应式 */
+            .page-navigation {
+                padding: 0.5rem 0;
+            }
+
+            .nav-container {
+                gap: 0.5rem;
+            }
+
+            .nav-item {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            /* 回到顶部按钮响应式 */
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            /* 命令参考区域响应式 */
+            .command-reference-redirect {
+                padding: 1.5rem;
+            }
+
+            .redirect-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .redirect-icon {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+
+            .redirect-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .redirect-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .common-commands-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面加载动画 -->
+    <div class="page-loader">
+        <div class="loader-content">
+            <div class="dice-loader">
+                <i class="fas fa-dice-d20"></i>
+            </div>
+            <p>加载中...</p>
+        </div>
+    </div>
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html" class="active"><i class="fas fa-dice"></i> 骰子指南</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 页面内导航 -->
+    <div class="page-navigation">
+        <div class="nav-container">
+            <a href="#welcome" class="nav-item active">欢迎</a>
+            <a href="#features" class="nav-item">功能</a>
+            <a href="#how-to-use" class="nav-item">使用指南</a>
+            <a href="#command-reference" class="nav-item">命令参考</a>
+            <a href="#roadmap" class="nav-item">发展计划</a>
+        </div>
+    </div>
+
+    <!-- 欢迎区域 -->
+    <section class="hero-banner" id="welcome">
+        <div class="hero-content">
+            <h1 class="hero-title">骰点机器人完全指南</h1>
+            <p class="hero-subtitle">探索Miss Foxsan和霜尾游的全部功能，从基础骰点到高级规则，让你的TRPG体验更加精彩。</p>
+
+            <!-- 骰娘展示 -->
+            <div class="characters-showcase">
+                <div class="character-card">
+                    <img src="image/fox立绘.jpg" alt="Miss Foxsan" class="character-image">
+                    <h3 class="character-name">Miss Foxsan</h3>
+                    <p class="character-description">活泼可爱的数字狐娘，主要为TRPG爱好者提供骰点服务。</p>
+                    <div class="character-tags">
+                        <span class="character-tag">西幻风格</span>
+                        <span class="character-tag">现代风格</span>
+                        <span class="character-tag">活泼开朗</span>
+                    </div>
+                </div>
+
+                <div class="character-card">
+                    <img src="image/xiaoshimei.png" alt="霜尾游" class="character-image">
+                    <h3 class="character-name">霜尾游</h3>
+                    <p class="character-description">江月游者，徘徊于万界缝隙中的数字灵狐，为玩家提供骰点服务。</p>
+                    <div class="character-tags">
+                        <span class="character-tag">古风风格</span>
+                        <span class="character-tag">和风风格</span>
+                        <span class="character-tag">清冷温和</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 按钮区域 -->
+            <div class="hero-buttons">
+                <a href="#features" class="hero-button primary">
+                    <i class="fas fa-dice-d20"></i> 开始使用
+                </a>
+                <a href="#platforms" class="hero-button secondary">
+                    <i class="fas fa-server"></i> 支持平台
+                </a>
+            </div>
+
+            <!-- 滑动提示 -->
+            <div class="scroll-indicator" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+                <p>向下滑动了解更多</p>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- 为什么选择我们区域 -->
+    <section id="features" class="why-choose-us">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">为什么选择我们</h2>
+                <p class="section-subtitle">发现Miss Foxsan和霜尾游与其他骰点机器人的不同之处</p>
+            </div>
+
+            <!-- 主要特点和优势 -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-dice-d20"></i>
+                    </div>
+                    <h3 class="feature-title">骰点服务</h3>
+                    <p class="feature-description">支持多种TRPG规则系统的骰点，包括COC、DND、无限流、赛博服克红、FFG系战锤规则、魔导书大战、BRP、LOM诡秘及诡秘琉璃版、最终物语、北欧奇谭、喵苏鲁、忍神、永夜后日谈、撞邪、暗夜刀锋、餐云卧石、魔法猫猫救世界、绿色三角洲、黑暗世界、双重十字、共鸣性怪异、暗影狂奏等多种规则。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">AI对话</h3>
+                    <p class="feature-description">与骰娘进行有趣的AI对话互动，可以回答问题、聊天或提供建议。Miss Foxsan采用活泼可爱的风格，而霜尾游则采用半古风半毒舌的风格，满足不同玩家的喜好。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="feature-title">娱乐功能</h3>
+                    <p class="feature-description">内置多种娱乐小游戏和互动功能，包括特色牌堆（疯狂星期四、COJ名场面、一日三餐、随机冒险等）、点歌功能、表情包制作等多种娱乐功能。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="feature-title">好感度系统</h3>
+                    <p class="feature-description">与骰娘建立好感度，解锁更多互动。通过日常互动和签到提升好感度，解锁特殊对话和功能，增强跑团体验。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <h3 class="feature-title">Team功能</h3>
+                    <p class="feature-description">为管理员和主持人提供的团队管理工具，可以更方便地管理跑团成员、安排活动和发布公告，减少管理工作量。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="feature-title">历史记录</h3>
+                    <p class="feature-description">详细的跑团历史记录和数据统计功能，包括log日志时间和条数记录、长期骰点统计、logstat记录等，帮助玩家回顾和分析跑团数据。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3 class="feature-title">单人跑团模组</h3>
+                    <p class="feature-description">提供单人跑团体验（需私聊），允许玩家在没有其他玩家的情况下体验跑团乐趣，适合新手学习和老手快速体验。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="feature-title">跑团辅助功能</h3>
+                    <p class="feature-description">提供各种实用的跑团辅助工具，如角色卡管理、自定义骰点表达式、快捷指令设置等，提高跑团效率和体验。</p>
+                </div>
+            </div>
+
+            <!-- 支持平台部分 -->
+            <div id="platforms" class="platforms-section">
+                <div class="section-header">
+                    <h2 class="section-title">支持平台</h2>
+                    <p class="section-subtitle">选择你喜欢的平台，开始使用骰点机器人</p>
+                </div>
+
+                <div class="platforms-container">
+                    <div class="platform-card">
+                        <div class="platform-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <h3 class="platform-title">Discord</h3>
+                        <p class="platform-description">在Discord服务器上使用骰点功能，支持英文和中文指令。</p>
+                        <a href="https://discord.com/oauth2/authorize?client_id=1255774481918595152&permissions=8&integration_type=0&scope=bot" target="_blank" class="platform-button">添加到服务器</a>
+                    </div>
+
+                    <div class="platform-card">
+                        <div class="platform-icon">
+                            <img src="image/qq01.jpg" alt="Miss Foxsan" class="platform-image">
+                        </div>
+                        <h3 class="platform-title">QQ初号机</h3>
+                        <p class="platform-description">西幻/现代风格的骰点机器人，由Miss Foxsan提供服务。</p>
+                        <div class="platform-info">
+                            <p><strong>QQ号码：</strong> 3989736640</p>
+                        </div>
+                        <a href="#" class="platform-button">添加好友</a>
+                    </div>
+
+                    <div class="platform-card">
+                        <div class="platform-icon">
+                            <img src="image/qq02.jpg" alt="霜尾游" class="platform-image">
+                        </div>
+                        <h3 class="platform-title">QQ二号机</h3>
+                        <p class="platform-description">古风/和风风格的骰点机器人，由霜尾游提供服务。</p>
+                        <div class="platform-info">
+                            <p><strong>QQ号码：</strong> 1783352478</p>
+                            <p><strong>用户群：</strong> 241639081</p>
+                        </div>
+                        <a href="https://qm.qq.com/q/DwGV5e5ECk" class="platform-button">添加好友</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据统计部分 -->
+            <div id="stats" class="stats-section">
+                <div class="section-header">
+                    <h2 class="section-title">数据统计</h2>
+                    <p class="section-subtitle">我们的骰点机器人已经帮助了成千上万的TRPG玩家</p>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-dice-d20"></i></div>
+                        <div class="stat-value">222,190</div>
+                        <div class="stat-label">累计响应指令</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-value">1,072</div>
+                        <div class="stat-label">服务用户数</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="stat-value">1,017</div>
+                        <div class="stat-label">log跑团日志</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-value">1,413,873</div>
+                        <div class="stat-label">总跑团消息（条）</div>
+                    </div>
+                </div>
+
+                <div class="stats-note">
+                    <p>数据持续更新中，上述数据截至2025年3月</p>
+                    <div class="stats-update-badge">最近更新</div>
+                </div>
+            </div>
+
+            <!-- 如何使用区域 -->
+            <div id="how-to-use" class="how-to-use-section">
+                <div class="section-header">
+                    <h2 class="section-title">如何使用</h2>
+                    <p class="section-subtitle">从添加骰子到探索高级功能，分步骤指南帮助你快速上手</p>
+                </div>
+
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">添加骰子到群聊/服务器</h3>
+                            <p class="step-description">选择你喜欢的平台，将Miss Foxsan或霜尾游添加到你的QQ群或Discord服务器。</p>
+                            <div class="step-tips">
+                                <div class="tip-title"><i class="fas fa-lightbulb"></i> 小提示</div>
+                                <p>在QQ上，你需要先添加骰娘为好友，然后将她邀请到群聊中。在Discord上，只需点击“添加到服务器”按钮并选择你的服务器即可。</p>
+                            </div>
+                            <div class="step-image">
+                                <img src="image/qq01.jpg" alt="添加骰子" class="step-img">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 class="step-title">设置角色和基本参数</h3>
+                            <p class="step-description">使用基本命令创建你的角色并设置属性值。</p>
+                            <div class="step-code">
+                                <div class="code-title">基本命令示例</div>
+                                <div class="code-block">
+                                    <code>.help</code> - 查看帮助信息<br>
+                                    <code>.st 力量:50 敏捷:60 意志:70</code> - 设置属性值<br>
+                                    <code>.pc</code> - 查看当前角色卡<br>
+                                    <code>.nn 角色名称</code> - 设置角色名称
+                                </div>
+                            </div>
+                            <div class="step-tips">
+                                <div class="tip-title"><i class="fas fa-lightbulb"></i> 小提示</div>
+                                <p>不同的规则系统可能有不同的属性设置方式。使用 <code>.help 规则名</code> 查看特定规则的帮助。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3 class="step-title">使用基本骰点命令</h3>
+                            <p class="step-description">学习基本的骰点命令，开始你的跑团之旅。</p>
+                            <div class="step-code">
+                                <div class="code-title">基本骰点命令</div>
+                                <div class="code-block">
+                                    <code>.r</code> - 扔一个骰子 (1d100)<br>
+                                    <code>.r 3d6</code> - 扔三个六面骰<br>
+                                    <code>.ra 力量</code> - 进行属性检定<br>
+                                    <code>.sc 1/1d3</code> - 理智检定(仅COC)<br>
+                                    <code>.ri 敏捷</code> - 带有奖惩的检定(仅DND)
+                                </div>
+                            </div>
+                            <div class="step-image">
+                                <img src="image/fox立绘.jpg" alt="基本骰点" class="step-img">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3 class="step-title">探索高级功能</h3>
+                            <p class="step-description">当你熟悉了基本命令后，可以开始探索更多高级功能。</p>
+                            <div class="advanced-features">
+                                <div class="advanced-feature">
+                                    <div class="advanced-feature-icon"><i class="fas fa-book"></i></div>
+                                    <div class="advanced-feature-content">
+                                        <h4>记录跑团日志</h4>
+                                        <p>使用 <code>.log on</code> 开始记录跑团日志，<code>.log off</code> 停止记录。</p>
+                                    </div>
+                                </div>
+
+                                <div class="advanced-feature">
+                                    <div class="advanced-feature-icon"><i class="fas fa-user-friends"></i></div>
+                                    <div class="advanced-feature-content">
+                                        <h4>团队管理</h4>
+                                        <p>使用 <code>.team create</code> 创建团队，<code>.team add @用户</code> 添加成员。</p>
+                                    </div>
+                                </div>
+
+                                <div class="advanced-feature">
+                                    <div class="advanced-feature-icon"><i class="fas fa-dice"></i></div>
+                                    <div class="advanced-feature-content">
+                                        <h4>自定义骰点</h4>
+                                        <p>使用 <code>.set</code> 命令设置自定义骰点表达式和快捷指令。</p>
+                                    </div>
+                                </div>
+
+                                <div class="advanced-feature">
+                                    <div class="advanced-feature-icon"><i class="fas fa-heart"></i></div>
+                                    <div class="advanced-feature-content">
+                                        <h4>好感度系统</h4>
+                                        <p>使用 <code>.favor</code> 查看当前好感度，<code>.sign</code> 每日签到提升好感度。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="step-tips">
+                                <div class="tip-title"><i class="fas fa-lightbulb"></i> 小提示</div>
+                                <p>使用 <code>.help advanced</code> 查看更多高级命令和功能。不同的规则系统可能有特定的高级功能。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="get-started-cta">
+                    <h3>准备好开始你的跑团之旅了吗？</h3>
+                    <p>现在你已经了解了基本的使用方法，可以开始探索更多功能了。</p>
+                    <div class="cta-buttons">
+                        <a href="#command-reference" class="cta-button primary">查看命令参考</a>
+                        <a href="#platforms" class="cta-button secondary">添加骰娘</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 命令参考区域 -->
+    <section id="command-reference" class="command-reference-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">命令参考</h2>
+                <p class="section-subtitle">完整的命令列表，按系统和功能分类</p>
+            </div>
+
+            <div class="command-reference-redirect">
+                <div class="redirect-content">
+                    <div class="redirect-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="redirect-text">
+                        <h3>详细的命令文档</h3>
+                        <p>我们提供了一个专门的命令参考页面，其中包含了所有命令的详细说明、用法示例和注意事项。</p>
+                        <p>点击下面的按钮查看完整的命令文档：</p>
+                    </div>
+                </div>
+
+                <div class="redirect-actions">
+                    <a href="dicebot.html" class="redirect-button primary">
+                        <i class="fas fa-book-open"></i> 查看完整命令文档
+                    </a>
+                    <a href="#how-to-use" class="redirect-button secondary">
+                        <i class="fas fa-arrow-up"></i> 返回使用指南
+                    </a>
+                </div>
+
+                <div class="common-commands">
+                    <h3>常用命令速览</h3>
+                    <div class="common-commands-grid">
+                        <div class="common-command">
+                            <code>.r</code>
+                            <span>基本骰点</span>
+                        </div>
+                        <div class="common-command">
+                            <code>.ra</code>
+                            <span>COC属性检定</span>
+                        </div>
+                        <div class="common-command">
+                            <code>.ri</code>
+                            <span>DND属性检定</span>
+                        </div>
+                        <div class="common-command">
+                            <code>.st</code>
+                            <span>设置属性</span>
+                        </div>
+                        <div class="common-command">
+                            <code>.pc</code>
+                            <span>查看角色卡</span>
+                        </div>
+                        <div class="common-command">
+                            <code>.nn</code>
+                            <span>设置角色名</span>
+                        </div>
+                        <div class="common-command">
+                            <code>.log</code>
+                            <span>记录日志</span>
+                        </div>
+                        <div class="common-command">
+                            <code>.help</code>
+                            <span>查看帮助</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 发展历程与未来计划区域 -->
+    <section id="roadmap" class="roadmap-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">发展历程与未来计划</h2>
+                <p class="section-subtitle">回顾我们的发展历程，并了解即将推出的新功能</p>
+            </div>
+
+            <!-- 发展历程时间线 -->
+            <div class="timeline-container">
+                <div class="timeline-header">
+                    <h3>发展历程</h3>
+                    <p>从初始版本到现在的发展过程</p>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item timeline-left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2024年6月</div>
+                            <h3>Miss Foxsan骰娘诞生！</h3>
+                            <p>Miss Foxsan正式启动，接入海豹框架，主营qq平台。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2024年7月</div>
+                            <h3>Discord版本&好感度系统发布</h3>
+                            <p>Miss Foxsan同时加入Discord。</p>
+                            <p>内置好感度系统&签到服务。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2024年8月</div>
+                            <h3>更新入群&加好友指引</h3>
+                            <p>更新了入群&新好友消息，使使用方式更加通俗易懂。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2024年10月</div>
+                            <h3>点歌功能上线</h3>
+                            <p>增加了在qq中直接听歌的功能，为qq跑团提供bgm。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2024年11月</div>
+                            <h3>喵苏鲁规则&最终物语规则支持上线</h3>
+                            <p>添加了对以上规则的支持，在进一步完善资料库方便用户查询的同时添加了敏感词拦截系统。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2024年12月</div>
+                            <h3>历史记录系统上线</h3>
+                            <p>添加了历史记录系统，可以记录和查询跑团历史数据。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2025年1月</div>
+                            <h3>team、群公告功能上线</h3>
+                            <p>有效的为管理员和主持人减少工作量，同时开放打赏渠道。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2025年2月</div>
+                            <h3>coc制卡功能优化</h3>
+                            <p>因为使用人数过多，机器人出现了消息超出每日上限的问题，对coc制卡进行了优化和折叠。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2025年3月</div>
+                            <h3>忍神规则&永夜后日谈规则支持上线</h3>
+                            <p>支持了更多小众规则，如忍神及永夜后日谈等。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item timeline-right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2025年现在</div>
+                            <h3>持续发展中</h3>
+                            <p>Miss Foxsan和霜尾游正在不断完善和发展，添加多种规则，为TRPG玩家提供更好的服务。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 未来计划区域 -->
+            <div class="future-plans">
+                <div class="future-plans-header">
+                    <h3>未来计划</h3>
+                    <p>我们正在开发的新功能和改进</p>
+                </div>
+
+                <div class="future-plans-grid">
+                    <div class="future-plan-card">
+                        <div class="plan-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="plan-content">
+                            <h4>增强AI对话能力</h4>
+                            <p>我们正在开发更先进的AI对话系统，使骰娘能够更好地理解玩家的意图和提供更自然的对话体验。</p>
+                            <div class="plan-status">计划中</div>
+                        </div>
+                    </div>
+
+                    <div class="future-plan-card">
+                        <div class="plan-icon">
+                            <i class="fas fa-dice-d20"></i>
+                        </div>
+                        <div class="plan-content">
+                            <h4>更多规则系统支持</h4>
+                            <p>我们计划添加更多的TRPG规则系统支持，包括更多小众规则和国内原创规则。</p>
+                            <div class="plan-status">进行中</div>
+                        </div>
+                    </div>
+
+                    <div class="future-plan-card">
+                        <div class="plan-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="plan-content">
+                            <h4>移动应用开发</h4>
+                            <p>我们正在考虑开发移动应用，使玩家可以在手机上更方便地使用骰子功能。</p>
+                            <div class="plan-status">调研中</div>
+                        </div>
+                    </div>
+
+                    <div class="future-plan-card">
+                        <div class="plan-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="plan-content">
+                            <h4>多语言支持</h4>
+                            <p>我们计划添加更多语言的支持，使来自世界各地的玩家都能使用骰娘。</p>
+                            <div class="plan-status">计划中</div>
+                        </div>
+                    </div>
+
+                    <div class="future-plan-card">
+                        <div class="plan-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <div class="plan-content">
+                            <h4>角色卡可视化</h4>
+                            <p>我们正在开发更直观的角色卡可视化工具，使玩家可以更方便地管理和分享角色卡。</p>
+                            <div class="plan-status">开发中</div>
+                        </div>
+                    </div>
+
+                    <div class="future-plan-card">
+                        <div class="plan-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="plan-content">
+                            <h4>社区功能增强</h4>
+                            <p>我们计划增强社区功能，包括跑团招募、玩家配对和资源共享等功能。</p>
+                            <div class="plan-status">计划中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 参与贡献区域 -->
+            <div class="contribute-section">
+                <div class="contribute-content">
+                    <h3>参与贡献</h3>
+                    <p>我们欢迎所有形式的贡献，无论是功能建议、错误报告还是代码贡献。</p>
+                    <p>如果你有任何想法或建议，请通过以下方式联系我们：</p>
+
+                    <div class="contribute-methods">
+                        <a href="messages.html" class="contribute-method">
+                            <i class="fas fa-comment"></i>
+                            <span>在留言板上提交建议</span>
+                        </a>
+                        <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank" class="contribute-method">
+                            <i class="fab fa-qq"></i>
+                            <span>加入QQ群讨论</span>
+                        </a>
+                        <a href="https://discord.gg/Bkx8dJxyTB" target="_blank" class="contribute-method">
+                            <i class="fab fa-discord"></i>
+                            <span>加入Discord服务器</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contribute-image">
+                    <img src="image/missfoxtrasp.png" alt="Miss Foxsan" class="contribute-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- 页面增强脚本 -->
+    <script>
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            const pageLoader = document.querySelector('.page-loader');
+            setTimeout(function() {
+                pageLoader.style.opacity = '0';
+                pageLoader.style.visibility = 'hidden';
+            }, 800);
+        });
+
+        // 回到顶部按钮
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 页面内导航高亮
+        const sections = document.querySelectorAll('section[id]');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        window.addEventListener('scroll', function() {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+
+                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').substring(1) === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // 平滑滚动到页面内链接
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- 命令参考脚本 -->
+    <script>
+        // 当点击常用命令时跳转到dicebot.html页面并定位到相应命令
+        document.querySelectorAll('.common-command').forEach(command => {
+            command.addEventListener('click', function() {
+                const commandName = this.querySelector('code').textContent.trim();
+                window.location.href = `dicebot.html#${commandName.substring(1)}`;
+            });
+
+            // 添加手型光标和悬停提示
+            command.style.cursor = 'pointer';
+            command.title = '点击查看详细说明';
+        });
+    </script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="clicks_count.js"></script>
+</body>
+</html>
