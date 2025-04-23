@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言板 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="message-styles.css">
+    <link rel="stylesheet" href="message-styles-new.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html"><i class="fas fa-dice"></i> 骰子指南</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="messages.html" class="active"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                    <li id="user-dropdown" class="user-dropdown">
+                        <div class="user-dropdown-toggle">
+                            <div class="user-avatar"><i class="fas fa-user"></i></div>
+                            <span class="user-name">登录</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="login.html"><i class="fas fa-sign-in-alt"></i> 登录</a>
+                            <a href="register.html"><i class="fas fa-user-plus"></i> 注册</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>留言板</h1>
+            <p>来自骰主朋友们的留言和反馈</p>
+        </div>
+    </div>
+
+    <main>
+        <!-- 精选留言部分 -->
+        <section class="featured-messages message-container">
+            <h2 class="section-title">精选留言</h2>
+
+            <div class="featured-message">
+                <div class="message-header">
+                    <div class="message-author">
+                        <div class="author-avatar"></div>
+                        <div>
+                            <div class="author-name">月光之下</div>
+                            <div class="message-date">2023-05-20</div>
+                        </div>
+                        <span class="featured-badge">精选</span>
+                    </div>
+                </div>
+                <div class="message-content">
+                    <p>Miss Foxsan是我用过的最好的骰点机器人，没有之一！界面友好，功能强大，而且还有可爱的人格设定。我们团队已经用了半年多了，每次跑团都离不开她。特别是COC的奖惩骰和理智检定功能，简直是神器！感谢创作者的辛勤付出，让我们的跑团体验更加美好。</p>
+                </div>
+                <div class="message-footer">
+                    <div class="message-meta">
+                        <i class="fas fa-tag"></i> COC骰主
+                    </div>
+                    <div class="message-actions">
+                        <a href="#" class="message-action-button"><i class="far fa-heart"></i> 喜欢</a>
+                        <a href="#" class="message-action-button"><i class="far fa-comment"></i> 回复</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-message">
+                <div class="message-header">
+                    <div class="message-author">
+                        <div class="author-avatar"></div>
+                        <div>
+                            <div class="author-name">龙与地下城</div>
+                            <div class="message-date">2023-04-15</div>
+                        </div>
+                        <span class="featured-badge">精选</span>
+                    </div>
+                </div>
+                <div class="message-content">
+                    <p>作为一个DND的KP，我非常喜欢Miss Foxsan的优势劣势骰功能，使用起来非常方便。而且机器人的响应速度很快，从不会在关键时刻掉链子。最让我惊喜的是，Miss Foxsan还会在适当的时候插入一些有趣的对话，为跑团增添了不少乐趣。希望以后能有更多的DND相关功能！</p>
+                </div>
+                <div class="message-footer">
+                    <div class="message-meta">
+                        <i class="fas fa-tag"></i> DND骰主
+                    </div>
+                    <div class="message-actions">
+                        <a href="#" class="message-action-button"><i class="far fa-heart"></i> 喜欢</a>
+                        <a href="#" class="message-action-button"><i class="far fa-comment"></i> 回复</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="message-container">
+            <!-- 管理员审核区域 -->
+            <div id="admin-review-section" class="admin-review-section" style="display: none;">
+                <h3 class="admin-review-title"><i class="fas fa-shield-alt"></i> 待审核留言</h3>
+                <div id="admin-review-list" class="admin-review-list">
+                    <!-- 待审核留言将通过JavaScript动态加载 -->
+                    <div class="message-loading">
+                        <i class="fas fa-spinner fa-spin"></i> 加载中...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 留言表单 -->
+            <div id="message-form-container" class="message-form-container">
+                <h2 class="section-title">留下你的留言</h2>
+                
+                <div id="login-prompt" style="display: none;">
+                    <p>请<a href="login.html">登录</a>后发表留言</p>
+                </div>
+
+                <div id="message-form-content" style="display: none;">
+                    <div class="message-form-header">
+                        <div class="message-form-avatar" id="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="message-form-name" id="user-name">加载中...</div>
+                    </div>
+
+                    <form id="message-form" class="message-form">
+                        <div class="form-group">
+                            <label for="category" class="form-label">分类</label>
+                            <select id="category" class="form-control">
+                                <option value="general">一般留言</option>
+                                <option value="feedback">功能反馈</option>
+                                <option value="bug">问题报告</option>
+                                <option value="suggestion">建议</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <textarea id="message-content" class="message-textarea" placeholder="写下你的留言..." required></textarea>
+                        <div class="message-form-footer">
+                            <div class="message-form-hint">
+                                <span id="char-count">0</span>/500 字符
+                            </div>
+                            <button type="submit" id="submit-message" class="message-submit-button">提交留言</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="message-header">
+                <h2 class="message-title">留言列表</h2>
+                <div class="message-controls">
+                    <button id="sort-by-time" class="message-sort-button active">最新</button>
+                    <button id="sort-by-likes" class="message-sort-button">最热</button>
+                </div>
+            </div>
+
+            <!-- 留言分类 -->
+            <div class="message-categories">
+                <div class="category-btn active" data-category="all">全部</div>
+                <div class="category-btn" data-category="general">一般留言</div>
+                <div class="category-btn" data-category="feedback">功能反馈</div>
+                <div class="category-btn" data-category="bug">问题报告</div>
+                <div class="category-btn" data-category="suggestion">建议</div>
+            </div>
+
+            <!-- 留言列表 -->
+            <div id="message-list" class="message-list">
+                <!-- 示例留言 -->
+                <div class="message-item" data-category="general">
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar"></div>
+                            <div>
+                                <div class="message-user-name">星辰大海</div>
+                                <div class="message-time">2023-06-10</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <p>Miss Foxsan真的太可爱了！每次骰出大成功时她的反应都让我忍不住笑出来。而且她的骰点结果显示非常清晰，让整个跑团过程更加流畅。感谢创作者的用心设计！</p>
+                    </div>
+                    <div class="message-footer">
+                        <div class="message-meta">
+                            <i class="fas fa-tag"></i> 一般留言
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>15</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-item" data-category="feedback">
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar"></div>
+                            <div>
+                                <div class="message-user-name">深海之眼</div>
+                                <div class="message-time">2023-06-05</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <p>最近更新的COC角色卡功能非常实用，可以直接在Discord上查看和修改角色属性，省去了很多麻烦。不过希望能增加一个导出角色卡为PDF的功能，这样我们可以更方便地保存和打印。</p>
+                    </div>
+                    <div class="message-footer">
+                        <div class="message-meta">
+                            <i class="fas fa-tag"></i> 功能反馈
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>8</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-item" data-category="bug">
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar"></div>
+                            <div>
+                                <div class="message-user-name">代码猎手</div>
+                                <div class="message-time">2023-06-01</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <p>在使用.rs命令进行理智检定时，偏尔会出现计算错误的情况。例如，当我输入.rs60/1d3/1d6时，有时候成功后的理智值计算会出错。希望能修复这个问题。</p>
+                    </div>
+                    <div class="message-footer">
+                        <div class="message-meta">
+                            <i class="fas fa-tag"></i> 问题报告
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>5</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-item" data-category="suggestion">
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar"></div>
+                            <div>
+                                <div class="message-user-name">幻想编织者</div>
+                                <div class="message-time">2023-05-28</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <p>建议增加一个跑团音乐推荐功能，可以根据当前场景（如战斗、探索、恐怖等）推荐合适的背景音乐。这样可以让跑团氛围更加沉浸。如果能直接在Discord中播放就更好了！</p>
+                    </div>
+                    <div class="message-footer">
+                        <div class="message-meta">
+                            <i class="fas fa-tag"></i> 建议
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>12</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-item" data-category="general">
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar"></div>
+                            <div>
+                                <div class="message-user-name">午夜幽灵</div>
+                                <div class="message-time">2023-05-25</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <p>作为一个新手KP，Miss Foxsan真的帮了我大忙。她的指令简单易懂，即使是第一次接触TRPG的玩家也能很快上手。而且她的AI对话功能经常能在气氛低迷时活跃一下场景，让游戏更加有趣。</p>
+                    </div>
+                    <div class="message-footer">
+                        <div class="message-meta">
+                            <i class="fas fa-tag"></i> 一般留言
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>10</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 空状态 -->
+            <div id="message-empty" class="message-empty" style="display: none;">
+                <div class="message-empty-icon">
+                    <i class="far fa-comment-dots"></i>
+                </div>
+                <div class="message-empty-text">暂无留言</div>
+                <p>成为第一个留言的人吧！</p>
+            </div>
+
+            <!-- 分页 -->
+            <div id="message-pagination" class="message-pagination">
+                <div class="pagination">
+                    <div class="page-btn active">1</div>
+                    <div class="page-btn">2</div>
+                    <div class="page-btn">3</div>
+                    <div class="page-btn"><i class="fas fa-ellipsis-h"></i></div>
+                    <div class="page-btn">8</div>
+                    <div class="page-btn"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="footer-logo-img">
+                    <h3>狐狸小姐 <span class="english-name">Miss Foxsan</span></h3>
+                </div>
+                <p>让跑团更简单，让故事更精彩</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-qq"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-weixin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-bilibili"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html">骰子指南</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" title="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+    <script src="paw-effect.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <script src="clicks_count.js"></script>
+    <script src="auth.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="message-service.js"></script>
+    <script src="messages.js"></script>
+
+    <script>
+        // 页面加载完成后显示
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+
+        // 留言分类筛选
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            // 筛选函数
+            function filterMessages() {
+                const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
+                const messageItems = document.querySelectorAll('.message-item');
+                
+                messageItems.forEach(item => {
+                    if (activeCategory === 'all' || item.getAttribute('data-category') === activeCategory) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 为当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 调用筛选函数
+                    filterMessages();
+                });
+            });
+            
+            // 分页功能
+            const pageButtons = document.querySelectorAll('.page-btn');
+            
+            pageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    pageButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 为当前点击的按钮添加active类
+                    if (!this.querySelector('.fa-angle-right') && !this.querySelector('.fa-ellipsis-h')) {
+                        this.classList.add('active');
+                    }
+                    
+                    // 这里可以添加实际的分页逻辑
+                    console.log('切换到页面：', this.textContent);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!-- 页面头部 -->
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <img src="../image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+            <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html" id="nav-home"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="../blog.html" id="nav-blog"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                <li><a href="../documents.html" id="nav-docs"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                <li><a href="../dicebot-guide.html" id="nav-dicebot"><i class="fas fa-dice"></i> 骰点指南</a></li>
+                <li><a href="../videos.html" id="nav-videos"><i class="fas fa-video"></i> 跑团视频</a></li>
+                <li><a href="../messages.html" id="nav-messages"><i class="fas fa-comment"></i> 留言板</a></li>
+                <li><a href="../about.html" id="nav-about"><i class="fas fa-info-circle"></i> 好奇猫猫</a></li>
+            </ul>
+        </nav>
+        <div class="user-nav-area" id="userNavArea">
+            <!-- 用户登录/注册按钮或用户头像将通过JavaScript动态插入 -->
+        </div>
+    </div>
+</header>
+
+<!-- 消息提示容器 -->
+<div class="message-container" id="messageContainer"></div>
+
+<script>
+    // 设置当前页面的导航高亮
+    function setActiveNav() {
+        const path = window.location.pathname;
+        const page = path.split('/').pop();
+        
+        // 移除所有active类
+        document.querySelectorAll('nav a').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        // 根据当前页面设置active类
+        if (page === 'index.html' || page === '') {
+            document.getElementById('nav-home')?.classList.add('active');
+        } else if (page === 'blog.html') {
+            document.getElementById('nav-blog')?.classList.add('active');
+        } else if (page === 'documents.html') {
+            document.getElementById('nav-docs')?.classList.add('active');
+        } else if (page === 'dicebot-guide.html' || page === 'dicebot.html') {
+            document.getElementById('nav-dicebot')?.classList.add('active');
+        } else if (page === 'videos.html') {
+            document.getElementById('nav-videos')?.classList.add('active');
+        } else if (page === 'messages.html') {
+            document.getElementById('nav-messages')?.classList.add('active');
+        } else if (page === 'about.html') {
+            document.getElementById('nav-about')?.classList.add('active');
+        }
+    }
+    
+    // 页面加载完成后设置当前页面的导航高亮
+    document.addEventListener('DOMContentLoaded', setActiveNav);
+</script>

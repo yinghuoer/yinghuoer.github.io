@@ -5,240 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>留言板 - 狐狸小姐 (Miss Foxsan)</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="message-styles.css">
+    <link rel="stylesheet" href="message-styles-new.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* 高对比度标题样式 */
-        .hero {
-            background-color: #333;
-            padding: 1.2rem 0;
-            border-bottom: 3px solid var(--primary-color);
+        body {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
         }
 
-        .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .hero h2 {
-            color: var(--primary-color);
-            margin: 0;
-            font-size: 1.6rem;
-            margin-right: 1rem;
-            font-weight: bold;
-            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-        }
-
-        .hero p {
-            color: #f0f0f0;
-            margin: 0;
-            font-size: 0.95rem;
-            font-weight: normal;
-            position: relative;
-            padding-left: 1rem;
-            max-width: 600px;
-            border-left: 2px solid rgba(255, 175, 204, 0.6);
-        }
-
-        /* 留言板页面特定样式 */
-        .message-board {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--box-shadow);
-            margin-bottom: 3rem;
-        }
-
-        .message-form {
-            margin-bottom: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: var(--border-radius);
-            font-family: inherit;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 175, 204, 0.2);
-        }
-
-        textarea.form-control {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .message-list {
-            margin-top: 3rem;
-        }
-
-        .message-item {
-            background-color: #f9f9f9;
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
-        }
-
-        .message-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(255, 175, 204, 0.2);
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .message-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(255, 175, 204, 0.2);
-        }
-
-        .message-author {
-            display: flex;
-            align-items: center;
-        }
-
-        .author-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #ddd;
-            margin-right: 1rem;
-            overflow: hidden;
-        }
-
-        .author-name {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .message-date {
-            color: #888;
-            font-size: 0.9rem;
-        }
-
-        .message-content {
-            line-height: 1.6;
-        }
-
-        .message-footer {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid rgba(255, 175, 204, 0.2);
-            color: #888;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-
-        .message-item:hover .message-footer {
-            color: var(--secondary-color);
-        }
-
-        .message-actions a {
-            margin-left: 1rem;
-            color: #888;
-            transition: var(--transition);
-        }
-
-        .message-actions a:hover {
-            color: var(--primary-color);
-            text-shadow: 0 0 1px rgba(255, 175, 204, 0.5);
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-            gap: 0.5rem;
-        }
-
-        .page-btn {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            background-color: #f0f0f0;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .page-btn:hover, .page-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .message-categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .category-btn {
-            padding: 0.5rem 1rem;
-            background-color: #f0f0f0;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .category-btn:hover, .category-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .featured-messages {
-            margin-bottom: 3rem;
-        }
-
-        .featured-message {
-            background: linear-gradient(135deg, #fff6f3, #fff);
-            border-left: 4px solid var(--primary-color);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 1.5rem;
-            box-shadow: var(--box-shadow);
-        }
-
-        .featured-message .message-content {
-            font-size: 1.1rem;
-            font-style: italic;
-        }
-
-        .featured-badge {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            margin-left: 1rem;
+        body.loaded {
+            opacity: 1;
         }
     </style>
 </head>
@@ -258,43 +36,96 @@
                     <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
                     <li><a href="messages.html" class="active"><i class="fas fa-comment"></i> 留言板</a></li>
                     <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                    <li id="user-dropdown" class="user-dropdown">
+                        <div class="user-dropdown-toggle">
+                            <div class="user-avatar"><i class="fas fa-user"></i></div>
+                            <span class="user-name">登录</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="login.html"><i class="fas fa-sign-in-alt"></i> 登录</a>
+                            <a href="register.html"><i class="fas fa-user-plus"></i> 注册</a>
+                        </div>
+                    </li>
                 </ul>
             </nav>
+            <div class="user-nav-area" id="userNavArea"></div>
         </div>
     </header>
 
+    <style>
+        /* 美化的标题样式 - 扁平版 */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 0;
+            border-radius: 0 0 8px 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(255, 175, 204, 0.2);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .hero h1 {
+            color: white;
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            margin-right: 1rem;
+        }
+
+        .hero p {
+            color: white;
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 500;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.3px;
+        }
+    </style>
+
     <div class="hero">
         <div class="hero-content">
-            <h2>留言板</h2>
-            <p>来自骰主朋友们的留言和反馈</p>
+            <h1>留言板</h1>
+            <p>这里可以留下你的留言和反馈！</p>
         </div>
     </div>
 
     <main>
-        <section class="featured-messages">
-            <h2 class="section-title">狐狸小姐的朋友们</h2>
+        <!-- 精选留言部分 -->
+        <section class="featured-messages message-container">
+            <h2 class="section-title">精选留言</h2>
 
             <div class="featured-message">
                 <div class="message-header">
                     <div class="message-author">
-                        <div class="author-avatar"></div>
+                        <div class="author-avatar">月</div>
                         <div>
-                            <div class="author-name">茶叶</div>
-                            <div class="message-date">2025-04-11</div>
+                            <div class="author-name">月光之下</div>
+                            <div class="message-date">2023-05-20</div>
                         </div>
                         <span class="featured-badge">精选</span>
                     </div>
                 </div>
                 <div class="message-content">
-                    <p>“这里同位体狐狸窝！我来霸占屏——”</p>
+                    <p>Miss Foxsan是我用过的最好的骰点机器人，没有之一！界面友好，功能强大，而且还有可爱的人格设定。我们团队已经用了半年多了，每次跑团都离不开她。特别是COC的奖惩骰和理智检定功能，简直是神器！感谢创作者的辛勤付出，让我们的跑团体验更加美好。</p>
                 </div>
                 <div class="message-footer">
                     <div class="message-meta">
-                        <i class="fas fa-tag"></i> 徐福&阿飞骰主
+                        <i class="fas fa-tag"></i> COC骰主
                     </div>
                     <div class="message-actions">
-                        <a href="#"><i class="far fa-heart"></i> 喜欢</a>
-                        <a href="#"><i class="far fa-comment"></i> 回复</a>
+                        <a href="#" class="message-action-button"><i class="far fa-heart"></i> 喜欢</a>
+                        <a href="#" class="message-action-button"><i class="far fa-comment"></i> 回复</a>
                     </div>
                 </div>
             </div>
@@ -302,7 +133,7 @@
             <div class="featured-message">
                 <div class="message-header">
                     <div class="message-author">
-                        <div class="author-avatar"></div>
+                        <div class="author-avatar">龙</div>
                         <div>
                             <div class="author-name">龙与地下城</div>
                             <div class="message-date">2023-04-15</div>
@@ -318,62 +149,92 @@
                         <i class="fas fa-tag"></i> DND骰主
                     </div>
                     <div class="message-actions">
-                        <a href="#"><i class="far fa-heart"></i> 喜欢</a>
-                        <a href="#"><i class="far fa-comment"></i> 回复</a>
+                        <a href="#" class="message-action-button"><i class="far fa-heart"></i> 喜欢</a>
+                        <a href="#" class="message-action-button"><i class="far fa-comment"></i> 回复</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="message-board">
-            <h2 class="section-title">留下你的留言</h2>
-
-            <div class="message-form">
-                <form id="commentForm">
-                    <div class="form-group">
-                        <label for="name" class="form-label">昵称</label>
-                        <input type="text" id="name" class="form-control" placeholder="请输入您的昵称" required>
+        <div class="message-container">
+            <!-- 管理员审核区域 -->
+            <div id="admin-review-section" class="admin-review-section" style="display: none;">
+                <h3 class="admin-review-title"><i class="fas fa-shield-alt"></i> 待审核留言</h3>
+                <div id="admin-review-list" class="admin-review-list">
+                    <!-- 待审核留言将通过JavaScript动态加载 -->
+                    <div class="message-loading">
+                        <i class="fas fa-spinner fa-spin"></i> 加载中...
                     </div>
-                    <div class="form-group">
-                        <label for="email" class="form-label">邮箱（不会公开）</label>
-                        <input type="email" id="email" class="form-control" placeholder="请输入您的邮箱" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="category" class="form-label">分类</label>
-                        <select id="category" class="form-control">
-                            <option value="general">一般留言</option>
-                            <option value="feedback">功能反馈</option>
-                            <option value="bug">问题报告</option>
-                            <option value="suggestion">建议</option>
-                            <option value="other">其他</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="message" class="form-label">留言内容</label>
-                        <textarea id="message" class="form-control" placeholder="请输入您的留言内容" required></textarea>
-                    </div>
-                    <button type="submit" class="btn primary-btn">提交留言</button>
-                </form>
+                </div>
             </div>
 
-            <div class="message-list">
-                <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">所有留言</h3>
+            <!-- 留言表单 -->
+            <div id="message-form-container" class="message-form-container">
+                <h2 class="section-title">留下你的留言</h2>
 
-                <div class="message-categories">
-                    <div class="category-btn active" data-category="all">全部</div>
-                    <div class="category-btn" data-category="general">一般留言</div>
-                    <div class="category-btn" data-category="feedback">功能反馈</div>
-                    <div class="category-btn" data-category="bug">问题报告</div>
-                    <div class="category-btn" data-category="suggestion">建议</div>
+                <div id="login-prompt" style="display: none;">
+                    <p>请<a href="login.html">登录</a>后发表留言</p>
                 </div>
 
+                <div id="message-form-content" style="display: none;">
+                    <div class="message-form-header">
+                        <div class="message-form-avatar" id="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="message-form-name" id="user-name"></div>
+                    </div>
+
+                    <form id="message-form" class="message-form">
+                        <div class="form-group">
+                            <label for="category" class="form-label">分类</label>
+                            <select id="category" class="form-control">
+                                <option value="general">一般留言</option>
+                                <option value="feedback">功能反馈</option>
+                                <option value="bug">问题报告</option>
+                                <option value="suggestion">建议</option>
+                                <option value="praise">夸夸</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <textarea id="message-content" class="message-textarea" placeholder="写下你的留言..." required></textarea>
+                        <div class="message-form-footer">
+                            <div class="message-form-hint">
+                                <span id="char-count">0</span>/500 字符
+                            </div>
+                            <button type="submit" id="submit-message" class="message-submit-button">提交留言</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="message-header">
+                <h2 class="message-title">留言列表</h2>
+                <div class="message-controls">
+                    <button id="sort-by-time" class="message-sort-button active">最新</button>
+                    <button id="sort-by-likes" class="message-sort-button">最热</button>
+                </div>
+            </div>
+
+            <!-- 留言分类 -->
+            <div class="message-categories">
+                <div class="category-btn active" data-category="all">全部</div>
+                <div class="category-btn" data-category="general">一般留言</div>
+                <div class="category-btn" data-category="feedback">功能反馈</div>
+                <div class="category-btn" data-category="bug">问题报告</div>
+                <div class="category-btn" data-category="suggestion">建议</div>
+                <div class="category-btn" data-category="praise">夸夸</div>
+            </div>
+
+            <!-- 留言列表 -->
+            <div id="message-list" class="message-list">
+                <!-- 示例留言 -->
                 <div class="message-item" data-category="general">
-                    <div class="message-header">
-                        <div class="message-author">
-                            <div class="author-avatar"></div>
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar">星</div>
                             <div>
-                                <div class="author-name">星辰大海</div>
-                                <div class="message-date">2023-06-10</div>
+                                <div class="message-user-name">星辰大海</div>
+                                <div class="message-time">2023-06-10</div>
                             </div>
                         </div>
                     </div>
@@ -385,19 +246,19 @@
                             <i class="fas fa-tag"></i> 一般留言
                         </div>
                         <div class="message-actions">
-                            <a href="#"><i class="far fa-heart"></i> 喜欢</a>
-                            <a href="#"><i class="far fa-comment"></i> 回复</a>
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>15</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="message-item" data-category="feedback">
-                    <div class="message-header">
-                        <div class="message-author">
-                            <div class="author-avatar"></div>
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar">深</div>
                             <div>
-                                <div class="author-name">深海之眼</div>
-                                <div class="message-date">2023-06-05</div>
+                                <div class="message-user-name">深海之眼</div>
+                                <div class="message-time">2023-06-05</div>
                             </div>
                         </div>
                     </div>
@@ -409,43 +270,67 @@
                             <i class="fas fa-tag"></i> 功能反馈
                         </div>
                         <div class="message-actions">
-                            <a href="#"><i class="far fa-heart"></i> 喜欢</a>
-                            <a href="#"><i class="far fa-comment"></i> 回复</a>
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>8</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-item" data-category="praise">
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar">狐</div>
+                            <div>
+                                <div class="message-user-name">狐狐爱好者</div>
+                                <div class="message-time">2023-06-02</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <p>狐狐小姐太棒了！你的马甲团模式简直是我见过最好用的，界面超级可爱，功能也很完善。每次跑团都能给我们带来很多欢乐，让我们的故事更加生动。爱你！不愧是最可爱的骑士团马甲团助手！</p>
+                    </div>
+                    <div class="message-footer">
+                        <div class="message-meta">
+                            <i class="fas fa-tag"></i> 夸夸
+                        </div>
+                        <div class="message-actions">
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>12</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="message-item" data-category="bug">
-                    <div class="message-header">
-                        <div class="message-author">
-                            <div class="author-avatar"></div>
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar">代</div>
                             <div>
-                                <div class="author-name">代码猎手</div>
-                                <div class="message-date">2023-06-01</div>
+                                <div class="message-user-name">代码猎手</div>
+                                <div class="message-time">2023-06-01</div>
                             </div>
                         </div>
                     </div>
                     <div class="message-content">
-                        <p>在使用.rs命令进行理智检定时，偶尔会出现计算错误的情况。例如，当我输入.rs60/1d3/1d6时，有时候成功后的理智值计算会出错。希望能修复这个问题。</p>
+                        <p>在使用.rs命令进行理智检定时，偏尔会出现计算错误的情况。例如，当我输入.rs60/1d3/1d6时，有时候成功后的理智值计算会出错。希望能修复这个问题。</p>
                     </div>
                     <div class="message-footer">
                         <div class="message-meta">
                             <i class="fas fa-tag"></i> 问题报告
                         </div>
                         <div class="message-actions">
-                            <a href="#"><i class="far fa-heart"></i> 喜欢</a>
-                            <a href="#"><i class="far fa-comment"></i> 回复</a>
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>5</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="message-item" data-category="suggestion">
-                    <div class="message-header">
-                        <div class="message-author">
-                            <div class="author-avatar"></div>
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar">幻</div>
                             <div>
-                                <div class="author-name">幻想编织者</div>
-                                <div class="message-date">2023-05-28</div>
+                                <div class="message-user-name">幻想编织者</div>
+                                <div class="message-time">2023-05-28</div>
                             </div>
                         </div>
                     </div>
@@ -457,19 +342,19 @@
                             <i class="fas fa-tag"></i> 建议
                         </div>
                         <div class="message-actions">
-                            <a href="#"><i class="far fa-heart"></i> 喜欢</a>
-                            <a href="#"><i class="far fa-comment"></i> 回复</a>
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>12</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="message-item" data-category="general">
-                    <div class="message-header">
-                        <div class="message-author">
-                            <div class="author-avatar"></div>
+                    <div class="message-item-header">
+                        <div class="message-user-info">
+                            <div class="message-avatar">午</div>
                             <div>
-                                <div class="author-name">午夜幽灵</div>
-                                <div class="message-date">2023-05-25</div>
+                                <div class="message-user-name">午夜幽灵</div>
+                                <div class="message-time">2023-05-25</div>
                             </div>
                         </div>
                     </div>
@@ -481,12 +366,24 @@
                             <i class="fas fa-tag"></i> 一般留言
                         </div>
                         <div class="message-actions">
-                            <a href="#"><i class="far fa-heart"></i> 喜欢</a>
-                            <a href="#"><i class="far fa-comment"></i> 回复</a>
+                            <button class="message-action-button"><i class="far fa-heart"></i> <span>10</span></button>
+                            <button class="message-action-button"><i class="far fa-comment"></i> <span>回复</span></button>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- 空状态 -->
+            <div id="message-empty" class="message-empty" style="display: none;">
+                <div class="message-empty-icon">
+                    <i class="far fa-comment-dots"></i>
+                </div>
+                <div class="message-empty-text">暂无留言</div>
+                <p>成为第一个留言的人吧！</p>
+            </div>
+
+            <!-- 分页 -->
+            <div id="message-pagination" class="message-pagination">
                 <div class="pagination">
                     <div class="page-btn active">1</div>
                     <div class="page-btn">2</div>
@@ -496,7 +393,7 @@
                     <div class="page-btn"><i class="fas fa-angle-right"></i></div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <footer>
@@ -517,10 +414,9 @@
             <div class="footer-section">
                 <h3>快速链接</h3>
                 <ul class="quick-links">
-                    <li><a href="index.html">首页</a></li>
-                    <li><a href="dicebot-guide.html">骰子指南</a></li>
                     <li><a href="blog.html">时空枢纽</a></li>
                     <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html">骰子指南</a></li>
                     <li><a href="about.html">好奇豹豹</a></li>
                 </ul>
             </div>
@@ -530,24 +426,82 @@
         </div>
     </footer>
 
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" title="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script src="script.js"></script>
+    <script src="paw-effect.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <script src="clicks_count.js"></script>
+    <script src="auth-unified.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="firestore-rest-api.js"></script>
+    <script src="firestore-user-api.js"></script>
+    <script src="message-service-rest.js"></script>
+    <script src="messages.js"></script>
+
     <script>
+        // 获取分类名称
+        function getCategoryName(category) {
+            const categoryNames = {
+                'general': '一般留言',
+                'feedback': '功能反馈',
+                'bug': '问题报告',
+                'suggestion': '建议',
+                'praise': '夸夸',
+                'other': '其他'
+            };
+
+            return categoryNames[category] || '一般留言';
+        }
+
+        // 页面加载完成后显示
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+
+        // 留言分类筛选
         document.addEventListener('DOMContentLoaded', function() {
-            // 留言分类筛选
             const categoryButtons = document.querySelectorAll('.category-btn');
+
+            // 全局变量记录当前选中的分类
+            window.currentCategory = 'all';
 
             // 筛选函数
             function filterMessages() {
                 const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-                const currentMessageItems = document.querySelectorAll('.message-item'); // 重新获取所有留言项
+                window.currentCategory = activeCategory; // 更新当前分类
 
-                currentMessageItems.forEach(item => {
-                    if (activeCategory === 'all' || item.getAttribute('data-category') === activeCategory) {
+                const messageItems = document.querySelectorAll('.message-item');
+                let visibleCount = 0;
+
+                messageItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (activeCategory === 'all' || itemCategory === activeCategory) {
                         item.style.display = 'block';
+                        visibleCount++;
                     } else {
                         item.style.display = 'none';
                     }
                 });
+
+                // 如果没有可见的留言，显示空状态
+                const emptyState = document.getElementById('message-empty');
+                if (visibleCount === 0 && messageItems.length > 0) {
+                    emptyState.style.display = 'block';
+                    emptyState.querySelector('.message-empty-text').textContent = `没有${getCategoryName(activeCategory)}`;
+                } else {
+                    emptyState.style.display = 'none';
+                }
             }
 
             categoryButtons.forEach(button => {
@@ -561,10 +515,9 @@
                     // 调用筛选函数
                     filterMessages();
                 });
-
             });
 
-            // 分页功能（示例）
+            // 分页功能
             const pageButtons = document.querySelectorAll('.page-btn');
 
             pageButtons.forEach(button => {
@@ -581,80 +534,9 @@
                     console.log('切换到页面：', this.textContent);
                 });
             });
-
-            // 留言表单提交
-            const commentForm = document.getElementById('commentForm');
-            const messageList = document.querySelector('.message-list');
-
-            commentForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // 获取表单数据
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const category = document.getElementById('category').value;
-                const categoryText = document.getElementById('category').options[document.getElementById('category').selectedIndex].text;
-                const message = document.getElementById('message').value;
-
-                // 获取当前日期
-                const today = new Date();
-                const dateString = today.getFullYear() + '-' +
-                                  ('0' + (today.getMonth() + 1)).slice(-2) + '-' +
-                                  ('0' + today.getDate()).slice(-2);
-
-                // 创建新留言元素
-                const newMessage = document.createElement('div');
-                newMessage.className = 'message-item';
-                newMessage.setAttribute('data-category', category);
-
-                // 设置留言HTML内容
-                newMessage.innerHTML = `
-                    <div class="message-header">
-                        <div class="message-author">
-                            <div class="author-avatar"></div>
-                            <div>
-                                <div class="author-name">${name}</div>
-                                <div class="message-date">${dateString}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-content">
-                        <p>${message}</p>
-                    </div>
-                    <div class="message-footer">
-                        <div class="message-meta">
-                            <i class="fas fa-tag"></i> ${categoryText}
-                        </div>
-                        <div class="message-actions">
-                            <a href="#"><i class="far fa-heart"></i> 喜欢</a>
-                            <a href="#"><i class="far fa-comment"></i> 回复</a>
-                        </div>
-                    </div>
-                `;
-
-                // 将新留言插入到留言列表的开头
-                const firstMessage = document.querySelector('.message-item');
-                messageList.insertBefore(newMessage, firstMessage);
-
-                // 重置表单
-                commentForm.reset();
-
-                // 显示提交成功消息
-                alert('留言提交成功！感谢您的反馈。');
-
-                // 注意：这只是前端演示，页面刷新后数据会丢失
-                console.log('提交留言：', { name, email, category, message });
-
-                // 应用当前的筛选条件
-                filterMessages();
-            });
         });
     </script>
-    <script src="paw-effect.js"></script>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <script src="clicks_count.js"></script>
+
 
 </body>
 </html>

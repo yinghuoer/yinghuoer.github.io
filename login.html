@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html"><i class="fas fa-dice"></i> 骰子指南</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                </ul>
+            </nav>
+            <div class="user-nav-area" id="userNavArea"></div>
+        </div>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-card">
+            <h2 class="auth-title">登录</h2>
+            <div id="auth-message" class="auth-message"></div>
+            <div id="auth-error" class="auth-error"></div>
+
+            <p class="auth-description">
+                请使用您的电子邮箱和密码登录，或者注册一个新账号。
+            </p>
+
+            <div class="auth-buttons-container">
+                <button id="show-login-modal" class="auth-button primary">
+                    <i class="fas fa-sign-in-alt"></i> 登录
+                </button>
+                <button id="show-register-modal" class="auth-button secondary">
+                    <i class="fas fa-user-plus"></i> 注册
+                </button>
+            </div>
+
+            <div class="auth-divider">
+                <span>或者</span>
+            </div>
+
+            <div class="auth-links">
+                <a href="reset-password.html" class="auth-link">
+                    <i class="fas fa-key"></i> 忘记密码？
+                </a>
+                <a href="index.html" class="auth-link">
+                    <i class="fas fa-home"></i> 返回首页
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html">骰子指南</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" title="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+    <script src="paw-effect.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <script src="clicks_count.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="firestore-rest-api.js"></script>
+    <script src="create-user-direct.js"></script>
+    <script src="auth-unified.js"></script>
+    <script>
+        // 页面加载完成后显示
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+
+            // 添加登录按钮事件
+            document.getElementById('show-login-modal').addEventListener('click', function() {
+                window.authUnified.openModal('loginModal');
+            });
+
+            // 添加注册按钮事件
+            document.getElementById('show-register-modal').addEventListener('click', function() {
+                window.authUnified.openModal('registerModal');
+            });
+        });
+    </script>
+</body>
+</html>

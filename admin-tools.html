@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员工具 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-title {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .admin-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+
+        .user-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .user-card {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 1rem;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-email {
+            color: #666;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .user-role {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .user-role.admin {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .user-role.user {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .user-role.bronze {
+            background-color: #cd7f32;
+            color: white;
+        }
+
+        .user-role.silver {
+            background-color: #c0c0c0;
+            color: white;
+        }
+
+        .user-role.gold {
+            background-color: #ffd700;
+            color: #333;
+        }
+
+        .user-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .user-action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .set-admin-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .set-admin-btn:hover {
+            background-color: #c82333;
+        }
+
+        .set-user-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .set-user-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+            transform: translateX(120%);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .notification.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .notification.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-icon {
+            margin-right: 0.5rem;
+        }
+
+        .notification-close {
+            margin-left: 1rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .user-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html"><i class="fas fa-dice"></i> 骰子指南</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                    <li id="user-dropdown" class="user-dropdown">
+                        <div class="user-dropdown-toggle">
+                            <div class="user-avatar"><i class="fas fa-user"></i></div>
+                            <span class="user-name">登录</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="login.html"><i class="fas fa-sign-in-alt"></i> 登录</a>
+                            <a href="register.html"><i class="fas fa-user-plus"></i> 注册</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-nav-area" id="userNavArea"></div>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>管理员工具</h1>
+            <p>管理用户权限和系统设置</p>
+        </div>
+    </div>
+
+    <main>
+        <div class="admin-container">
+            <div class="admin-header">
+                <h2 class="admin-title">用户管理</h2>
+                <p class="admin-description">在这里可以管理所有用户的角色和权限</p>
+                <div class="admin-warning">
+                    <i class="fas fa-exclamation-triangle"></i> 警告：请谨慎使用管理员权限，不要随意更改用户角色。
+                </div>
+            </div>
+
+            <div id="user-list-container">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> 正在加载用户列表...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="footer-logo-img">
+                    <h3>狐狸小姐 <span class="english-name">Miss Foxsan</span></h3>
+                </div>
+                <p>让跑团更简单，让故事更精彩</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-qq"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-weixin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-bilibili"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html">骰子指南</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" title="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- 通知组件 -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <span class="notification-icon"></span>
+            <span id="notification-message"></span>
+            <span class="notification-close" onclick="hideNotification()"><i class="fas fa-times"></i></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="paw-effect.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <script src="clicks_count.js"></script>
+    <script src="auth-unified.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="firestore-rest-api.js"></script>
+    <script src="firestore-user-api.js"></script>
+
+    <script>
+        // 页面加载完成后显示
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+            
+            // 检查是否是管理员
+            checkAdminAccess();
+        });
+
+        // 检查管理员权限
+        async function checkAdminAccess() {
+            try {
+                // 检查用户是否登录
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    // 等待用户登录
+                    firebase.auth().onAuthStateChanged(function(user) {
+                        if (user) {
+                            checkAdminRole();
+                        } else {
+                            // 用户未登录，显示错误信息
+                            document.getElementById('user-list-container').innerHTML = `
+                                <div class="admin-warning">
+                                    <i class="fas fa-exclamation-triangle"></i> 您需要先登录才能访问管理员工具。
+                                    <p><a href="login.html" class="btn">去登录</a></p>
+                                </div>
+                            `;
+                        }
+                    });
+                } else {
+                    checkAdminRole();
+                }
+            } catch (error) {
+                console.error('检查管理员权限失败:', error);
+                showNotification('检查管理员权限失败: ' + error.message, 'error');
+            }
+        }
+
+        // 检查用户是否是管理员
+        async function checkAdminRole() {
+            try {
+                let isAdmin = false;
+                
+                if (window.firestoreUserApi && typeof window.firestoreUserApi.checkUserRoleLevel === 'function') {
+                    isAdmin = await window.firestoreUserApi.checkUserRoleLevel(window.firestoreUserApi.USER_ROLES.ADMIN);
+                } else if (window.firebaseService && typeof window.firebaseService.checkUserRoleLevel === 'function') {
+                    isAdmin = await window.firebaseService.checkUserRoleLevel(window.firebaseService.USER_ROLES.ADMIN);
+                }
+                
+                if (isAdmin) {
+                    // 用户是管理员，加载用户列表
+                    loadUsers();
+                } else {
+                    // 用户不是管理员，显示错误信息
+                    document.getElementById('user-list-container').innerHTML = `
+                        <div class="admin-warning">
+                            <i class="fas fa-exclamation-triangle"></i> 您没有管理员权限，无法访问此页面。
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('检查管理员角色失败:', error);
+                showNotification('检查管理员角色失败: ' + error.message, 'error');
+            }
+        }
+
+        // 加载所有用户
+        async function loadUsers() {
+            try {
+                // 获取用户认证令牌
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    throw new Error('用户未登录');
+                }
+                
+                const idToken = await user.getIdToken(true);
+                
+                // 构建 REST API URL
+                const projectId = 'missfoxcounter';
+                const databaseId = 'missfoxsanuser';
+                const collectionName = 'users';
+                
+                const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/${collectionName}`;
+                
+                console.log('发送 GET 请求到:', url);
+                
+                // 发送 REST API 请求
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${idToken}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`获取用户列表失败: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('获取用户列表成功:', data);
+                
+                // 转换 Firestore REST API 格式为普通对象
+                let users = [];
+                if (data.documents) {
+                    users = data.documents.map(doc => {
+                        const id = doc.name.split('/').pop();
+                        const userData = convertFirestoreDocumentToObject(doc);
+                        return { id, ...userData };
+                    });
+                }
+                
+                // 显示用户列表
+                displayUsers(users);
+            } catch (error) {
+                console.error('加载用户列表失败:', error);
+                showNotification('加载用户列表失败: ' + error.message, 'error');
+                
+                document.getElementById('user-list-container').innerHTML = `
+                    <div class="admin-warning">
+                        <i class="fas fa-exclamation-triangle"></i> 加载用户列表失败: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // 显示用户列表
+        function displayUsers(users) {
+            const container = document.getElementById('user-list-container');
+            
+            if (users.length === 0) {
+                container.innerHTML = `
+                    <div class="admin-warning">
+                        <i class="fas fa-exclamation-triangle"></i> 没有找到任何用户。
+                    </div>
+                `;
+                return;
+            }
+            
+            // 按角色排序，管理员在前面
+            users.sort((a, b) => {
+                const roleOrder = {
+                    'admin': 1,
+                    'gold': 2,
+                    'silver': 3,
+                    'bronze': 4,
+                    'user': 5
+                };
+                
+                const roleA = a.role || 'user';
+                const roleB = b.role || 'user';
+                
+                return (roleOrder[roleA] || 5) - (roleOrder[roleB] || 5);
+            });
+            
+            let html = '<div class="user-list">';
+            
+            users.forEach(user => {
+                const role = user.role || 'user';
+                const displayName = user.displayName || user.email.split('@')[0];
+                const initial = displayName.charAt(0).toUpperCase();
+                
+                html += `
+                    <div class="user-card" data-id="${user.id}">
+                        <div class="user-header">
+                            <div class="user-avatar">
+                                ${user.photoURL ? `<img src="${user.photoURL}" alt="${displayName}">` : initial}
+                            </div>
+                            <div class="user-info">
+                                <div class="user-name">${displayName}</div>
+                                <div class="user-email">${user.email}</div>
+                                <div class="user-role ${role}">${getRoleName(role)}</div>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            ${role !== 'admin' ? `<button class="user-action-btn set-admin-btn" onclick="setUserRole('${user.id}', 'admin')">设为管理员</button>` : ''}
+                            ${role === 'admin' ? `<button class="user-action-btn set-user-btn" onclick="setUserRole('${user.id}', 'user')">设为普通用户</button>` : ''}
+                            ${role !== 'gold' && role !== 'admin' ? `<button class="user-action-btn set-gold-btn" onclick="setUserRole('${user.id}', 'gold')">设为黄金用户</button>` : ''}
+                            ${role !== 'silver' && role !== 'admin' ? `<button class="user-action-btn set-silver-btn" onclick="setUserRole('${user.id}', 'silver')">设为白银用户</button>` : ''}
+                            ${role !== 'bronze' && role !== 'admin' ? `<button class="user-action-btn set-bronze-btn" onclick="setUserRole('${user.id}', 'bronze')">设为青铜用户</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // 设置用户角色
+        async function setUserRole(uid, role) {
+            try {
+                if (window.firestoreUserApi && typeof window.firestoreUserApi.setUserRole === 'function') {
+                    await window.firestoreUserApi.setUserRole(uid, role);
+                    showNotification(`用户角色已更新为 ${getRoleName(role)}`, 'success');
+                    
+                    // 重新加载用户列表
+                    loadUsers();
+                } else {
+                    throw new Error('没有可用的设置用户角色方法');
+                }
+            } catch (error) {
+                console.error('设置用户角色失败:', error);
+                showNotification('设置用户角色失败: ' + error.message, 'error');
+            }
+        }
+
+        // 获取角色名称
+        function getRoleName(role) {
+            const roleNames = {
+                'user': '普通用户',
+                'bronze': '青铜用户',
+                'silver': '白银用户',
+                'gold': '黄金用户',
+                'admin': '管理员'
+            };
+            
+            return roleNames[role] || '未知角色';
+        }
+
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+            const notificationIcon = document.querySelector('.notification-icon');
+            
+            // 设置消息
+            notificationMessage.textContent = message;
+            
+            // 设置图标
+            if (type === 'success') {
+                notificationIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+            } else if (type === 'error') {
+                notificationIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            } else {
+                notificationIcon.innerHTML = '<i class="fas fa-info-circle"></i>';
+            }
+            
+            // 设置类型
+            notification.className = 'notification';
+            notification.classList.add(type);
+            notification.classList.add('show');
+            
+            // 3秒后自动隐藏
+            setTimeout(hideNotification, 3000);
+        }
+
+        // 隐藏通知
+        function hideNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.remove('show');
+        }
+
+        // 将 Firestore REST API 格式的文档转换为普通对象
+        function convertFirestoreDocumentToObject(document) {
+            if (!document || !document.fields) {
+                return null;
+            }
+            
+            const result = {};
+            
+            for (const [key, value] of Object.entries(document.fields)) {
+                result[key] = convertFirestoreValueToNative(value);
+            }
+            
+            return result;
+        }
+
+        // 将 Firestore REST API 格式的值转换为原生 JavaScript 值
+        function convertFirestoreValueToNative(value) {
+            if (value.stringValue !== undefined) {
+                return value.stringValue;
+            } else if (value.integerValue !== undefined) {
+                return parseInt(value.integerValue, 10);
+            } else if (value.doubleValue !== undefined) {
+                return parseFloat(value.doubleValue);
+            } else if (value.booleanValue !== undefined) {
+                return value.booleanValue;
+            } else if (value.nullValue !== undefined) {
+                return null;
+            } else if (value.timestampValue !== undefined) {
+                return new Date(value.timestampValue);
+            } else if (value.arrayValue !== undefined) {
+                return (value.arrayValue.values || []).map(convertFirestoreValueToNative);
+            } else if (value.mapValue !== undefined) {
+                return convertFirestoreDocumentToObject(value.mapValue);
+            } else {
+                return null;
+            }
+        }
+    </script>
+</body>
+</html>

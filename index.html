@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>狐狸小姐 (Miss Foxsan) - 个人主页</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* 页面加载动画 */
@@ -1184,7 +1185,7 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index_new.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
                     <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
                     <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
                     <li><a href="dicebot-guide.html"><i class="fas fa-dice"></i> 骰子指南</a></li>
@@ -1193,6 +1194,9 @@
                     <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
                 </ul>
             </nav>
+            <div class="user-nav-area" id="userNavArea">
+                <!-- 用户登录/注册按钮或用户头像将通过JavaScript动态插入 -->
+            </div>
         </div>
     </header>
 
@@ -1802,7 +1806,12 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="firebase-init.js"></script>
     <script src="clicks_count.js"></script>
+    <script src="auth-unified.js"></script>
 
     <!-- 页面增强脚本 -->
     <script>

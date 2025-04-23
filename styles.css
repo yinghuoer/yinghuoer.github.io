@@ -129,12 +129,13 @@ header {
 }
 
 .header-container {
-    max-width: 1200px;
+    max-width: 1400px; /* 增加宽度 */
     margin: 0 auto;
     padding: 1rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start; /* 改为左对齐 */
     align-items: center;
+    position: relative; /* 为定位元素提供参考 */
 }
 
 .logo {
@@ -143,31 +144,51 @@ header {
 }
 
 .logo h1 {
-    margin-left: 15px;
-    font-size: 1.5rem;
+    margin-left: 10px; /* 减少间距 */
+    font-size: 1.4rem; /* 减小字体 */
     color: var(--primary-color);
     text-shadow: 1px 1px 2px rgba(255, 175, 204, 0.3);
 }
 
 .english-name {
-    font-size: 1rem;
+    font-size: 0.9rem; /* 减小字体 */
     opacity: 0.8;
+    margin-left: 5px; /* 添加左边距 */
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    margin-left: 20px; /* 与左侧logo保持一定距离 */
+    flex: 1; /* 占据可用空间 */
+    overflow-x: auto; /* 允许水平滚动 */
+    -ms-overflow-style: none; /* IE 和 Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* 隐藏滚动条 */
+nav::-webkit-scrollbar {
+    display: none; /* Chrome, Safari 和 Opera */
 }
 
 nav ul {
     display: flex;
     list-style: none;
+    justify-content: flex-start; /* 左对齐 */
+    flex-wrap: nowrap; /* 防止换行 */
 }
 
 nav ul li {
-    margin-left: 1.5rem;
+    margin-left: 1rem; /* 减少间距 */
 }
 
 nav ul li a {
     color: var(--text-color);
     font-weight: 500;
-    padding: 0.5rem;
+    padding: 0.4rem 0.6rem; /* 减少内边距 */
     border-radius: var(--border-radius);
+    white-space: nowrap; /* 防止文字换行 */
+    font-size: 0.95rem; /* 稍微减小字体大小 */
 }
 
 nav ul li a:hover, nav ul li a.active {
@@ -176,7 +197,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 nav ul li a i {
-    margin-right: 5px;
+    margin-right: 3px; /* 减少图标和文字之间的间距 */
 }
 
 /* 英雄区域样式 */
@@ -510,10 +531,13 @@ footer {
         margin-top: 1rem;
         width: 100%;
         overflow-x: auto;
+        display: flex;
+        justify-content: center;
     }
 
     nav ul {
         width: max-content;
+        justify-content: center;
     }
 
     .hero {

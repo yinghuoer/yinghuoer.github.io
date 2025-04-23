@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑个人资料 - 狐狸小姐 (Miss Foxsan)</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="profile-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        .profile-edit-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .profile-edit-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(255, 175, 204, 0.2);
+        }
+
+        .profile-edit-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            font-size: 2rem;
+        }
+
+        .profile-edit-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .profile-edit-section {
+            margin-bottom: 2.5rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .profile-edit-section:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .profile-edit-section:last-child {
+            border-bottom: none;
+        }
+
+        .profile-edit-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid rgba(255, 175, 204, 0.2);
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+        }
+
+        .profile-edit-section h3 i {
+            margin-right: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        .avatar-upload {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            margin-right: 2rem;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(255, 175, 204, 0.3);
+            border: 3px solid white;
+            flex-shrink: 0; /* 防止头像被压缩 */
+        }
+
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 确保图片按比例填充 */
+            object-position: center; /* 确保图片居中 */
+        }
+
+        .avatar-preview .default-avatar {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .avatar-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .avatar-upload-btn {
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(255, 175, 204, 0.3);
+        }
+
+        .avatar-upload-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .avatar-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 175, 204, 0.4);
+        }
+
+        .avatar-remove-btn {
+            padding: 0.7rem 1.2rem;
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .avatar-remove-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .avatar-remove-btn:hover {
+            background-color: rgba(255, 175, 204, 0.1);
+        }
+
+        .avatar-input {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .avatar-upload {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .avatar-preview {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .admin-section {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 2rem;
+        }
+
+        .admin-section h4 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .admin-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .admin-note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background-color: #fff8e1;
+            border-left: 3px solid #ffc107;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        /* 昵称历史记录样式 */
+        .name-history-list {
+            margin-top: 1rem;
+        }
+
+        .name-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        .name-history-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .name-history-item:last-child {
+            border-bottom: none;
+        }
+
+        .name-history-name {
+            font-weight: 500;
+        }
+
+        .name-history-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .name-history-empty {
+            padding: 1rem;
+            text-align: center;
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="image/qq01.jpg" alt="Miss Foxsan Logo" class="logo-placeholder">
+                <h1>狐狸小姐 <span class="english-name">Miss Foxsan</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="blog.html"><i class="fas fa-blog"></i> 时空枢纽</a></li>
+                    <li><a href="documents.html"><i class="fas fa-file-alt"></i> 异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html"><i class="fas fa-dice"></i> 骰子指南</a></li>
+                    <li><a href="videos.html"><i class="fas fa-video"></i> 跑团视频</a></li>
+                    <li><a href="messages.html"><i class="fas fa-comment"></i> 留言板</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
+                </ul>
+            </nav>
+            <div class="user-nav-area" id="userNavArea">
+                <!-- 用户登录/注册按钮或用户头像将通过JavaScript动态插入 -->
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="profile-container">
+            <div class="profile-section">
+                <h2 class="profile-section-title"><i class="fas fa-user-edit"></i> 编辑个人资料</h2>
+                <p>在这里更新您的个人信息、头像和个人简介，让其他用户更好地了解您</p>
+                <div id="auth-message" class="auth-message"></div>
+                <div id="auth-error" class="auth-error"></div>
+
+                <div id="profile-edit-content">
+                    <!-- 个人资料编辑内容将通过JavaScript动态加载 -->
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i> 加载中...
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="profile-section-title">其他操作</h2>
+                <div class="profile-actions">
+                    <a href="profile.html" class="profile-action secondary">
+                        <i class="fas fa-arrow-left"></i> 返回个人资料
+                    </a>
+                    <a href="change-password.html" class="profile-action primary">
+                        <i class="fas fa-key"></i> 修改密码
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>关于Miss Foxsan</h3>
+                <p>Miss Foxsan是一个为TRPG爱好者提供骰点服务的免费公益机器人，由个人创作者开发和维护。</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <ul class="contact-list">
+                    <li><i class="fab fa-bilibili"></i> <a href="https://space.bilibili.com/2876867" target="_blank">B站主页</a></li>
+                    <li><i class="fab fa-discord"></i> <a href="https://discord.gg/Bkx8dJxyTB" target="_blank">Discord服务器</a></li>
+                    <li><i class="fab fa-qq"></i> <a href="https://qm.qq.com/q/JGWS55Fb2O" target="_blank">QQ群：超时空管理总局</a></li>
+                    <li><i class="fas fa-globe"></i> <a href="https://www.missfoxsan.com" target="_blank">本站地址</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul class="quick-links">
+                    <li><a href="blog.html">时空枢纽</a></li>
+                    <li><a href="documents.html">异时空存档点</a></li>
+                    <li><a href="dicebot-guide.html">骰子指南</a></li>
+                    <li><a href="about.html">好奇豹豹</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Miss Foxsan. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" title="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+    <script src="paw-effect.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-init.js"></script>
+    <script src="clicks_count.js"></script>
+    <script src="firestore-rest-api.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="firestore-user-api.js"></script>
+    <script src="auth-unified.js"></script>
+    <script>
+        // 页面加载完成后显示
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+
+            // 初始化页面
+            initProfileEdit();
+        });
+
+        // 初始化个人资料编辑页面
+        function initProfileEdit() {
+            // 使用统一的 Firebase 实例
+            const { auth, storage, db } = window.firebaseInstances;
+
+            // 获取DOM元素
+            const profileForm = document.getElementById('profile-form');
+            const displayNameInput = document.getElementById('display-name');
+            const emailInput = document.getElementById('email');
+            const bioInput = document.getElementById('bio');
+            const uploadAvatarBtn = document.getElementById('upload-avatar-btn');
+            const removeAvatarBtn = document.getElementById('remove-avatar-btn');
+            const avatarInput = document.getElementById('avatar-input');
+            const avatarImage = document.getElementById('avatar-image');
+            const defaultAvatar = document.getElementById('default-avatar');
+            const adminSection = document.getElementById('admin-section');
+            const currentRoleSpan = document.getElementById('current-role');
+
+            // 管理员按钮
+            const setAdminBtn = document.getElementById('set-admin-btn');
+            const setGoldBtn = document.getElementById('set-gold-btn');
+            const setSilverBtn = document.getElementById('set-silver-btn');
+            const setBronzeBtn = document.getElementById('set-bronze-btn');
+            const setUserBtn = document.getElementById('set-user-btn');
+
+            // 显示消息函数
+            function showMessage(message) {
+                const messageElement = document.getElementById('auth-message');
+                if (messageElement) {
+                    messageElement.textContent = message;
+                    messageElement.style.display = 'block';
+
+                    setTimeout(() => {
+                        messageElement.style.display = 'none';
+                    }, 5000);
+                }
+            }
+
+            // 显示错误函数
+            function showError(message) {
+                console.log('显示错误消息:', message);
+                const errorElement = document.getElementById('auth-error');
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+
+                    setTimeout(() => {
+                        errorElement.style.display = 'none';
+                    }, 5000);
+                } else {
+                    // 静默处理错误，只输出到控制台
+                    console.error('错误元素不存在，错误消息:', message);
+                }
+            }
+
+            // 显示成功消息函数
+            function showMessage(message) {
+                console.log('显示成功消息:', message);
+                const messageElement = document.getElementById('auth-message');
+                if (messageElement) {
+                    messageElement.textContent = message;
+                    messageElement.style.display = 'block';
+
+                    setTimeout(() => {
+                        messageElement.style.display = 'none';
+                    }, 5000);
+                } else {
+                    // 静默处理，只输出到控制台
+                    console.error('消息元素不存在，消息:', message);
+                }
+            }
+
+            // 检查用户是否登录
+            window.authService.auth.onAuthStateChanged(user => {
+                if (user) {
+                    // 加载用户资料
+                    loadUserProfile(user);
+
+                    // 检查是否是管理员
+                    checkAdminRole(user);
+                } else {
+                    // 未登录，重定向到登录页面
+                    window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+                }
+            });
+
+            // 加载用户资料
+            async function loadUserProfile(user) {
+                try {
+                    console.log('开始加载用户资料:', user.uid);
+
+                    // 设置邮箱
+                    emailInput.value = user.email;
+
+                    // 设置用户名
+                    displayNameInput.value = user.displayName || '';
+
+                    // 不再尝试创建用户记录，避免覆盖现有权限
+                    console.log('尝试加载现有用户记录...');
+
+                    // 从 Firestore 加载用户数据
+                    console.log('从 Firestore 加载用户数据...');
+                    const userData = await window.firebaseService.getUserData(user.uid);
+
+                    if (userData) {
+                        // 设置个人简介
+                        bioInput.value = userData.bio || '';
+
+                        // 设置头像
+                        if (userData.photoURL) {
+                            avatarImage.src = userData.photoURL;
+                            avatarImage.style.display = 'block';
+                            defaultAvatar.style.display = 'none';
+                        } else {
+                            avatarImage.style.display = 'none';
+                            defaultAvatar.style.display = 'flex';
+
+                            // 设置默认头像文字
+                            const initial = (user.displayName || user.email).charAt(0).toUpperCase();
+                            defaultAvatar.innerHTML = initial;
+                        }
+
+                        // 加载昵称历史记录
+                        loadNameHistory(user.uid);
+                    }
+                } catch (error) {
+                    console.error('加载用户资料失败:', error);
+                    // 静默处理错误，不显示给用户
+                    // 设置默认值
+                    bioInput.value = '';
+                    avatarImage.style.display = 'none';
+                    defaultAvatar.style.display = 'flex';
+                    const initial = (user.displayName || user.email).charAt(0).toUpperCase();
+                    defaultAvatar.innerHTML = initial;
+                }
+            }
+
+            // 加载昵称历史记录
+            async function loadNameHistory(uid) {
+                const nameHistoryContainer = document.getElementById('name-history-container');
+
+                try {
+                    // 获取昵称历史记录
+                    const nameHistory = await window.firebaseService.getUserNameHistory(uid);
+
+                    // 清空容器
+                    nameHistoryContainer.innerHTML = '';
+
+                    if (nameHistory && nameHistory.length > 0) {
+                        // 按时间排序，最新的在前
+                        nameHistory.sort((a, b) => {
+                            return b.changedAt - a.changedAt;
+                        });
+
+                        // 创建列表
+                        const historyList = document.createElement('div');
+                        historyList.className = 'name-history-list';
+
+                        // 添加每个昵称记录
+                        nameHistory.forEach(item => {
+                            const historyItem = document.createElement('div');
+                            historyItem.className = 'name-history-item';
+
+                            // 格式化日期
+                            const date = item.changedAt ? new Date(item.changedAt.seconds * 1000) : new Date();
+                            const formattedDate = date.toLocaleDateString('zh-CN', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+
+                            historyItem.innerHTML = `
+                                <div class="name-history-name">${item.displayName}</div>
+                                <div class="name-history-date">${formattedDate}</div>
+                            `;
+
+                            historyList.appendChild(historyItem);
+                        });
+
+                        nameHistoryContainer.appendChild(historyList);
+                    } else {
+                        // 没有历史记录
+                        nameHistoryContainer.innerHTML = `
+                            <div class="name-history-empty">
+                                暂无昵称历史记录
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('加载昵称历史记录失败:', error);
+                    nameHistoryContainer.innerHTML = `
+                        <div class="name-history-empty">
+                            加载历史记录失败
+                        </div>
+                    `;
+                }
+            }
+
+            // 检查是否是管理员
+            async function checkAdminRole(user) {
+                try {
+                    // 使用新的 firebaseService 检查管理员权限
+                    const isAdmin = await window.firebaseService.checkUserRoleLevel(window.firebaseService.USER_ROLES.ADMIN);
+
+                    if (isAdmin) {
+                        // 显示管理员设置
+                        adminSection.style.display = 'block';
+
+                        // 加载当前角色
+                        const userData = await window.firebaseService.getUserData(user.uid);
+                        if (userData) {
+                            currentRoleSpan.textContent = userData.role || '普通用户';
+                        }
+                    }
+                } catch (error) {
+                    console.error('检查管理员权限失败:', error);
+                }
+            }
+
+            // 上传头像按钮点击事件
+            if (uploadAvatarBtn) {
+                uploadAvatarBtn.addEventListener('click', function() {
+                    avatarInput.click();
+                });
+            }
+
+            // 头像文件选择事件
+            if (avatarInput) {
+                avatarInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+
+                    if (!file) return;
+
+                    // 检查文件类型
+                    if (!file.type.match('image.*')) {
+                        showError('请选择图片文件');
+                        return;
+                    }
+
+                    // 检查文件大小
+                    if (file.size > 2 * 1024 * 1024) {
+                        showError('图片大小不能超过2MB');
+                        return;
+                    }
+
+                    // 预览图片
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        avatarImage.src = e.target.result;
+                        avatarImage.style.display = 'block';
+                        defaultAvatar.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+
+                    // 上传图片
+                    uploadAvatar(file);
+                });
+            }
+
+            // 上传头像到Firebase Storage
+            async function uploadAvatar(file) {
+                // 检查用户是否登录
+                const user = window.authService.auth.currentUser;
+                if (!user) {
+                    showError('用户未登录，请重新登录');
+                    return;
+                }
+
+                // 显示上传中
+                uploadAvatarBtn.disabled = true;
+                uploadAvatarBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 上传中...';
+
+                // 显示上传进度信息
+                showMessage('正在上传头像，请稍候...');
+
+                try {
+                    console.log('开始上传头像，文件信息:', file.name, file.size, file.type);
+
+                    // 检查 firebaseService 是否存在
+                    if (!window.firebaseService || typeof window.firebaseService.uploadUserAvatar !== 'function') {
+                        console.error('Firebase服务未初始化或uploadUserAvatar函数不可用');
+                        throw new Error('Firebase服务未初始化');
+                    }
+
+                    // 使用 firebaseService 上传头像
+                    const downloadURL = await window.firebaseService.uploadUserAvatar(user.uid, file);
+                    console.log('头像上传成功，URL:', downloadURL);
+
+                    // 更新成功
+                    showMessage('头像上传成功');
+
+                    // 更新头像显示
+                    avatarImage.src = downloadURL;
+                    avatarImage.style.display = 'block';
+                    defaultAvatar.style.display = 'none';
+
+                    // 恢复按钮
+                    uploadAvatarBtn.disabled = false;
+                    uploadAvatarBtn.innerHTML = '<i class="fas fa-upload"></i> 上传头像';
+                } catch (error) {
+                    console.error('上传头像失败:', error);
+
+                    // 显示更详细的错误信息
+                    let errorMessage = '上传头像失败: ';
+
+                    if (error.code === 'storage/unauthorized') {
+                        errorMessage += '没有权限上传文件，请检查Firebase Storage规则';
+                    } else if (error.code === 'storage/canceled') {
+                        errorMessage += '文件上传已取消';
+                    } else if (error.code === 'storage/unknown') {
+                        errorMessage += '发生未知错误，请检查网络连接并重试';
+                    } else if (error.message) {
+                        errorMessage += error.message;
+                    } else {
+                        errorMessage += '请检查控制台了解详细错误';
+                    }
+
+                    showError(errorMessage);
+
+                    // 恢复按钮
+                    uploadAvatarBtn.disabled = false;
+                    uploadAvatarBtn.innerHTML = '<i class="fas fa-upload"></i> 上传头像';
+                }
+            }
+
+            // 移除头像按钮点击事件
+            if (removeAvatarBtn) {
+                removeAvatarBtn.addEventListener('click', async function() {
+                    // 检查用户是否登录
+                    const user = window.authService.auth.currentUser;
+                    if (!user) {
+                        showError('用户未登录，请重新登录');
+                        return;
+                    }
+
+                    // 显示移除中
+                    removeAvatarBtn.disabled = true;
+                    removeAvatarBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 移除中...';
+
+                    // 显示进度信息
+                    showMessage('正在移除头像，请稍候...');
+
+                    try {
+                        console.log('开始移除头像:', user.uid);
+
+                        // 检查 firebaseService 是否存在
+                        if (!window.firebaseService || typeof window.firebaseService.deleteUserAvatar !== 'function') {
+                            console.error('Firebase服务未初始化或deleteUserAvatar函数不可用');
+                            throw new Error('Firebase服务未初始化');
+                        }
+
+                        // 使用 firebaseService 删除头像
+                        await window.firebaseService.deleteUserAvatar(user.uid);
+                        console.log('头像删除成功');
+
+                        // 更新成功
+                        showMessage('头像已移除');
+
+                        // 显示默认头像
+                        avatarImage.style.display = 'none';
+                        defaultAvatar.style.display = 'flex';
+
+                        // 设置默认头像文字
+                        const initial = (user.displayName || user.email).charAt(0).toUpperCase();
+                        defaultAvatar.innerHTML = initial;
+
+                        // 恢复按钮
+                        removeAvatarBtn.disabled = false;
+                        removeAvatarBtn.innerHTML = '<i class="fas fa-trash-alt"></i> 移除头像';
+                    } catch (error) {
+                        console.error('移除头像失败:', error);
+
+                        // 显示更详细的错误信息
+                        let errorMessage = '移除头像失败: ';
+
+                        if (error.code === 'storage/object-not-found') {
+                            errorMessage += '头像文件不存在';
+                        } else if (error.code === 'storage/unauthorized') {
+                            errorMessage += '没有权限删除文件';
+                        } else if (error.message) {
+                            errorMessage += error.message;
+                        } else {
+                            errorMessage += '请检查控制台了解详细错误';
+                        }
+
+                        showError(errorMessage);
+
+                        // 恢复按钮
+                        removeAvatarBtn.disabled = false;
+                        removeAvatarBtn.innerHTML = '<i class="fas fa-trash-alt"></i> 移除头像';
+                    }
+                });
+            }
+
+            // 表单提交事件
+            if (profileForm) {
+                profileForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const user = window.authService.auth.currentUser;
+                    if (!user) return;
+
+                    const displayName = displayNameInput.value.trim();
+                    const bio = bioInput.value.trim();
+
+                    // 验证用户名
+                    if (!displayName) {
+                        showError('请输入用户名');
+                        return;
+                    }
+
+                    // 禁用提交按钮
+                    const submitButton = profileForm.querySelector('button[type="submit"]');
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 保存中...';
+
+                    try {
+                        // 使用新的 firebaseService 更新用户资料
+                        // 更新Auth用户名
+                        await user.updateProfile({
+                            displayName: displayName
+                        });
+
+                        // 更新Firestore用户资料
+                        await window.firebaseService.updateUserProfile(user.uid, {
+                            displayName: displayName,
+                            bio: bio
+                        });
+
+                        // 更新成功
+                        showMessage('个人资料已更新');
+
+                        // 恢复按钮
+                        submitButton.disabled = false;
+                        submitButton.textContent = '保存更改';
+                    } catch (error) {
+                        console.error('更新个人资料失败:', error);
+                        showError('更新个人资料失败: ' + error.message);
+
+                        // 恢复按钮
+                        submitButton.disabled = false;
+                        submitButton.textContent = '保存更改';
+                    }
+                });
+            }
+
+            // 管理员按钮点击事件
+            if (setAdminBtn) {
+                setAdminBtn.addEventListener('click', function() {
+                    setUserRole('admin');
+                });
+            }
+
+            if (setGoldBtn) {
+                setGoldBtn.addEventListener('click', function() {
+                    setUserRole('gold');
+                });
+            }
+
+            if (setSilverBtn) {
+                setSilverBtn.addEventListener('click', function() {
+                    setUserRole('silver');
+                });
+            }
+
+            if (setBronzeBtn) {
+                setBronzeBtn.addEventListener('click', function() {
+                    setUserRole('bronze');
+                });
+            }
+
+            if (setUserBtn) {
+                setUserBtn.addEventListener('click', function() {
+                    setUserRole('user');
+                });
+            }
+
+            // 设置用户角色
+            async function setUserRole(role) {
+                const user = window.authService.auth.currentUser;
+                if (!user) return;
+
+                try {
+                    // 检查是否是管理员
+                    const isAdmin = await window.firebaseService.checkUserRoleLevel(window.firebaseService.USER_ROLES.ADMIN);
+
+                    if (!isAdmin) {
+                        showError('只有管理员才能更改用户角色');
+                        return;
+                    }
+
+                    // 设置用户角色
+                    await window.firebaseService.setUserRole(user.uid, role);
+
+                    // 更新成功
+                    showMessage('用户角色已更新为: ' + role);
+                    currentRoleSpan.textContent = role;
+                } catch (error) {
+                    console.error('更新用户角色失败:', error);
+                    showError('更新用户角色失败: ' + error.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

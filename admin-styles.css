@@ -1,0 +1,229 @@
+/* 管理员页面样式 */
+.admin-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.admin-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    width: 100%;
+}
+
+.admin-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+}
+
+.admin-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 0.8rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    display: none;
+}
+
+.admin-error {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 0.8rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    display: none;
+}
+
+.admin-content {
+    display: none;
+}
+
+.unauthorized-content {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.unauthorized-icon {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.unauthorized-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.unauthorized-content p {
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+/* 用户管理表格 */
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.users-table th,
+.users-table td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.users-table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+    color: #555;
+}
+
+.users-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.user-role-select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    width: 100%;
+}
+
+.user-action-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.user-action-button:hover {
+    background-color: #ff8bbd;
+}
+
+.user-action-button.secondary {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.user-action-button.secondary:hover {
+    background-color: rgba(255, 175, 204, 0.1);
+}
+
+/* 搜索和过滤 */
+.admin-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-search {
+    flex: 1;
+    min-width: 200px;
+}
+
+.admin-search input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+}
+
+.admin-filter {
+    min-width: 150px;
+}
+
+.admin-filter select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+}
+
+/* 分页 */
+.admin-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.pagination-button {
+    background-color: transparent;
+    border: 1px solid #ddd;
+    color: #666;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.pagination-button:hover {
+    background-color: #f5f5f5;
+}
+
+.pagination-button.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 昵称历史记录徽章 */
+.history-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background-color: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.history-badge:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .admin-card {
+        padding: 1.5rem;
+    }
+
+    .admin-title {
+        font-size: 1.5rem;
+    }
+
+    .users-table {
+        font-size: 0.9rem;
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 0.6rem;
+    }
+
+    .admin-filters {
+        flex-direction: column;
+    }
+}

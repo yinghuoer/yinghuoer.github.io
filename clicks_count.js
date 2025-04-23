@@ -1,18 +1,6 @@
-// ✅ Firebase 初始化（只执行一次）
-if (!window._firebaseApp) {
-    var firebaseConfig = {
-        apiKey: "AIzaSyC5uKEY52uBF0jjcIZmBqnwrjaAbRhwbkE",
-        authDomain: "missfoxcounter.firebaseapp.com",
-        databaseURL: "https://missfoxcounter-default-rtdb.firebaseio.com",
-        projectId: "missfoxcounter",
-        storageBucket: "missfoxcounter.firebasestorage.app",
-        messagingSenderId: "633096112480",
-        appId: "1:633096112480:web:4eb1212f12a46674e9f605"
-    };
-    window._firebaseApp = firebase.initializeApp(firebaseConfig);
-}
-var db = window._firebaseDB || firebase.database(window._firebaseApp);
-window._firebaseDB = db;
+// 使用统一的 Firebase 实例
+const { rtdb } = window.firebaseInstances;
+var db = rtdb; // 保持兼容性
 
 // ✅ 当前页面识别
 var fullPath = window.location.pathname;

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>异时空存档点 - 狐狸小姐 (Miss Foxsan)</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* 页面加载动画 */
@@ -205,6 +206,32 @@
             display: flex;
             align-items: center;
             margin-right: 1rem;
+        }
+
+        .premium-badge {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+            box-shadow: 0 2px 4px rgba(255, 165, 0, 0.3);
+        }
+
+        .premium-badge[title*="青铜"] {
+            background: linear-gradient(135deg, #CD7F32, #B87333);
+        }
+
+        .premium-badge[title*="白银"] {
+            background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
+        }
+
+        .premium-badge[title*="黄金"] {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+        }
+
+        .premium-badge i {
+            margin-right: 0.3rem;
         }
 
         .document-meta i {
@@ -722,6 +749,7 @@
                     <li><a href="about.html"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
                 </ul>
             </nav>
+            <div class="user-nav-area" id="userNavArea"></div>
         </div>
     </header>
 
@@ -812,10 +840,11 @@
                             <span><i class="far fa-calendar"></i> 2023-06-15</span>
                             <span><i class="far fa-folder"></i> 后日谈存档</span>
                             <span><i class="far fa-eye"></i> 856 阅读</span>
+                            <span class="premium-badge" title="需要青铜级或以上权限"><i class="fas fa-crown"></i> 青铜级</span>
                         </div>
                         <p class="document-excerpt">卡维、米娅、乔和瑟琳四人因费萨南教授那近乎偏执的坤持，意外避开了那场席卷一切的爆炸。尽管他们未能成功研发出真正的复活术，但劃后余生的庆幸感却如潮水般淹没了他们的心头——至少，他们还活着。</p>
                         <div class="document-actions">
-                            <a href="docs/peter3-afterstory1.html" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                            <a href="docs/peter3-afterstory1.html" class="view-btn" data-role="bronze"><i class="fas fa-eye"></i> 在线阅读</a>
                         </div>
                     </div>
                 </article>
@@ -828,10 +857,11 @@
                             <span><i class="far fa-calendar"></i> 2023-06-15</span>
                             <span><i class="far fa-folder"></i> 后日谈存档</span>
                             <span><i class="far fa-eye"></i> 782 阅读</span>
+                            <span class="premium-badge" title="需要白银级或以上权限"><i class="fas fa-crown"></i> 白银级</span>
                         </div>
                         <p class="document-excerpt">后台休息室中。一名年轻貌美的女性正端坐在镜子前，柔顺的金色长发乖巧的盘在她的脑后。慕娜·卡德莉雅，这位后起之秀对着镜子里的自己微微一笑，勾起的红唇为她稍稍的冲散了一点这不好相处的气场。</p>
                         <div class="document-actions">
-                            <a href="docs/peter3-afterstory2.html" class="view-btn"><i class="fas fa-eye"></i> 在线阅读</a>
+                            <a href="docs/peter3-afterstory2.html" class="view-btn" data-role="silver"><i class="fas fa-eye"></i> 在线阅读</a>
                         </div>
                     </div>
                 </article>
@@ -1384,7 +1414,14 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="firebase-init.js"></script>
     <script src="clicks_count.js"></script>
+    <script src="auth-unified.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="permission-control.js"></script>
 
 </body>
 </html>

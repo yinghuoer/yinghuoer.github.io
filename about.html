@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>好奇豹豹 - 狐狸小姐 (Miss Foxsan)</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* 高对比度标题样式 */
@@ -517,6 +518,7 @@
                     <li><a href="about.html" class="active"><i class="fas fa-info-circle"></i> 好奇豹豹</a></li>
                 </ul>
             </nav>
+            <div class="user-nav-area" id="userNavArea"></div>
         </div>
     </header>
 
@@ -899,15 +901,15 @@
         </section>
 
         <section class="contact-section">
-            <h2 class="section-title">联系我们</h2>
+            <h2 class="section-title">定向留言板</h2>
             <div class="about-section">
                 <p>如果您有任何问题、建议或合作意向，欢迎通过以下方式联系我们：</p>
 
                 <div class="contact-form">
                     <form id="contactForm">
                         <div class="form-group">
-                            <label for="name" class="form-label">姓名</label>
-                            <input type="text" id="name" class="form-control" placeholder="请输入您的姓名" required>
+                            <label for="name" class="form-label">称呼</label>
+                            <input type="text" id="name" class="form-control" placeholder="请输入您的称呼" required>
                         </div>
                         <div class="form-group">
                             <label for="email" class="form-label">邮箱</label>
@@ -1028,7 +1030,12 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="firebase-init.js"></script>
     <script src="clicks_count.js"></script>
+    <script src="auth-unified.js"></script>
 
 </body>
 </html>

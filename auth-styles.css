@@ -1,0 +1,1200 @@
+/* 认证页面样式 */
+
+/* 用户导航区域样式 */
+.user-nav-area {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* 自动占据右侧空间 */
+    padding-left: 1rem;
+    min-width: 120px; /* 设置最小宽度，防止内容挤压 */
+    position: fixed; /* 固定定位，确保始终在右上角 */
+    right: 1rem; /* 距离右边距 1rem */
+    top: 1rem; /* 距离顶部 1rem */
+    z-index: 1001; /* 确保在最上层 */
+}
+
+/* 登录/注册按钮样式 */
+.auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end; /* 右对齐 */
+    width: 100%; /* 占据全部宽度 */
+    white-space: nowrap; /* 防止按钮文字换行 */
+}
+
+.auth-button {
+    padding: 0.4rem 0.8rem; /* 减小内边距 */
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem; /* 减小字体大小 */
+    background-color: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+}
+
+.auth-button i {
+    margin-right: 0.3rem; /* 减小图标与文字间的间距 */
+}
+
+.auth-button.primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.auth-button.secondary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.auth-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 用户头像和下拉菜单样式 */
+.user-profile {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end; /* 右对齐 */
+    width: 100%; /* 占据全部宽度 */
+}
+
+.user-avatar {
+    width: 36px; /* 减小头像大小 */
+    height: 36px; /* 减小头像大小 */
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem; /* 减小字体大小 */
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.default-avatar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1.1rem; /* 减小字体大小 */
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 250px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-top: 0.5rem;
+    z-index: 1002; /* 确保在用户导航区域之上 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    max-height: 80vh; /* 限制最大高度 */
+    overflow-y: auto; /* 允许垂直滚动 */
+}
+
+.user-profile:hover .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-info {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+    color: #333;
+}
+
+.user-email {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.2rem;
+}
+
+.user-role {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.user-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.user-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.user-link:hover {
+    background-color: #f5f5f5;
+}
+
+.user-link i {
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+    width: 20px;
+    text-align: center;
+}
+
+/* 模态框样式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal-content.modal-open {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.close-modal {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* 验证邮箱页面样式 */
+.verification-steps {
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+.step:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.step-content h4 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+}
+
+.step-content p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.email-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: #f0f0f0;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+}
+
+.email-info i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.email-info span {
+    font-weight: 500;
+}
+
+/* 加载中状态样式 */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.loading-spinner i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* 个人资料页面样式 */
+.profile-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-name {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.profile-role {
+    margin-bottom: 0.8rem;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.role-badge.admin {
+    background-color: #ffd700;
+    color: #333;
+}
+
+.role-badge.gold {
+    background-color: #ffd700;
+    color: #333;
+}
+
+.role-badge.silver {
+    background-color: #c0c0c0;
+    color: #333;
+}
+
+.role-badge.bronze {
+    background-color: #cd7f32;
+    color: white;
+}
+
+.profile-email {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+}
+
+.profile-email i {
+    color: var(--primary-color);
+}
+
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    background-color: #e6f7e6;
+    color: #2e7d32;
+}
+
+.unverified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    background-color: #fff0f0;
+    color: #d32f2f;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+    align-self: flex-start;
+}
+
+.profile-action-button {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.profile-action-button i {
+    margin-right: 0.5rem;
+}
+
+.profile-action-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.profile-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-section {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.section-title {
+    padding: 1rem 1.5rem;
+    margin: 0;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eee;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.section-content {
+    padding: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.info-value {
+    color: #333;
+}
+
+.name-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.name-history-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius);
+}
+
+.name-history-number {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.name-history-content {
+    flex: 1;
+}
+
+.name-history-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.name-history-date {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.empty-list {
+    padding: 1.5rem;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.security-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.security-action-button {
+    padding: 0.8rem 1.2rem;
+    border-radius: var(--border-radius);
+    background-color: white;
+    color: #333;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.security-action-button i {
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+.security-action-button:hover {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+}
+.auth-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+    min-height: 70vh;
+}
+
+.auth-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+}
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-title i {
+    margin-right: 0.5rem;
+}
+
+.auth-subtitle {
+    color: #666;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.auth-form {
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-group input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 175, 204, 0.2);
+}
+
+.form-hint {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.auth-button {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.auth-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 175, 204, 0.3);
+}
+
+.auth-button.secondary {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.auth-button.secondary:hover {
+    background-color: rgba(255, 175, 204, 0.1);
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    color: #666;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.auth-divider span {
+    padding: 0 1rem;
+    font-size: 0.9rem;
+}
+
+.auth-link-button {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.auth-link-button:hover {
+    background-color: rgba(231, 198, 255, 0.1);
+    color: var(--accent-color);
+}
+
+.auth-link-button.secondary {
+    border-color: #ddd;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.auth-link-button.secondary:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.auth-error {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 0.8rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    display: none;
+}
+
+.auth-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 0.8rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    display: none;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 2rem 0;
+    color: #666;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
+
+    .auth-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* 用户下拉菜单样式 */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.user-dropdown-toggle:hover {
+    background-color: rgba(255, 175, 204, 0.1);
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+    font-size: 1rem;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    margin-right: 0.5rem;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    min-width: 180px;
+    z-index: 100;
+    display: none;
+}
+
+.user-dropdown-menu.show {
+    display: block;
+}
+
+.user-dropdown-item {
+    padding: 0.8rem 1rem;
+    display: block;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.user-dropdown-item:hover {
+    background-color: rgba(255, 175, 204, 0.1);
+    color: var(--primary-color);
+}
+
+.user-dropdown-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 0.5rem 0;
+}
+
+/* 验证邮箱页面样式 */
+.verify-email-content {
+    text-align: center;
+}
+
+.verify-email-content p {
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+.email-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: rgba(255, 175, 204, 0.1);
+    border-radius: var(--border-radius);
+}
+
+.email-info i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.email-info span {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.verification-steps {
+    margin: 2rem 0;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color);
+}
+
+.step-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* 个人资料页面样式 */
+.profile-content {
+    margin-bottom: 2rem;
+}
+
+/* 登录/注册按钮样式 */
+.auth-nav-buttons {
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem; /* 减少间距 */
+    position: absolute;
+    right: 0.5rem; /* 减少右边距 */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.auth-nav-button {
+    padding: 0.4rem 0.8rem; /* 减少内边距 */
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: var(--transition);
+    margin-left: 0.3rem; /* 减少间距 */
+    font-size: 0.85rem; /* 减小字体 */
+    white-space: nowrap;
+}
+
+.auth-nav-button.login {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.auth-nav-button.login:hover {
+    background-color: rgba(255, 175, 204, 0.1);
+}
+
+.auth-nav-button.register {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    box-shadow: 0 2px 5px rgba(255, 175, 204, 0.3);
+}
+
+.auth-nav-button.register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 175, 204, 0.4);
+}
+
+/* 用户下拉菜单样式 */
+.user-dropdown {
+    position: relative;
+    margin-left: auto;
+    margin-right: 0.5rem; /* 减少右边距 */
+}
+
+.user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 50%;
+    transition: var(--transition);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 175, 204, 0.2);
+    width: 40px;
+    height: 40px;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+.user-dropdown-toggle:hover {
+    background-color: rgba(255, 175, 204, 0.1);
+    border-color: rgba(255, 175, 204, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(255, 175, 204, 0.2);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* 防止头像被压缩 */
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover; /* 确保图片按比例填充 */
+    object-position: center; /* 确保图片居中 */
+}
+
+.user-name {
+    margin-right: 0.5rem;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 220px;
+    z-index: 100;
+    display: none;
+    overflow: hidden;
+    animation: dropdown-fade 0.2s ease;
+}
+
+.user-dropdown-header {
+    padding: 1rem;
+    background-color: rgba(255, 175, 204, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.user-dropdown-header .user-name {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+}
+
+.user-dropdown-header .user-email {
+    font-size: 0.8rem;
+    color: #666;
+    word-break: break-all;
+}
+
+@keyframes dropdown-fade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-dropdown-menu.show {
+    display: block;
+}
+
+.user-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: var(--text-color);
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.user-dropdown-item:hover {
+    background-color: rgba(255, 175, 204, 0.1);
+    color: var(--primary-color);
+}
+
+.user-dropdown-item i {
+    margin-right: 0.8rem;
+    width: 20px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.user-dropdown-divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 0.5rem 0;
+}
+
+/* 账号信息项样式 */
+.account-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.account-info-item:last-child {
+    border-bottom: none;
+}
+
+.account-info-label {
+    display: flex;
+    align-items: center;
+    color: #666;
+    font-weight: 500;
+}
+
+.account-info-label i {
+    margin-right: 0.8rem;
+    color: var(--primary-color);
+    width: 20px;
+    text-align: center;
+}
+
+.account-info-value {
+    color: #333;
+    font-weight: 500;
+}
+
+.profile-section h3 i {
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+/* 个人简介样式 */
+.profile-bio {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    background-color: rgba(255, 175, 204, 0.05);
+    border-radius: var(--border-radius);
+    font-style: italic;
+    color: #666;
+    position: relative;
+    line-height: 1.5;
+}
+
+.profile-bio i {
+    color: var(--primary-color);
+    opacity: 0.5;
+    font-size: 0.8rem;
+}
+
+.profile-bio i.fa-quote-left {
+    margin-right: 0.5rem;
+}
+
+.profile-bio i.fa-quote-right {
+    margin-left: 0.5rem;
+}
+
+.profile-bio .empty-bio {
+    color: #999;
+}
+
+.profile-bio .empty-bio a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.profile-bio .empty-bio a:hover {
+    text-decoration: underline;
+}
+
+/* 按钮样式补充 */
+.auth-button.secondary {
+    background: white;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.auth-button.secondary:hover {
+    background-color: rgba(255, 175, 204, 0.1);
+}
